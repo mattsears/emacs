@@ -81,11 +81,13 @@
     (nuke-some-buffers)
     (maximize-frame)
     (set-frame-position (selected-frame) 50 70)
-    ;(split-window-vertically)	
     (split-window-horizontally)
-    (enlarge-window 15)
-    ;;(other-window 2) 
-    ;;(shell)
+    (other-window 1) 
+    (split-window-vertically)	
+	(other-window 2) 
+    (enlarge-window-horizontally 10)
+	(other-window 1) 
+    (eshell)
 	(other-window 0) 
 )
 
@@ -136,6 +138,7 @@
         (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
         (isearch-forward regexp-p no-recursive-edit)))))
 
+;; Handy text filler
 (defun lorem ()
   "Insert a lorem ipsum."
   (interactive)
@@ -173,5 +176,12 @@
  (set-window-buffer w2 b1)
  (set-window-start w1 s2)
  (set-window-start w2 s1)))))
+
+;; Clears the screen in eshell mode
+(defun eshell/clear ()
+  "04Dec2001 - sailor, to clear the eshell buffer."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)))
 
 (provide 'defuns)
