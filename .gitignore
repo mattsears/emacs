@@ -2,5 +2,5 @@ url/*
 auto-save-list/*
 tramp-autosave/*
 .DS_Store
-local.el
+mattsears/local.el
 *.elc

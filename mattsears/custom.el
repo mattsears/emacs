@@ -25,5 +25,4 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(css-mode-default ((t (:inherit prog-mode-default :slant normal :weight normal :height 120 :family "monaco"))) t)
- '(nxml-mode-default ((t (:inherit html-mode-default :slant normal :weight normal :height 120 :family "monaco"))) t))
+ '(default ((t (:inherit prog-mode-default :slant normal :weight normal :height 120 :family "monaco"))) t))

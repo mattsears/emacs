@@ -203,7 +203,7 @@
      
 	 (mode-line ((t (:background "#fcfcfcf" :foreground "#afafaf"))))
 	 (mode-line-inactive ((t (:foreground "#d2e0f6" :background "#1d1f32"))))
-     (modeline-buffer-id ((t (:bold t))))
+     (modeline-buffer-id ((t (:inherit blackboard-white :bold t))))
 
 	 (highlight ((t (:inherit blackboard-current-line))))
      (highline-face ((t (:inherit blackboard-highlight))))
