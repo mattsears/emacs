@@ -7,6 +7,7 @@
 (load "~/.emacs.d/mattsears/modes/nxml")
 (load "~/.emacs.d/mattsears/modes/ido")
 (load "~/.emacs.d/mattsears/modes/snippets")
+(load "~/.emacs.d/mattsears/modes/clojure")
 
 ;; Misc Modes
 
