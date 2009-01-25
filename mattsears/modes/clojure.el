@@ -17,7 +17,6 @@
 (setq swank-clojure-binary "~/bin/clojure")
 (require  'swank-clojure-autoload)
 
-
 (defun clojure ()
   "Starts clojure in Slime"
   (interactive)

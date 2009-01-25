@@ -15,10 +15,12 @@
 (setq auto-mode-alist (cons '("Rakefile" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("Capfile" . ruby-mode) auto-mode-alist))
 
+(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
+
 ; Rinari
 (vendor 'rinari)
 (setq rinari-tags-file-name "TAGS")
-(add-hook 'rinari-minor-mode-hook 
+(add-hook 'rinari-minor-mode-hook
           (lambda ()
             (define-key rinari-minor-mode-map (kbd "A-r") 'rinari-test)))
 
@@ -77,8 +79,8 @@
   "Insert a hash rocket"
   (interactive)
   (insert " => "))
-		
-;; Continuation lines should be indented. 
+
+;; Continuation lines should be indented.
 (defadvice ruby-calculate-indent
   (after ruby-indent-continuation-lines activate)
   "Advise ruby-mode to further indent continuation lines."
@@ -100,14 +102,14 @@
                (repeat . t)
                (modes  . '(ruby-mode))))
 
-
 ;; Ruby hookers
 (add-hook 'ruby-mode-hook (lambda () (ruby-electric-mode t)))
 (add-hook 'ruby-mode-hook '(lambda () (inf-ruby-keys) ))
 (add-hook 'ruby-mode-hook '(lambda() (local-set-key "\r" 'ruby-reindent-then-newline-and-indent)))
-(add-hook 'ruby-mode-hook '(lambda () 
+(add-hook 'ruby-mode-hook '(lambda ()
 	(if (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
      				(flymake-mode))	))
+
 (add-hook 'ruby-mode-hook
           (lambda ()
             (add-hook 'local-write-file-hooks
@@ -119,10 +121,10 @@
             (set (make-local-variable 'tab-width) 4)
 			(define-key ruby-mode-map [return] 'newline-and-indent)
             (define-key ruby-mode-map "\C-m" 'ruby-reindent-then-newline-and-indent)
-			(define-key ruby-mode-map "\C-l" 'ruby-electric-hashrocket)	
+			(define-key ruby-mode-map "\C-l" 'ruby-electric-hashrocket)
             (require 'ruby-electric)
             (ruby-electric-mode t)))
- 
+
 (defadvice ruby-do-run-w/compilation (before kill-buffer (name cmdlist))
   (let ((comp-buffer-name (format "*%s*" name)))
     (when (get-buffer comp-buffer-name)

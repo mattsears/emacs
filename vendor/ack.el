@@ -75,11 +75,21 @@ in the --type argument to the ack command")
 ;;;###autoload
 (defun ack (command-args)
   (interactive
-   (list (read-from-minibuffer "Run ack (like this): "
-                               (ack-build-command)
-                               nil
-                               nil
-                               'ack-history)))
-  (compilation-start command-args 'ack-mode))
+   (list (read-from-minibuffer
+          (concat
+          "Search"
+          (unless (null project-root)
+            (concat " in " project-root ": ")))
+          (ack-build-command)
+          nil
+          nil
+          'ack-history)))
+  (compilation-start
+   (concat
+    command-args
+    (unless (null project-root)
+      (concat " " project-root)))
+   'ack-mode)
+)
 
 (provide 'ack)

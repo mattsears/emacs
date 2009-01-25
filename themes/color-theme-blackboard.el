@@ -40,22 +40,24 @@
 	  (blackboard-highlight ((t (:background "#344e87"))))
 	  (blackboard-current-line ((t (:background "#22283c"))))
 
+     (text-face ((t (:foreground blackboard-yellow))))
+
      (bold ((t (:bold t))))
      (bold-italic ((t (:bold t))))
      (border-glyph ((t (nil))))
 	 (border ((t (:inherit blackboard-bg))))
      (buffers-tab ((t (:inherit blackboard-blue))))
-     
-     (dired-face-directory ((t (:inherit blackboard-yellow :bold t :weight bold))))
+
+     (dired-face-directory ((t (:inherit blackboard-yellow))))
      (dired-face-executable ((t (:inherit blackboard-green))))
      (dired-face-flagged ((t (:inherit blackboard-yellow))))
      (dired-face-marked ((t (:inherit blackboard-yellow))))
      (dired-face-permissions ((t (:inherit blackboard-blue))))
-     
+
      (eshell-prompt-face ((t (:inherit blackboard-green))))
      (eshell-prompt ((t (:inherit blackboard-green))))
      (eshell-ls-archive-face ((t (:inherit blackboard-blue))))
-     (eshell-ls-archive ((t (:inherit blackboard-blue)))) 
+     (eshell-ls-archive ((t (:inherit blackboard-blue))))
      (eshell-ls-backup-face ((t (:inherit blackboard-orange))))
      (eshell-ls-backup ((t (:inherit blackboard-orange))))
      (eshell-ls-clutter-face ((t (:inherit blackboard-white))))
@@ -77,10 +79,10 @@
      (eshell-ls-unreadable-face ((t (:inherit blackboard-red))))
      (eshell-ls-unreadable ((t (:inherit blackboard-red))))
 
-     (flyspell-duplicate-face ((t (:inherit blackboard-red :underline t :weight bold))))
-     (flyspell-incorrect-face ((t (:inherit blackboard-red :underline t :weight bold))))
+     (flyspell-duplicate-face ((t (:underline t))))
+     (flyspell-incorrect-face ((t (:box (:line-width 1 :color "#b9402a")))))
 	 (fringe ((t (:inherit blackboard-bg))))
- 
+
      (font-lock-builtin-face ((t (:inherit blackboard-orange))))
      (font-lock-comment-face ((t (:inherit blackboard-grey))))
 	 (font-lock-comment-delimiter-face ((t (:inherit blackboard-grey))))
@@ -96,9 +98,10 @@
      (font-lock-string-face ((t (:inherit blackboard-green))))
      (font-lock-type-face ((t (:inherit blackboard-orange))))
      (font-lock-variable-name-face ((t (:inherit blackboard-blue))))
-     (font-lock-warning-face ((t (:inherit blackboard-red)))) 			    
+     (font-lock-warning-face ((t (:inherit blackboard-red))))
      (font-lock-negation-char-face ((t (nil))))
 	 (header-line ((t (:bold t :weight bold :underline t :foreground "grey20" :box nil))))
+
      ;; Javascript mode
      (js2-builtin-face ((t (:inherit blackboard-white))))
      (js2-comment-face ((t (:inherit blackboard-grey))))
@@ -126,17 +129,11 @@
      (isearch-lazy-highlight-face ((t (:inherit blackboard-highlight))))
      (isearch-secondary ((t (:inherit blackboard-highlight))))
      (isearch-fail ((t (:inherit blackboard-red))))
- 
-	 ;;(lazy-highlight ((t ()))
-     ;;(iswitchb-current-match ((t ())))
-     ;;(iswitchb-single-match ((t ())))
-     ;;(iswitchb-invalid-regexp ((t ())))
-     ;;(iswitchb-virtual-matches ((t ())))
-     
-     ;;(ibuffer-deletion-face . font-lock-warning-face)
-     ;;(ibuffer-filter-group-name-face . bold)
-     ;;(ibuffer-marked-face . font-lock-comment-face)
-     ;;(ibuffer-title-face . dired-header)
+
+     (ibuffer-deletion-face ((t (blackboard-red))))
+     (ibuffer-filter-group-name-face ((t (blackboard-blue))))
+     (ibuffer-marked-face ((t (blackboard-grey))))
+     (ibuffer-title-face ((t (blackboard-green))))
 
 	 (ido-first-match ((t (:inherit blackboard-green))))
 	 (ido-first-match-face ((t (:inherit blackboard-yellow))))
@@ -147,7 +144,7 @@
 	 (ido-only-match-face ((t (:inherit blackboard-green))))
 	 (ido-subdir ((t (:inherit blackboard-yellow))))
 	 (ido-subdir-face ((t (:inherit blackboard-blue))))
-	
+
 	 (nxml-name-face ((t (:inherit blackboard-blue))))
 	 (nxml-comment-content-face ((t (:inherit blackboard-grey))))
 	 (nxml-markup-declaration-delimiter-face ((t (:inherit blackboard-grey))))
@@ -190,34 +187,53 @@
 	 (nxml-attribute-colon ((t (:inherit blackboard-blue))))
 	 (nxml-namespace-attribute-colon ((t (:inherit nxml-attribute-colon))))
 	 (nxml-hash-face ((t (:inherit blackboard-yellow))))
-	
-	 (erb-section ((t (:inherit blackboard-bg)))) 
+
+	 (erb-section ((t (:inherit blackboard-bg))))
 	 (erb-delim-face ((t (:inherit blackboard-bg))))
      (erb-face ((t (:inherit blackboard-bg))))
      (erb-out-delim-face ((t (:inherit blackboard-bg))))
 
-	 (mmm-code-submode-face ((t (:box (:line-width 1 :color "Purple")))))
-	 (mmm-comment-submode-face ((t (:foreground "Firebrick" :box (:line-width 1 :color "Firebrick")))))
-	 (mmm-default-submode-face ((t (:background "#0C1021"))))
-	 (mmm-output-submode-face ((t (:box (:line-width 1 :color "#0000a0")))))
-     
-	 (mode-line ((t (:background "#fcfcfcf" :foreground "#afafaf"))))
-	 (mode-line-inactive ((t (:foreground "#d2e0f6" :background "#1d1f32"))))
-     (modeline-buffer-id ((t (:inherit blackboard-white :bold t))))
+	 (mmm-code-submode-face ((t (:inherit blackboard-bg ))))
+	 (mmm-comment-submode-face ((t (:inherit blackboard-grey))))
+	 (mmm-default-submode-face ((t (:inherit blackboard-bg))))
+	 (mmm-output-submode-face ((t (:inherit blackboard-bg ))))
 
+     ;; org mode
+     (org-level-1 ((t (:inherit blackboard-blue))))
+     (org-level-2 ((t (:inherit blackboard-orange))))
+     (org-level-3 ((t (:inherit blackboard-white))))
+     (org-level-4 ((t (:inherit blackboard-blue))))
+     (org-special-keyword ((t (:inherit blackboard-blue))))
+     (org-property-value ((t (:inherit blackboard-green))))
+     (org-link ((t (:inherit blackboard-green :underline t))))
+     (org-target ((t (:inherit blackboard-white))))
+     (org-date ((t (:inherit blackboard-red))))
+     (org-sexp-date ((t (:inherit blackboard-red))))
+     (org-tag ((t (:inherit blackboard-green))))
+     (org-todo ((t (:inherit blackboard-green))))
+     (org-done ((t (:inherit blackboard-orange))))
+     (org-headline-done ((t (:inherit blackboard-green))))
+
+	 (mode-line ((t (:background "#373c4e" :foreground "#afafaf" ))))
+	 (mode-line-inactive ((t (:foreground "#d2e0f6" :background "#373c4e"))))
+     (modeline-buffer-id ((t (:bold t))))
+
+     (lazy-highlight-face ((t (:inherit blackboard-current-line))))
+     (hl-line ((t (:inherit blackboard-current-line))))
 	 (highlight ((t (:inherit blackboard-current-line))))
-     (highline-face ((t (:inherit blackboard-highlight))))
+     (highline-face ((t (:inherit blackboard-current-line))))
 	 (minibuffer-prompt ((t (:inherit blackboard-blue))))
-	 
+
 	 (region ((t (:inherit blackboard-highlight))))
-	 (show-paren-match-face ((t (nil))))
-     (show-paren-match-face ((t (:inherit blackboard-highlight))))
+
+     (show-paren-match-face ((t (nil))))
+     (show-paren-match-face ((t (:inherit blackboard-orange))))
      (show-paren-mismatch-face ((t (:inherit blackboard-red))))
+
      (italic ((t (nil))))
      (left-margin ((t (nil))))
      (underline ((nil (:underline nil))))
      (vertical-border ((t (nil))))
-     ;(scroll-bar ((t (:background "fdfdfd"))))
 	 (semantic-dirty-token-face ((t (:inherit blackboard-grey))))
 	 (semantic-unmatched-syntax-face ((t (nil))))
      (zmacs-region ((t (:inherit blackboard-blue)))))))

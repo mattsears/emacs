@@ -5,15 +5,17 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(aquamacs-additional-fontsets nil t)
- '(aquamacs-customization-version-id 162 t)
+ '(aquamacs-autoface-mode nil)
+ '(aquamacs-customization-version-id 163 t)
  '(aquamacs-save-options-on-quit nil)
+ '(aquamacs-scratch-file nil)
+ '(column-number-mode nil)
  '(default-frame-alist (quote ((tool-bar-lines . 0) (fringe) (right-fringe) (left-fringe . 1) (vertical-scroll-bars) (cursor-type . box) (menu-bar-lines . 0) (background-color . "#0C1021") (background-mode . dark) (border-color . "#dedede") (cursor-color . "#AFAFAF") (foreground-color . "#F8F8F8") (mouse-color . "sienna1"))))
+ '(global-font-lock-mode 1)
+ '(global-hl-line-mode t)
  '(load-home-init-file t t)
  '(nxml-slash-auto-complete-flag t)
- '(show-paren-mode nil)
  '(tabbar-mode nil nil (tabbar))
- '(transient-mark-mode t)
- '(aquamacs-autoface-mode nil)
  '(x-stretch-cursor t))
 
 ;;  The only I can get a bar cursor on mac os

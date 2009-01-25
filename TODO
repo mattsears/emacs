@@ -1,5 +1,5 @@
 TODO
 ====
 
-* Spell check
-* HTML validation
+* Fix issue with erb sections in nxml mode
+* Fix ido bug when exiting

@@ -1,9 +1,5 @@
-;; TODO: Run a remote Rails console
-(defun rails-remote-console()
-  (interactive)
-  (run-ruby "ssh server /var/www/apps/appname/current/script/console"))
+;;; defuns.el - Custom functions
 
-;; For indenting an entire file
 (defun iwb ()
   "indent whole buffer"
   (interactive)
@@ -11,49 +7,101 @@
   (indent-region (point-min) (point-max) nil)
   (untabify (point-min) (point-max)))
 
-;; Textmate style command+space
+(defun nuke-all-buffers ()
+  "Kill all buffers, leaving *scratch* only."
+  (interactive)
+  (mapcar (lambda (x) (kill-buffer x)) (buffer-list)) (delete-other-windows))
+
 (defun insert-blank-line-after-current ()
+  "Textmate style command+space"
   (interactive)
   (next-line)
   (beginning-of-line)
   (insert "\n"))
 (define-key global-map [M-return] 'insert-blank-line-after-current)
 
-;; Create a new scratch area
+(defun open-line-below ()
+  "Open a line below the line the point is at.
+   Then move to that line and indent accordning to mode"
+  (interactive)
+  (move-end-of-line 1)
+  (newline)
+  (indent-according-to-mode))
+
+(defun open-line-above ()
+  "Open a line above the line the point is at.
+  Then move to that line and indent accordning to mode"
+  (interactive)
+  (move-beginning-of-line 1)
+  (newline)
+  (previous-line)
+  (indent-according-to-mode))
+
+(defun backward-delete-word ()
+  "Delete work backwards without saving it to the kill ring."
+  (interactive)
+  (delete-region (point) (progn (backward-word) (point))))
+
+(defun untabify-buffer ()
+  "Replaces all tabs in the buffer with spaces."
+  (interactive)
+  (untabify (point-min) (point-max)))
+
+(defun untabify-buffer-or-region ()
+  "Replaces all tabs in the buffer with spaces."
+  (interactive)
+  (if mark-active
+      (untabify-buffer)
+    (untabify (point-min) (point-max))))
+
+(defun indent-buffer ()
+  "Indents whole buffer."
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
+(defun indent-buffer-or-region ()
+  "Indents region if any. Otherwise whole buffer."
+  (interactive)
+  (if mark-active
+      (call-interactively 'indent-region)
+    (indent-buffer)))
+
+(defun back-to-indentation-or-beginning-of-line ()
+  "Moves point back to indentation if there is any
+non blank characters to the left of the cursor.
+Otherwise point moves to beginning of line."
+  (interactive)
+  (if (= (point) (save-excursion (back-to-indentation) (point)))
+      (beginning-of-line)
+    (back-to-indentation)))
+
 (defun my-new-frame-with-new-scratch ()
+  "Create a new scratch area"
   (interactive)
   (let ((one-buffer-one-frame t))
     (new-frame-with-new-scratch)))
 (define-key osx-key-mode-map (kbd "A-n") 'my-new-frame-with-new-scratch)
 
-;; Tab with spaces
 (defun insert-soft-tab ()
+  " Tab with spaces"
   (interactive)
   (insert "   "))
 
-;; Kill the current frame, but not window
-(one-buffer-one-frame-mode 0)
-(defun my-close-current-window-asktosave ()
-  (interactive)
-  (let ((one-buffer-one-frame t))
-    (kill-buffer (current-buffer))))
-(define-key osx-key-mode-map (kbd "A-w") 'my-close-current-window-asktosave)
-
-;; For loading libraries in from the vendor directory
 (defun vendor (library)
-  (let* ((file (symbol-name library)) 
-         (normal (concat "~/.emacs.d/vendor/" file)) 
+  "For loading libraries in from the vendor directory"
+  (let* ((file (symbol-name library))
+         (normal (concat "~/.emacs.d/vendor/" file))
          (suffix (concat normal ".el"))
          (matt (concat "~/.emacs.d/mattsears/" file)))
-    (cond 
+    (cond
      ((file-directory-p normal) (add-to-list 'load-path normal) (require library))
      ((file-directory-p suffix) (add-to-list 'load-path suffix) (require library))
      ((file-exists-p suffix) (require library)))
     (when (file-exists-p (concat matt ".el"))
       (load matt))))
 
-;; Recognize file types with shebang declaration
 (defun shebang-to-mode ()
+  "Recognize file types with shebang declaration"
   (interactive)
   (let*
       ((bang (buffer-substring (point-min) (prog2 (end-of-line) (point) (move-beginning-of-line 1))))
@@ -65,61 +113,106 @@
       (funcall mode-fn))))
 (add-hook 'find-file-hook 'shebang-to-mode)
 
-;; Duplicate the current line
-(defun duplicate-line () 
+(defun duplicate-line ()
+  "Duplicate the current line"
   (interactive)
-    (beginning-of-line)
-    (copy-region-as-kill (point) (progn (end-of-line) (point)))
-    (textmate-next-line)
-    (yank)
-    (beginning-of-line)
-    (indent-according-to-mode))
+  (beginning-of-line)
+  (copy-region-as-kill (point) (progn (end-of-line) (point)))
+  (textmate-next-line)
+  (yank)
+  (beginning-of-line)
+  (indent-according-to-mode))
 
-;; Reset windows and frames
 (defun reset-window-position ()
+  "Reset windows and frames"
   (interactive)
-    (nuke-some-buffers)
-    (maximize-frame)
-    (set-frame-position (selected-frame) 50 70)
-	(split-window-horizontally)
-	(other-window 0) 
-)
+  (delete-other-windows)
+                                        ;(maximize-frame)
+  (set-frame-position (selected-frame) 325 100)
+                                        ;(split-window-horizontally)
+                                        ;(other-window 0)
+  )
 
-;; Kills live buffers, leaves some emacs work buffers
-;; optained from http://www.chrislott.org/geek/emacs/dotemacs.html
-(defun nuke-some-buffers (&optional list)
-  "For each buffer in LIST, kill it silently if unmodified. Otherwise ask.
-   LIST defaults to all existing live buffers."
+(one-buffer-one-frame-mode 0)
+(defun my-close-current-window-asktosave ()
+  "Kill the buffer, but not the window"
   (interactive)
-  (if (null list)
-      (setq list (buffer-list)))
-  (while list
-    (let* ((buffer (car list))
-	   (name (buffer-name buffer)))
-      (and (not (string-equal name ""))
-	   (not (string-equal name "*Messages*"))
-	  ;; (not (string-equal name "*Buffer List*"))
-	   (not (string-equal name "*buffer-selection*"))
-	   (not (string-equal name "*Shell Command Output*"))
-	   (not (string-equal name "*scratch*"))
-	   (/= (aref name 0) ? )
-	   (if (buffer-modified-p buffer)
-	       (if (yes-or-no-p
-		    (format "Buffer %s has been edited. Kill? " name))
-		   (kill-buffer buffer))
-	     (kill-buffer buffer))))
-    (setq list (cdr list))))
+  ;;(let ((one-buffer-one-frame t))
+  (kill-buffer (current-buffer)))
+;;(define-key osx-key-mode-map (kbd "A-w") 'my-close-current-window-asktosave)
 
+(one-buffer-one-frame-mode 0)
+(defun matts-close-and-delete-window ()
+  "Kill the current frame and the window"
+  (interactive)
+  ;;(let ((one-buffer-one-frame t))
+  (kill-buffer (current-buffer))
+  (delete-window))
+;;(define-key osx-key-mode-map (kbd "A-W") 'matts-close-and-delete-window)
+
+(defun matts-split-window-three-ways ()
+  "Reset windows and frames with room"
+  (interactive)
+  (delete-other-windows)
+  (maximize-frame)
+  (set-frame-position (selected-frame) 50 70)
+  (split-window-horizontally)
+  (other-window 1)
+  (split-window-vertically)
+  (other-window 1)
+  )
+
+(defun matts-reset-window-position-with-shell ()
+  "Reset windows and frames with a shell"
+  (interactive)
+  (matts-split-window-three-ways)
+  (shrink-window 20)
+  (eshell)
+  (other-window 0)
+  )
+
+(defun matts-reset-window-position-with-calendar ()
+  "Reset windows and frames with a shell"
+  (interactive)
+  (matts-split-window-three-ways)
+  (other-window 1)
+  (matts-flip-windows)
+  (calendar)
+  (shrink-window 25)
+  (other-window 1)
+  )
+
+(defun matts-delete-whole-line ()
+  "Delete an entire line, including trailing newline"
+  (interactive)
+  (setq previous-column (current-column))
+  (end-of-line)
+  (if (= (current-column) 0)
+      (delete-char 1)
+    (progn
+      (beginning-of-line)
+      (kill-line)
+      (delete-char 1)
+      (move-to-column previous-column))))
+
+(defun matts-delete-whole-line ()
+  "Deletes the whole line with copying the text to the kill-ring"
+  (interactive)
+  (beginning-of-line)
+  (setq matts-begin-point (point))
+  (forward-line 1)
+  (setq matts-end-point (point))
+  (delete-region matts-begin-point matts-end-point))
 
 ;; From http://platypope.org/blog/2007/8/5/a-compendium-of-awesomeness
 ;; I-search with initial contents
 (defvar isearch-initial-string nil)
- 
+
 (defun isearch-set-initial-string ()
   (remove-hook 'isearch-mode-hook 'isearch-set-initial-string)
   (setq isearch-string isearch-initial-string)
   (isearch-search-and-update))
- 
+
 (defun isearch-forward-at-point (&optional regexp-p no-recursive-edit)
   "Interactive search forward for the symbol at point."
   (interactive "P\np")
@@ -132,7 +225,6 @@
         (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
         (isearch-forward regexp-p no-recursive-edit)))))
 
-;; Handy text filler
 (defun lorem ()
   "Insert a lorem ipsum."
   (interactive)
@@ -144,36 +236,120 @@
           "pariatur. Excepteur sint occaecat cupidatat non proident, sunt in "
           "culpa qui officia deserunt mollit anim id est laborum."))
 
-;; Scroll without moving cursor
-(defun scroll-down-keep-cursor () 
-;; the text one line down while keeping the cursor 
-    (interactive) 
-    (scroll-down 1))
-(defun scroll-up-keep-cursor () 
-    ;; Scroll the text one line up while keeping the cursor 
-    (interactive) 
-    (scroll-up 1))
+(defun scroll-down-keep-cursor ()
+  "Scroll without moving cursor"
+  (interactive)
+  (scroll-down 1))
+
+(defun scroll-up-keep-cursor ()
+  " Scroll the text one line up while keeping the cursor"
+  (interactive)
+  (scroll-up 1))
 (global-set-key '[C-M-up] 'scroll-down-keep-cursor)
 (global-set-key '[C-M-down] 'scroll-up-keep-cursor)
 
-;; From Steve Yegge: http://steve.yegge.googlepages.com/my-dot-emacs-file
-(defun swap-windows ()
- "If you have 2 windows, it swaps them." (interactive) (cond ((not (= (count-windows) 2)) (message "You need exactly 2 windows to do this."))
- (t
- (let* ((w1 (first (window-list)))
-	 (w2 (second (window-list)))
-	 (b1 (window-buffer w1))
-	 (b2 (window-buffer w2))
-	 (s1 (window-start w1))
-	 (s2 (window-start w2)))
- (set-window-buffer w1 b2)
- (set-window-buffer w2 b1)
- (set-window-start w1 s2)
- (set-window-start w2 s1)))))
+(defun matts-flip-windows ()
+  ";; Swap windows if in split-screen mode"
+  (interactive)
+  (let ((cur-buffer (current-buffer))
+        (top-buffer)
+        (bottom-buffer))
+    (pop-to-buffer (window-buffer (frame-first-window)))
+    (setq top-buffer (current-buffer))
+    (other-window 1)
+    (setq bottom-buffer (current-buffer))
+    (switch-to-buffer top-buffer)
+    (other-window -1)
+    (switch-to-buffer bottom-buffer)
+    (pop-to-buffer cur-buffer)))
 
-;; Clears the screen in eshell mode
+(defun matts-ido-choose-from-recentf ()
+  "Use ido to select a recently opened file from the `recentf-list'"
+  (interactive)
+  (let ((home (expand-file-name (getenv "HOME"))))
+    (find-file
+     (ido-completing-read "Recent open: "
+                          (mapcar (lambda (path)
+                                    (replace-regexp-in-string home "~" path))
+                                  recentf-list)
+                          nil t))))
+
+(defun choose-from-menu (menu-title menu-items)
+  "Choose from a list of choices from a popup menu."
+  (let ((item)
+        (item-list))
+    (while menu-items
+      (setq item (car menu-items))
+      (if (consp item)
+          (setq item-list (cons (cons (car item) (cdr item) ) item-list))
+        (setq item-list (cons (cons item item) item-list)))
+      (setq menu-items (cdr menu-items)))
+    (x-popup-menu
+     `((500 200) ,(selected-frame))
+     (list menu-title (cons menu-title (nreverse item-list))))))
+
+(defun matts-popup-commands ()
+  "Show a popup menu of commands."
+  (interactive)
+  (eval-expression (car (read-from-string (choose-from-menu "Commands"
+                                                            (list
+                                                             (cons "Goto Line" "(call-interactively 'goto-line)")
+                                                             (cons "-" "")
+                                                             (cons "Nuke all buffers " "(nuke-all-buffers)")
+                                                             (cons "Shell (C-x C-z) " "(matts-reset-window-position-with-shell)")
+                                                             (cons "Flip Windows" "(matts-flip-windows)")
+                                                             (cons "Calendar" "(matts-reset-window-position-with-calendar)")
+                                                             (cons "Resize Window" "(reset-window-position)")
+                                                             (cons "Reload Emacs" "(load-file \"~/.emacs\")")
+                                                             (cons "Eval Current Buffer" "(eval-current-buffer)")
+                                                             )))))
+  )
+
+(defun matts-popup-symbols ()
+  "Popups for the current buffer's symbols"
+  (interactive)
+  (imenu--make-index-alist)
+  (let ((name-and-pos '())
+        (symbol-names '()))
+    (flet ((addsymbols (symbol-list)
+                       (when (listp symbol-list)
+                         (dolist (symbol symbol-list)
+                           (let ((name nil) (position nil))
+                             (cond
+                              ((and (listp symbol) (imenu--subalist-p symbol))
+                               (addsymbols symbol))
+
+                              ((listp symbol)
+                               (setq name (car symbol))
+                               (setq position (cdr symbol)))
+
+                              ((stringp symbol)
+                               (setq name symbol)
+                               (setq position (get-text-property 1 'org-imenu-marker symbol))))
+
+                             (unless (or (null position) (null name))
+                               (add-to-list 'symbol-names name)
+                               (add-to-list 'name-and-pos (cons name position))))))))
+      (addsymbols imenu--index-alist))
+
+    (let* ((selected-symbol (choose-from-menu "Symbols " symbol-names))
+           (position (cdr (assoc selected-symbol name-and-pos))))
+      (goto-char position)))
+  )
+
+(defun passenger-restart (&optional starting)
+  "Restart apache - requred project-root variable"
+  (interactive)
+  (when (null project-root)
+    (error "Can't find any project"))
+  (shell-command-to-string
+   (concat
+    "touch "
+    project-root
+    "/tmp/restart.txt")) "\n" t)
+
 (defun eshell/clear ()
-  "04Dec2001 - sailor, to clear the eshell buffer."
+  "Clear the eshell buffer."
   (interactive)
   (let ((inhibit-read-only t))
     (erase-buffer)))
