@@ -1,5 +1,12 @@
+
 ;; Ruby mode
 (require 'ruby-mode)
+
+;; Rspec mode
+;(add-to-list 'load-path "~/.emacs.d/vendor/rspec-mode")
+;(require 'rspec-mode)
+;; Toggle between rspec and its target.
+(global-set-key (kbd "C-c s") 'rspec-toggle-spec-and-target)
 
 ;; Automatically insert compeleted tags, don't really like it that much
 (require 'ruby-electric)

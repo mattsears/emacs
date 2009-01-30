@@ -130,11 +130,20 @@
      (isearch-secondary ((t (:inherit blackboard-highlight))))
      (isearch-fail ((t (:inherit blackboard-red))))
 
+     ;; ibuffer
      (ibuffer-deletion-face ((t (blackboard-red))))
      (ibuffer-filter-group-name-face ((t (blackboard-blue))))
      (ibuffer-marked-face ((t (blackboard-grey))))
      (ibuffer-title-face ((t (blackboard-green))))
+     (ibuffer-dired-buffer-face ((t (blackboard-blue))))
+     (ibuffer-help-buffer-face ((t (blackboard-blue))))
+     (ibuffer-hidden-buffer-face ((t (blackboard-red))))
+     (ibuffer-occur-match-face ((t (blackboard-red))))
+     (ibuffer-read-only-buffer-face ((t (blackboard-red))))
+     (ibuffer-special-buffer-face ((t (blackboard-red))))
+     (ibuffer-title-face ((t (blackboard-blue))))
 
+     ;; ido
 	 (ido-first-match ((t (:inherit blackboard-green))))
 	 (ido-first-match-face ((t (:inherit blackboard-yellow))))
 	 (ido-incomplete-regexp ((t (:box (:line-width 1 :color "red4") :foreground "red2"))))
@@ -188,12 +197,12 @@
 	 (nxml-namespace-attribute-colon ((t (:inherit nxml-attribute-colon))))
 	 (nxml-hash-face ((t (:inherit blackboard-yellow))))
 
-	 (erb-section ((t (:inherit blackboard-bg))))
+	 (erb-section ((t (nil))))
 	 (erb-delim-face ((t (:inherit blackboard-bg))))
      (erb-face ((t (:inherit blackboard-bg))))
      (erb-out-delim-face ((t (:inherit blackboard-bg))))
 
-	 (mmm-code-submode-face ((t (:inherit blackboard-bg ))))
+	 (mmm-code-submode-face ((t (nil ))))
 	 (mmm-comment-submode-face ((t (:inherit blackboard-grey))))
 	 (mmm-default-submode-face ((t (:inherit blackboard-bg))))
 	 (mmm-output-submode-face ((t (:inherit blackboard-bg ))))

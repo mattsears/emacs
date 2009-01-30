@@ -13,8 +13,6 @@
 ;; Modify the mode-line as well. This is a cleaner setup than the
 (setq default-mode-line-format
       '(" "
-       ;mode-line-mule-info
-       ;mode-line-modified
        mode-line-frame-identification
        mode-line-buffer-identification
        "  "
@@ -25,8 +23,11 @@
        (-3 . "%p")
        "% "))
 
+;; Don't indent with tabs
+(setq-default indent-tabs-mode nil)
+
 ;;  makes the region act quite like the text "highlight" in many apps.
-(setq transient-mark-mode t)
+(setq transient-mark-mode nil)
 
 ;; Shutoff messages
 (setq message-log-max nil)
