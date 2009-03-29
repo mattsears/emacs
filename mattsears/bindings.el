@@ -3,6 +3,9 @@
 ;; Newline and then indent.
 (global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
 
+;; Re-assign the tab key
+(global-set-key (kbd "TAB") 'insert-soft-tab);
+
 ;; make the delete key delete
 (global-set-key [delete] 'delete-char)
 
@@ -27,23 +30,23 @@
 (global-set-key [f8] 'delete-window)
 
 ;; Buffers
-(global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "<C-tab>") 'ibuffer)
-
-;; Easy buffer switching
-;(require 'wcy-swbuff)
-;(global-set-key (kbd "<C-tab>") 'wcy-switch-buffer-forward)
-;(global-set-key (kbd "<C-S-kp-tab>") 'wcy-switch-buffer-backward)
+(global-set-key "\C-x\C-b" 'buffer-menu)
 
 ;; General
-(global-set-key "\C-x\C-b" 'buffer-menu)
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\M-i" 'insert-soft-tab)
 (global-set-key "\C-R" 'replace-string)
 
 ;; Use ido to match commands in the mini-buffer
-(global-set-key "\M-x" 'ido-execute-command)
+;;(global-set-key "\M-x" 'ido-execute-command)
+
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "C-c M-x") 'smex-update-and-run)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;; Vim emulation
 (global-set-key (kbd "C-*") 'isearch-forward-at-point)
@@ -70,11 +73,14 @@
 ;; Duplicated the current line
 (define-key osx-key-mode-map (kbd "A-d") 'duplicate-line)
 
-;; Open a file with find-file
+;; Open a file with dired
 (define-key osx-key-mode-map (kbd "A-o") 'dired)
 
 ;; Open a file with ido
 (define-key osx-key-mode-map (kbd "A-O") 'ido-find-file)
+
+;; Find a file from the list of most recently open files
+(define-key osx-key-mode-map (kbd "C-x r") 'matts-ido-choose-from-recentf)
 
 ;; Indent the buffer
 (define-key osx-key-mode-map (kbd "A-i") 'iwb)
@@ -82,13 +88,13 @@
 ;; Trigger the buffer list
 (define-key osx-key-mode-map (kbd "A-b") 'ibuffer)
 
-;; Recently open files
+;; Compile buffer in it's current mode
 (define-key osx-key-mode-map (kbd "A-r") 'mode-compile)
 
 ;; Custom set of commands in popup window
 (define-key osx-key-mode-map (kbd "A-m") 'matts-popup-commands)
 
-;; Popup a window for all the symbols
+;; Popup a window for all the methods on the buffer
 (define-key osx-key-mode-map (kbd "A-T") 'matts-popup-symbols)
 
 ;; Find file in project
@@ -108,6 +114,5 @@
 
 ;; Cancel current command
 (global-set-key [(alt .)] 'keyboard-quit)
-
 
 (provide 'bindings)

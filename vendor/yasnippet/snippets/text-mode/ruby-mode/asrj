@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : assert_rjs
-# --
-assert_rjs :${1:replace}, ${2:"${3:dom id}"}

@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : flunk(..)
-# --
-flunk`snippet_paren.rb`"${0:Failure message.}"`snippet_paren.rb end`

@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : assert_response
-# --
-assert_response :${1:success}, @response.body$0

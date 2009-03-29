@@ -1,6 +1,5 @@
-# -*- mode: yasnippet -*-
-#name : application { .. }
+#name : if __FILE__ == $PROGRAM_NAME ... end
 # --
-if __FILE__ == \$PROGRAM_NAME
-	$0
+if __FILE__ == $PROGRAM_NAME
+  $0
 end

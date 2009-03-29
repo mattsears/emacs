@@ -1,7 +1,7 @@
 (autoload 'css-mode "css-mode" "Mode for editing CSS file" t)
 (add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
 (setq cssm-newline-before-closing-bracket t)
-(setq cssm-indent-function #'cssm-c-style-indenter)
+(setq cssm-indent-function 'cssm-c-style-indenter)
 
 ;; Some eval-on-load stuff
 (require 'css-mode)

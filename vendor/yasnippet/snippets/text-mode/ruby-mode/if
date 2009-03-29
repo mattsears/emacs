@@ -1,6 +1,5 @@
-# -*- mode: yasnippet -*-
-#name : if … end
+#name : if ... end
 # --
 if ${1:condition}
-	$0
+  $0
 end

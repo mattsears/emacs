@@ -2,7 +2,6 @@
 (require 'ido)
 (setq ido-mode t)
 (setq ido-save-directory-list-file nil)
-;(setq ido-save-directory-list-file "~/.ido.last")
 (setq ido-enable-flex-matching t) ; fuzzy matching is a must have
 (setq ido-decorations (quote (" (" ")" "  " " ..." " [" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]")))
 (setq ido-default-buffer-method (quote selected-window))

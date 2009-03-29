@@ -1,4 +1,3 @@
-# -*- mode: yasnippet -*-
-#name : detect { |e| .. }
+#name : detect { |...| ... }
 # --
-detect { |${1:e}| $0 }
+detect { |${e}| $0 }

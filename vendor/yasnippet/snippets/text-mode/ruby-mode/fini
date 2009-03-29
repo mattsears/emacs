@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : find(id)
-# --
-find(${1:id})

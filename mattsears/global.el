@@ -1,8 +1,8 @@
-;;; Set org mode to be the default major mode
-(setq default-major-mode 'org-mode)
+;; Set text mode to be the default major mode
+(setq default-major-mode 'text-mode)
 
 (defvar project-root)
-(setq project-root (concat (expand-file-name "~") "/"))
+(setq project-root (concat (expand-file-name "~") "/.emacs.d"))
 
 ;; always need a good font
 (set-default-font "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
@@ -10,24 +10,29 @@
 (set-face-font 'modeline "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
 (set-face-font 'minibuffer-prompt "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
 
-;; Modify the mode-line as well. This is a cleaner setup than the
+;; Set the default font-size to 16pt
+(set-face-attribute 'default nil :height 160)
+
+;; Modify the mode-line as well. This is a cleaner setup than the default
 (setq default-mode-line-format
       '(" "
-       mode-line-frame-identification
-       mode-line-buffer-identification
-       "  "
-       global-mode-string
-       "   %[(" mode-name mode-line-process minor-mode-alist "%n" ")%]  "
-       (line-number-mode "Line %l  ")
-       (column-number-mode "Column %c  ")
-       (-3 . "%p")
-       "% "))
+        mode-line-frame-identification
+        mode-line-buffer-identification
+        "  "
+        global-mode-string
+        "   %[(" mode-name mode-line-process minor-mode-alist "%n" ")%]  "
+        (line-number-mode "Line %l  ")
+        (column-number-mode "Column %c  ")
+        (-3 . "%p")
+        "% "))
+(setq line-number-mode t)
+(setq column-number-mode t)
 
 ;; Don't indent with tabs
 (setq-default indent-tabs-mode nil)
 
-;;  makes the region act quite like the text "highlight" in many apps.
-(setq transient-mark-mode nil)
+;; Make the region act quite like the text "highlight" in many apps.
+(setq transient-mark-mode t)
 
 ;; Shutoff messages
 (setq message-log-max nil)
@@ -48,8 +53,6 @@
 (setq select-active-regions t) ;  active region sets primary X11 selection
 (setq yank-pop-change-selection t)
 
-(setq kill-whole-line nil)
-
 ;; Set column with to 100
 (setq fill-column 100)
 
@@ -60,8 +63,6 @@
 
 ;; Behaviors
 (prefer-coding-system 'utf-8)
-(setq line-number-mode t)
-(setq column-number-mode t)
 (setq require-final-newline t)
 (setq display-buffer-reuse-frames t)
 (setq truncate-partial-width-windows t)
@@ -94,7 +95,7 @@
 (setq initial-scratch-message nil)
 
 ;; No backups
-(setq make-backup-files         nil)
+(setq make-backup-files  nil)
 
 ;; No .saves files
 (setq auto-save-list-file-name nil)
@@ -111,14 +112,11 @@
 (scroll-bar-mode nil)
 (toggle-scroll-bar -1)
 
-;; Turn off that damn bell and flashing!!
+;; Will somebody answer the phone!
 (setq ring-bell-function (lambda () (message nil)))
 
-;; Need on imenu
+;; Need an imenu
 (require 'imenu)
-
-;; Need imdb because I am a fan of Kevin Bacon
-(require 'imdb)
 
 ;; Make sure we have font-lock to start with
 (require 'font-lock)
@@ -128,7 +126,6 @@
 
 ;; Find files in project
 (require 'find-file-in-project)
-;(setq find-file-in-project-file-excludes (list "vendor" "fixtures"))
 
 ;; Allows syntax highlighting to work, among other things
 (setq global-font-lock-mode 1)
@@ -142,12 +139,6 @@
 ;; Remember where I left off
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)
-
-; Set encoding
-(prefer-coding-system 'utf-8)
-
-;; Start the server so we can use emacsclient to open files
-(server-start)
 
 ;; Switch windows with M-up, M-down, M-right, M-left
 (windmove-default-keybindings 'meta)
@@ -166,7 +157,7 @@
 (setq make-backup-files nil)
 (setq backup-inhibited t)
 
-; delete trailing whitespace before save
+;; Delete trailing whitespace before save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Misc settings
@@ -183,58 +174,67 @@
 (setq show-paren-mode t)
 (setq show-paren-style 'expression)
 
-; No tooltips
+;; No tooltips
 (setq tooltip-mode nil)
 (setq version-control t)
 (setq mark-even-if-inactive t) ;; don't kill the mark
 (setq blink-matching-paren-on-screen t)
 
-;; For it's awesome rectangle mode.
-(setq cua-enable-cua-keys nil)
-(setq cua-toggle-set-mark nil)
-(cua-mode)
-
-; No funky input for normal editing;
+;; No funky input for normal editing;
 (set-input-method nil)
 
-; Ignore case when completing...filenames too
+;; Ignore case when completing...filenames too
 (setq completion-ignore-case t
-  read-file-name-completion-ignore-case t)
+      read-file-name-completion-ignore-case t)
 
 ;;; Fix junk characters in shell mode
 (add-hook 'shell-mode-hook
-         'ansi-color-for-comint-mode-on)
+          'ansi-color-for-comint-mode-on)
 
 ;; Resize the frame
 (require 'maxframe)
-(setq mf-max-width 1800)  ;; Pixel width of main monitor.
+(setq mf-max-width 1800) ;; Pixel width of main monitor.
 (setq mf-max-height 1100)
 (add-hook 'window-setup-hook
-       (lambda ()
-         (reset-window-position)
-	))
+          (lambda ()
+            (reset-window-position)
+            ))
 
 ;; Fix foolish calendar-mode scrolling.
 (add-hook 'calendar-load-hook
- '(lambda ()
- (setq mark-holidays-in-calendar t)
- (define-key calendar-mode-map ">" 'scroll-calendar-left)
- (define-key calendar-mode-map "<" 'scroll-calendar-right)
- (define-key calendar-mode-map "\C-x>" 'scroll-calendar-left)
- (define-key calendar-mode-map "\C-x<" 'scroll-calendar-right)))
+          '(lambda ()
+             (setq mark-holidays-in-calendar t)
+             (define-key calendar-mode-map ">" 'scroll-calendar-left)
+             (define-key calendar-mode-map "<" 'scroll-calendar-right)
+             (define-key calendar-mode-map "\C-x>" 'scroll-calendar-left)
+             (define-key calendar-mode-map "\C-x<" 'scroll-calendar-right)))
 
 (require 'browse-kill-ring)
 (global-set-key [(control c)(k)] 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
 
-;Install mode-compile to give friendlier compiling support!
-(autoload 'mode-compile "mode-compile"
-   "Command to compile current buffer file based on the major mode" t)
-(global-set-key "\C-cc" 'mode-compile)
-(autoload 'mode-compile-kill "mode-compile"
- "Command to kill a compilation launched by `mode-compile'" t)
-(global-set-key "\C-ck" 'mode-compile-kill)
+;; scroll smoothly
+(require 'smooth-scrolling)
 
+;; Sudo saving
+(require 'sudo)
+
+;; Navigation bar
+(require 'nav)
+
+;; Enhanced M-x
+(require 'smex)
+
+;; Tidy
+(require 'tidy)
+(autoload 'tidy-buffer "tidy" "Run Tidy HTML parser on current buffer" t)
+(autoload 'tidy-parse-config-file "tidy" "Parse the `tidy-config-file'" t)
+(autoload 'tidy-save-settings "tidy" "Save settings to `tidy-config-file'" t)
+(autoload 'tidy-build-menu  "tidy" "Install an options menu for HTML Tidy." t)
+
+;; Scroll with the compilation output
+(setq compilation-scroll-output t)
+(setq compilation-window-height 20)
 
 ;; Start server.
 (server-start)

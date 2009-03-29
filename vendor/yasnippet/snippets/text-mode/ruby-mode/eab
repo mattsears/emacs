@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : each_byte { |byte| .. }
-# --
-each_byte { |${1:byte}| $0 }

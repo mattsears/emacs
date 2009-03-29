@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : PStore.new( .. )
-# --
-PStore.new(${1:"${2:file_name.pstore}"})

@@ -10,7 +10,7 @@
 ;;    `\C-c ,t`)
 ;;
 ;;  * verify the spec file associated with the current buffer (bound to `\C-c ,v`)
-;;  
+;;
 ;;  * verify the spec defined in the current buffer if it is a spec
 ;;    file (bound to `\C-c ,v`)
 ;;
@@ -29,7 +29,7 @@
 ;;
 ;; This minor mode depends on `mode-compile`.  The expectations depend
 ;; `on el-expectataions.el`.
-;; 
+;;
 ;;
 ;; (c) 2008 Peter Williams <http://pezra.barelyenough.org>
 ;;
@@ -65,13 +65,13 @@
   :keymap  (rspec-keymap))
 
 ;; Snippets
-(snippet-with-abbrev-table
- 'rspec-mode-abbrev-table
- ("helper" . "require 'pathname'\nrequire Pathname(__FILE__).dirname + '../spec_helper'\n\n$.")
- ("desc"   . "describe $${ClassName} do\n  $.\nend ")
- ("descm"  . "describe $${ClassName}, \"$${modifier}\" do\n  $.\nend ")
- ("it"     . "it \"should $${what exactly?}\" do\n  $.\n  end ")
- ("bef"    . "before do\n  $.\n  end"))
+;;(snippet-with-abbrev-table
+;; 'rspec-mode-abbrev-table
+;; ("helper" . "require 'pathname'\nrequire Pathname(__FILE__).dirname + '../spec_helper'\n\n$.")
+;; ("desc"   . "describe $${ClassName} do\n  $.\nend ")
+;; ("descm"  . "describe $${ClassName}, \"$${modifier}\" do\n  $.\nend ")
+;; ("it"     . "it \"should $${what exactly?}\" do\n  $.\n  end ")
+;; ("bef"    . "before do\n  $.\n  end"))
 
 
 
@@ -79,7 +79,7 @@
   "Moves point to the beginning of the example in which the point current is."
   (interactive)
   (let ((start (point)))
-    (goto-char 
+    (goto-char
      (save-excursion
        (end-of-line)
        (unless (and (search-backward-regexp "^[[:space:]]*it[[:space:]]*(?[\"']" nil t)
@@ -105,7 +105,7 @@
 (defun rspec-disable-example ()
   "Disable the example in which the point is located"
   (interactive)
-  (when (not (rspec-example-pending-p))   
+  (when (not (rspec-example-pending-p))
     (save-excursion
       (rspec-beginning-of-example)
       (end-of-line)
@@ -120,9 +120,9 @@
       (rspec-beginning-of-example)
       (search-forward-regexp "^[[:space:]]*pending\\([[:space:](]\\|$\\)" (save-excursion (ruby-end-of-block) (point)))
       (beginning-of-line)
-      (delete-region (save-excursion (beginning-of-line) (point)) 
+      (delete-region (save-excursion (beginning-of-line) (point))
                      (save-excursion (forward-line 1) (point))))))
-  
+
 (defun rspec-verify ()
   "Runs the specified spec, or the spec file for the current buffer."
   (interactive)
@@ -149,13 +149,13 @@
   "Find spec for the specified file"
   (if (rspec-spec-file-p a-file-name)
       a-file-name
-    (rspec-specize-file-name (expand-file-name (replace-regexp-in-string "^\\.\\./[^/]+/" "" (file-relative-name a-file-name (rspec-spec-directory a-file-name))) 
+    (rspec-specize-file-name (expand-file-name (replace-regexp-in-string "^\\.\\./[^/]+/" "" (file-relative-name a-file-name (rspec-spec-directory a-file-name)))
                                                (rspec-spec-directory a-file-name)))))
 
 (defun rspec-target-file-for (a-spec-file-name)
   "Find the target for a-spec-file-name"
-  (first 
-   (file-expand-wildcards 
+  (first
+   (file-expand-wildcards
     (replace-regexp-in-string "/spec/" "/*/" (rspec-targetize-file-name a-spec-file-name)))))
 
 (defun rspec-specize-file-name (a-file-name)
@@ -167,19 +167,19 @@
 (defun rspec-targetize-file-name (a-file-name)
   "Returns a-file-name but converted into a non-spec file name"
      (concat (file-name-directory a-file-name)
-             (rspec-file-name-with-default-extension 
+             (rspec-file-name-with-default-extension
               (replace-regexp-in-string "_spec\\.rb" "" (file-name-nondirectory a-file-name)))))
-  
+
 (defun rspec-file-name-with-default-extension (a-file-name)
   "Adds .rb file extension to a-file-name if it does not already have an extension"
   (if (file-name-extension a-file-name)
       a-file-name ;; file has a extension already so do nothing
     (concat a-file-name ".rb")))
-        
+
 (defun rspec-directory-subdirectories (directory)
   "Returns list of subdirectories"
-  (remove-if 
-   (lambda (dir) (or (string-match "^\\.\\.?$" (file-name-nondirectory dir)) 
+  (remove-if
+   (lambda (dir) (or (string-match "^\\.\\.?$" (file-name-nondirectory dir))
                      (not (file-directory-p dir))))
    (directory-files directory t)))
 
@@ -190,7 +190,7 @@
 (defun rspec-root-directory-p (a-directory)
   "Returns t if a-directory is the root"
   (equal a-directory (rspec-parent-directory a-directory)))
-   
+
 (defun rspec-spec-directory (a-file)
   "Returns the nearest spec directory that could contain specs for a-file"
   (if (file-directory-p a-file)

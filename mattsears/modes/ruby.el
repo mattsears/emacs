@@ -3,13 +3,11 @@
 (require 'ruby-mode)
 
 ;; Rspec mode
-;(add-to-list 'load-path "~/.emacs.d/vendor/rspec-mode")
-;(require 'rspec-mode)
+(add-to-list 'load-path "~/.emacs.d/vendor/rspec-mode")
+(require 'rspec-mode)
+
 ;; Toggle between rspec and its target.
 (global-set-key (kbd "C-c s") 'rspec-toggle-spec-and-target)
-
-;; Automatically insert compeleted tags, don't really like it that much
-(require 'ruby-electric)
 
 ;; Ruby code
 (require 'inf-ruby)
@@ -18,17 +16,18 @@
 
 ;; File types
 (setq auto-mode-alist (cons '(".rb$" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '(".ru$" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '(".rake$" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("Rakefile" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("Capfile" . ruby-mode) auto-mode-alist))
 
 (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
 
-; Rinari
+;; Rinari
 (vendor 'rinari)
 (setq rinari-tags-file-name "TAGS")
 (add-hook 'rinari-minor-mode-hook
-          (lambda ()
+         (lambda ()
             (define-key rinari-minor-mode-map (kbd "A-r") 'rinari-test)))
 
 ;; RI mode for ruby docs
@@ -39,6 +38,8 @@
 ;; Rails
 (add-to-list 'load-path "~/.emacs.d/vendor/emacs-rails/")
 (require 'rails)
+(require 'rails-lib)
+;;(require 'rails-ui)
 
 ;; Ruby hacks
 (vendor 'ruby-hacks)
@@ -110,7 +111,6 @@
                (modes  . '(ruby-mode))))
 
 ;; Ruby hookers
-(add-hook 'ruby-mode-hook (lambda () (ruby-electric-mode t)))
 (add-hook 'ruby-mode-hook '(lambda () (inf-ruby-keys) ))
 (add-hook 'ruby-mode-hook '(lambda() (local-set-key "\r" 'ruby-reindent-then-newline-and-indent)))
 (add-hook 'ruby-mode-hook '(lambda ()
@@ -127,10 +127,10 @@
             (set (make-local-variable 'indent-tabs-mode) 'nil)
             (set (make-local-variable 'tab-width) 4)
 			(define-key ruby-mode-map [return] 'newline-and-indent)
+            (font-lock-add-keywords nil
+                 '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
             (define-key ruby-mode-map "\C-m" 'ruby-reindent-then-newline-and-indent)
-			(define-key ruby-mode-map "\C-l" 'ruby-electric-hashrocket)
-            (require 'ruby-electric)
-            (ruby-electric-mode t)))
+			(define-key ruby-mode-map "\C-l" 'ruby-electric-hashrocket)))
 
 (defadvice ruby-do-run-w/compilation (before kill-buffer (name cmdlist))
   (let ((comp-buffer-name (format "*%s*" name)))

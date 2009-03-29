@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : map(&amp;:sym_proc)
-# --
-map(&:${1:id})

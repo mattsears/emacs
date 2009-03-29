@@ -1,6 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : assert_difference
-# --
-assert_difference "${1:Model}.${2:count}", ${3:1} do
-  $0
-end

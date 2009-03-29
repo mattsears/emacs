@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : at_most
-# --
-at_most(${1:n}).times

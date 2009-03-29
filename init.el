@@ -10,7 +10,6 @@
 (load "mattsears/modes")
 (load "mattsears/theme")
 (load "mattsears/shell")
-(load "mattsears/abbrev")
 (load "mattsears/local")
 
 (vendor 'cheat)
@@ -19,3 +18,5 @@
 (vendor 'css)
 (vendor 'ack)
 (vendor 'twit)
+
+(smex-initialize)

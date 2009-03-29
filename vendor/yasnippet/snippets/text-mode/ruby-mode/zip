@@ -1,4 +1,3 @@
-# -*- mode: yasnippet -*-
-#name : zip(enums) { |row| .. }
+#name : zip(...) { |...| ... }
 # --
-zip(${1:enums}) { |${2:row}| $0 }
+zip(${enums}) { |${row}| $0 }

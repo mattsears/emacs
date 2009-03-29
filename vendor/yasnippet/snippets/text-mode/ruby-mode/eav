@@ -1,4 +1,3 @@
-# -*- mode: yasnippet -*-
-#name : each_value { |val| .. }
+#name : each_value { |val| ... }
 # --
-each_value { |${1:val}| $0 }
+each_value { |${val}| $0 }

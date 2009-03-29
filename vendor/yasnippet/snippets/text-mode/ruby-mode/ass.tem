@@ -1,3 +1,0 @@
-#name : assert_template :tag
-# --
-assert_template :$0

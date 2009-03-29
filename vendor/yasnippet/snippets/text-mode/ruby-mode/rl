@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : render (layout)
-# --
-render :layout => "${1:layoutname}"

@@ -1,6 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : def method_missing .. end
-# --
-def method_missing(meth, *args, &blk)
-	$0
-end

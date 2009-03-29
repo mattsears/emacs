@@ -1,4 +1,3 @@
-# -*- mode: yasnippet -*-
-#name : all? { |e| .. }
+#name : all? { |...| ... }
 # --
-all? { |${1:e}| $0 }
+all? { |${e}| $0 }

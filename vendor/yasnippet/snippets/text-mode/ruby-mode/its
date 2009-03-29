@@ -1,5 +1,0 @@
-#name : it "should" do ... end
-# --
-it "should ${do its thing}" do
-  ${actual test}
-end

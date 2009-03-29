@@ -1,4 +1,3 @@
-# -*- mode: yasnippet -*-
-#name : each_with_index { |e, i| .. }
+#name : each_with_index { |e, i| ... }
 # --
-each_with_index { |${1:e}, ${2:i}| $0 }
+each_with_index { |${e}, ${i}| $0 }

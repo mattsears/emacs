@@ -15,7 +15,7 @@
  '(global-hl-line-mode t)
  '(load-home-init-file t t)
  '(nxml-slash-auto-complete-flag t)
- '(tabbar-mode nil nil (tabbar))
+ ;;'(tabbar-mode nil nil (tabbar))
  '(x-stretch-cursor t))
 
 ;;  The only I can get a bar cursor on mac os

@@ -37,7 +37,10 @@
                ("ruby" (mode . ruby-mode))
                ("html" (mode . nxml-mode))
                ("css" (mode . css-mode))
-               ("javascript" (mode . js2-mode))
+               ("sass" (mode . sass-mode))
+               ("yaml" (mode . yaml-mode))
+               ("haml" (mode . haml-mode))
+               ("javascript" (mode . javascript-mode))
                ("emacs" (or
                          (name . "^\\*el\\*$")
                          (name . "^\\*Messages\\*$")))
@@ -51,8 +54,8 @@
                         (name . "^\\.bbdb$")
                         (name . "^\\.newsrc-dribble")))))))
 
-;; ibuffer, I like my buffers to be grouped
-(add-hook 'ibuffer-mode-hook
-          (lambda ()
-            (ibuffer-switch-to-saved-filter-groups
-             "default")))
+;;ibuffer, I like my buffers to be grouped
+ (add-hook 'ibuffer-mode-hook
+           (lambda ()
+             (ibuffer-switch-to-saved-filter-groups
+              "default")))

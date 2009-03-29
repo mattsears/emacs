@@ -127,28 +127,21 @@ Otherwise point moves to beginning of line."
   "Reset windows and frames"
   (interactive)
   (delete-other-windows)
-                                        ;(maximize-frame)
-  (set-frame-position (selected-frame) 325 100)
-                                        ;(split-window-horizontally)
-                                        ;(other-window 0)
+  (set-frame-position (selected-frame) 325 60)
   )
 
 (one-buffer-one-frame-mode 0)
 (defun my-close-current-window-asktosave ()
   "Kill the buffer, but not the window"
   (interactive)
-  ;;(let ((one-buffer-one-frame t))
   (kill-buffer (current-buffer)))
-;;(define-key osx-key-mode-map (kbd "A-w") 'my-close-current-window-asktosave)
 
 (one-buffer-one-frame-mode 0)
 (defun matts-close-and-delete-window ()
   "Kill the current frame and the window"
   (interactive)
-  ;;(let ((one-buffer-one-frame t))
   (kill-buffer (current-buffer))
   (delete-window))
-;;(define-key osx-key-mode-map (kbd "A-W") 'matts-close-and-delete-window)
 
 (defun matts-split-window-three-ways ()
   "Reset windows and frames with room"
@@ -353,5 +346,27 @@ Otherwise point moves to beginning of line."
   (interactive)
   (let ((inhibit-read-only t))
     (erase-buffer)))
+
+;; keybindings
+(global-set-key [pause] 'toggle-window-dedicated)
+
+;; buffer dedication (mostly for cscope
+(defun toggle-window-dedicated ()
+  "Toggle whether the current active window is dedicated"
+  (interactive)
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+         (set-window-dedicated-p window
+                                 (not (window-dedicated-p window))))
+       "Window '%s' is dedicated"
+     "Window '%s' is normal")
+   (current-buffer)))
+
+;; Automatically indent region when code is pasted
+(defadvice yank (after indent-region activate)
+  (if (member major-mode '(emacs-lisp-mode lisp-mode ruby-mode objc-mode nxml-mode
+                                           javascript-mode latex-mode plain-tex-mode))
+      (let ((mark-even-if-inactive t))
+        (indent-region (region-beginning) (region-end) nil))))
 
 (provide 'defuns)
