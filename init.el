@@ -18,5 +18,6 @@
 (vendor 'css)
 (vendor 'ack)
 (vendor 'twit)
+(vendor 'rdebug)
 
 (smex-initialize)

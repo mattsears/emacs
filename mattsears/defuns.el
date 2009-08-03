@@ -123,6 +123,15 @@ Otherwise point moves to beginning of line."
   (beginning-of-line)
   (indent-according-to-mode))
 
+(defun copy-line()
+  "Copy the current line"
+  (interactive)
+  (let ((beg (line-beginning-position))
+        (end (line-end-position))
+        (column (current-column)))
+    (copy-region-as-kill beg end)))
+(define-key global-map (kbd "C-S-l") 'copy-line)
+
 (defun reset-window-position ()
   "Reset windows and frames"
   (interactive)
@@ -362,11 +371,14 @@ Otherwise point moves to beginning of line."
      "Window '%s' is normal")
    (current-buffer)))
 
+(defun word-count nil "Count words in buffer" (interactive)
+  (shell-command-on-region (point-min) (point-max) "wc -w"))
+
 ;; Automatically indent region when code is pasted
-(defadvice yank (after indent-region activate)
-  (if (member major-mode '(emacs-lisp-mode lisp-mode ruby-mode objc-mode nxml-mode
-                                           javascript-mode latex-mode plain-tex-mode))
-      (let ((mark-even-if-inactive t))
-        (indent-region (region-beginning) (region-end) nil))))
+;; (defadvice yank (after indent-region activate)
+;;   (if (member major-mode '(emacs-lisp-mode lisp-mode ruby-mode objc-mode nxml-mode
+;;                                            javascript-mode latex-mode plain-tex-mode))
+;;       (let ((mark-even-if-inactive t))
+;;         (indent-region (region-beginning) (region-end) nil))))
 
 (provide 'defuns)

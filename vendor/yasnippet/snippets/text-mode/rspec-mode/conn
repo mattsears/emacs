@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : controller_name
-# --
-controller_name :${1:controller}

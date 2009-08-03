@@ -28,6 +28,10 @@
       (cursor-color . "#AFAFAF")
       (foreground-color . "#F8F8F8")
       (mouse-color . "sienna1"))
+     ((help-highlight-face . underline)
+      (list-matching-lines-face . bold)
+      (sgml-set-face . "#7587A6")
+      (tags-tag-face . "#7587A6"))
      (blackboard-black ((t (:foreground "#0C1021"))))
      (blackboard-white ((t (:foreground "#F8F8F8"))))
      (blackboard-blue ((t (:foreground "#7587A6"))))
@@ -136,6 +140,7 @@
      (ido-subdir ((t (:inherit blackboard-yellow))))
      (ido-subdir-face ((t (:inherit blackboard-blue))))
 
+     ;; nxml
      (nxml-name-face ((t (:inherit blackboard-blue))))
      (nxml-comment-content-face ((t (:inherit blackboard-grey))))
      (nxml-markup-declaration-delimiter-face ((t (:inherit blackboard-grey))))
@@ -145,7 +150,7 @@
      (nxml-delimiter ((t (:inherit blackboard-blue))))
      (nxml-delimiter-face ((t (:inherit blackboard-blue))))
      (nxml-text ((t (:inherit blackboard-blue))))
-     (nxml-text-face ((t (:inherit blackboard-white))))
+     (nxml-text-face ((t (nil))))
      (nxml-delimited-data ((t (:inherit font-lock-string))))
      (nxml-delimited-data-face ((t (:inherit blackboard-blue))))
      (nxml-tag-delimiter-face ((t (:inherit blackboard-blue))))
@@ -179,11 +184,20 @@
      (nxml-namespace-attribute-colon ((t (:inherit nxml-attribute-colon))))
      (nxml-hash-face ((t (:inherit blackboard-yellow))))
 
-     (mmm-code-submode-face ((t (nil ))))
+     (mmm-code-submode-face ((t (:inherit blackboard-white ))))
      (mmm-comment-submode-face ((t (:inherit blackboard-grey))))
      (mmm-default-submode-face ((t (nil))))
-     (mmm-output-submode-face ((t (nil ))))
+     (mmm-output-submode-face ((t (:inherit blackboard-white ))))
      (mmm-declaration-submode-face ((t (:inherit blackboard-yellow))))
+
+     ;; ERB (Ruby Embedded in HTML)
+     (erb-face ((t (:inherit blackboard-white))))
+     (erb-delim-face ((t (:inherit blackboard-white))))
+     (erb-out-face ((t (:inherit blackboard-white))))
+     (erb-out-delim-face ((t (:inherit blackboard-white))))
+     (erb-comment-delim-face ((t (:inherit blackboard-grey))))
+     (erb-comment-face ((t (:italic t :inherit blackboard-grey))))
+
 
      ;; Do not highlight snippets
      (yas/field-highlight-face ((t (nil))))

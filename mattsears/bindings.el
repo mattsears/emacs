@@ -101,10 +101,10 @@
 (define-key osx-key-mode-map (kbd "A-t") 'find-file-in-project)
 
 ;; Kill the current frame, but not the window
-(define-key osx-key-mode-map (kbd "A-W") 'my-close-current-window-asktosave)
+(define-key osx-key-mode-map (kbd "A-w") 'my-close-current-window-asktosave)
 
 ;; Kill the current buffer and window
-(define-key osx-key-mode-map (kbd "A-w") 'matts-close-and-delete-window)
+(define-key osx-key-mode-map (kbd "A-W") 'matts-close-and-delete-window)
 
 ;; Delete entire line without copying to kill-ring
 (define-key osx-key-mode-map (kbd "<A-backspace>") 'matts-delete-whole-line)

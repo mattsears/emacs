@@ -10,7 +10,7 @@
 (load "~/.emacs.d/mattsears/modes/markdown")
 (load "~/.emacs.d/mattsears/modes/buffer")
 (load "~/.emacs.d/mattsears/modes/org")
-(load "~/.emacs.d/mattsears/modes/nxml")
+;;(load "~/.emacs.d/mattsears/modes/nxml")
 
 ;; Wrap words in text-mode
 (autoload 'longlines-mode "longlines.el" "Minor mode for editing long lines." t)
@@ -49,9 +49,6 @@
 (require 'magit)
 (autoload 'magit-status "magit" nil t)
 
-;; Growl
-(require 'growl)
-
 ;; Defunkt's Textmate
 (add-to-list 'load-path "~/.emacs.d/vendor/textmate.el")
 (require 'textmate)
@@ -75,5 +72,17 @@
 ;; Haml and Sass
 (require 'sass-mode)
 (require 'haml-mode)
+
+;; scroll smoothly
+(require 'smooth-scrolling)
+
+;; Sudo saving
+(require 'sudo)
+
+;; Navigation bar
+(require 'nav)
+
+;; Enhanced M-x
+(require 'smex)
 
 (provide 'modes)

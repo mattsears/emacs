@@ -53,13 +53,13 @@
 (setq select-active-regions t) ;  active region sets primary X11 selection
 (setq yank-pop-change-selection t)
 
-;; Set column with to 100
-(setq fill-column 100)
+;; Set column with
+(setq fill-column 80)
 
-;; Default tabs/indents are 4 spaces
-(setq-default tab-width 4)
-(setq tab-width 4)
-(setq standard-indent 4)
+;; Default tabs/indents are 2 spaces
+(setq-default tab-width 2)
+(setq tab-width 2)
+(setq standard-indent 2)
 
 ;; Behaviors
 (prefer-coding-system 'utf-8)
@@ -127,6 +127,9 @@
 ;; Find files in project
 (require 'find-file-in-project)
 
+;; Yet another paste tool, this one for Gist
+(require 'gist)
+
 ;; Allows syntax highlighting to work, among other things
 (setq global-font-lock-mode 1)
 
@@ -169,6 +172,9 @@
 (setq kill-whole-line t)
 (setq max-lisp-eval-depth 10000)
 
+(setq cua-highlight-region-shift-only t)
+(cua-mode t)
+
 ;; Balancing the parentheses
 (setq show-paren-delay 0)
 (setq show-paren-mode t)
@@ -191,15 +197,6 @@
 (add-hook 'shell-mode-hook
           'ansi-color-for-comint-mode-on)
 
-;; Resize the frame
-(require 'maxframe)
-(setq mf-max-width 1800) ;; Pixel width of main monitor.
-(setq mf-max-height 1100)
-(add-hook 'window-setup-hook
-          (lambda ()
-            (reset-window-position)
-            ))
-
 ;; Fix foolish calendar-mode scrolling.
 (add-hook 'calendar-load-hook
           '(lambda ()
@@ -209,32 +206,17 @@
              (define-key calendar-mode-map "\C-x>" 'scroll-calendar-left)
              (define-key calendar-mode-map "\C-x<" 'scroll-calendar-right)))
 
-(require 'browse-kill-ring)
-(global-set-key [(control c)(k)] 'browse-kill-ring)
-(browse-kill-ring-default-keybindings)
-
-;; scroll smoothly
-(require 'smooth-scrolling)
-
-;; Sudo saving
-(require 'sudo)
-
-;; Navigation bar
-(require 'nav)
-
-;; Enhanced M-x
-(require 'smex)
-
-;; Tidy
-(require 'tidy)
-(autoload 'tidy-buffer "tidy" "Run Tidy HTML parser on current buffer" t)
-(autoload 'tidy-parse-config-file "tidy" "Parse the `tidy-config-file'" t)
-(autoload 'tidy-save-settings "tidy" "Save settings to `tidy-config-file'" t)
-(autoload 'tidy-build-menu  "tidy" "Install an options menu for HTML Tidy." t)
-
 ;; Scroll with the compilation output
 (setq compilation-scroll-output t)
-(setq compilation-window-height 20)
+(setq compilation-window-height 16)
+
+;; Prevent accidentally killing emacs.
+(global-set-key [(control x) (control c)]
+                '(lambda ()
+                   (interactive)
+                   (if (y-or-n-p-with-timeout "Do you really want to exit Emacs ? " 4 nil)
+                       (save-buffers-kill-emacs))))
+
 
 ;; Start server.
 (server-start)

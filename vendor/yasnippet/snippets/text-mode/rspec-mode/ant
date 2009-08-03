@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : and_throw
-# --
-and_throw(${1:sym})

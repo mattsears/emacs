@@ -25,11 +25,10 @@
   "Add electric semicolons to css-mode's \"mirror mode.\""
   (define-key cssm-mode-map (read-kbd-macro ";")  'self-insert-command))
 
-
 (add-hook 'css-mode-hook
 	  '(lambda ()
 	     (setq tab-width 4)
-		 (define-key css-mode-map [return] 'newline-and-indent)
+		 ;;(define-key css-mode-map [return] 'newline-and-indent)
 		 (setq css-electric-brace-behavior t)
 		 (setq css-electric-semi-behavior t)
-	     (setq css-indent-offset 4)))
+	     (setq css-indent-offset 2)))

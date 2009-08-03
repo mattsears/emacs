@@ -1,5 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : should_not respond_to
-# --
-${1:target}.should_not respond_to(:${2:sym})
-$0

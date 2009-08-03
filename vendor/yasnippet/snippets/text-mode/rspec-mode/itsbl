@@ -1,4 +1,0 @@
-# -*- mode: yasnippet -*-
-#name : it_should_behave_like
-# --
-it_should_behave_like ${2:"$1"}$0

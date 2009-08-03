@@ -10,7 +10,7 @@
 
 (setq mmm-global-mode 'maybe)
 (setq mmm-submode-decoration-level 2)
-(setq nxml-child-indent 4)
+(setq nxml-child-indent 2)
 
 ;; XML Setup
 (load "~/.emacs.d/vendor/nxml/rng-auto.el")
@@ -22,15 +22,15 @@
 (add-hook 'nxml-mode-hook
           (lambda ()
             (setq indent-tabs-mode nil)
-            (setq tab-width 4)
+            (setq tab-width 2)
             (define-key nxml-mode-map "\M-h" 'backward-kill-word)
             (define-key nxml-mode-map "\C-m" 'newline-and-indent)
-            (setq nxml-indent-offset 4)
+            (rng-validate-mode 0)
             (longlines-mode)
             (mmm-mode-on)
             (yas/minor-mode-on)
             (setq local-abbrev-table nxml-mode-abbrev-table)
-            (message "My nxml-mode customizations loaded")))
+            (message "My nxml-mode customizations loaded"))t)
 
 (defvar nxml-mode-abbrev-table
   (let (table)
@@ -38,8 +38,23 @@
     table)
   "Abbrev table in use in ruby-mode buffers.")
 
+(add-hook 'nxml-mode-hook 'llasram/nxml-set-abbrev-table)
+(defun llasram/nxml-set-abbrev-table ()
+  (setq local-abbrev-table nxml-mode-abbrev-table))
+
 ;; Add spell checking to the text between the nodes
 (add-to-list 'flyspell-prog-text-faces 'nxml-text-face)
+
+;; Destroy!
+(setq magic-mode-alist
+      '(("%![^V]" . ps-mode)
+        ("# xmcd " . conf-unix-mode)))
+
+;; Key bindings
+(add-hook 'nxml-mode-hook 'llasram/nxml-extra-keys)
+(defun llasram/nxml-extra-keys ()
+  (define-key nxml-mode-map "\M-h" 'backward-kill-word)
+  (define-key nxml-mode-map "\C-m" 'newline-and-indent))
 
 (defun nxml-fontify-mode ()
   (nxml-mode)
@@ -52,56 +67,25 @@
 (fset 'html-helper 'nxml-mode)
 (fset 'xml-mode 'nxml-mode)
 
-(mmm-add-group
- 'fancy-html
- '((html-erb
+;; MMM class for working with erb
+(mmm-add-classes
+ '((erb-code
     :submode ruby-mode
     :match-face (("<%#" . mmm-comment-submode-face)
                  ("<%=" . mmm-output-submode-face)
                  ("<%"  . mmm-code-submode-face))
     :front "<%[#=]?"
-    :back "%>"
+    :back "-?%>"
     :insert ((?% erb-code       nil @ "<%"  @ " " _ " " @ "%>" @)
              (?# erb-comment    nil @ "<%#" @ " " _ " " @ "%>" @)
-             (?= erb-expression nil @ "<%=" @ " " _ " " @ "%>" @))
-    )
-   (html-php-embeded
-    :submode php-mode
-    :face mmm-code-submode-face
-    :front "<\\?\\(\\|php\\|=\\)?"
-    :back "\\?>"
-    :insert ((?p php-code   nil @ "<?php"  @ " " _ " " @ "?>" @)
-             (?P php-print  nil @ "<?=" @ " " _ " " @ "?>" @))
-    )
-   (html-js-embeded
-    :submode javascript-generic-mode
-    :face mmm-code-submode-face
-    :front "<script[^>]*type=\"text/javascript\"[^>]*"
-    :back "</script>"
-    )
-   (html-js-attribute
-    :submode javascript-generic-mode
-    :face mmm-declaration-submode-face
-    :front "\\bon\\w+=\""
-    :back "\""
-    )
-   (html-css-embeded
-    :submode css-mode
-    :face mmm-code-submode-face
-    :front "<style[^>]*type=\"text/css\"[^>]*>"
-    :back "</style>"
-    )
-   (html-css-attribute
-    :submode css-mode
-    :face mmm-declaration-submode-face
-    :front "\\bstyle=\\s-*\""
-    :back "\""
-    )
-   ))
+             (?= erb-expression nil @ "<%=" @ " " _ " " @ "%>" @)))))
 
-(add-to-list 'mmm-mode-ext-classes-alist '(nxml-mode nil fancy-html))
+;; Add erb foo to HTML files
+(mmm-add-mode-ext-class 'html-mode nil 'erb-code)
+(mmm-add-mode-ext-class 'nxml-mode nil 'erb-code)
 
 (setq auto-mode-alist (cons '("\\.html.erb$" . nxml-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.rhtml$" . nxml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.erb$" . nxml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.php$" . nxml-mode) auto-mode-alist))
 

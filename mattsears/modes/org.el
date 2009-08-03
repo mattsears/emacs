@@ -1,5 +1,3 @@
-(add-to-list 'load-path "~/.emacs.d/vendor/remember")
-
 (require 'org-install)
 (setq load-path (cons "~/.emacs.d/vendor/org/lisp" load-path))
 
@@ -28,7 +26,6 @@
 
 ;; If things are done, then skip them
 (setq org-agenda-skip-deadline-if-done t)
-(setq org-agenda-skip-scheduled-if-done t)
 
 ;; Keep the recent notes on top
 (setq org-reverse-note-order t)
@@ -41,30 +38,6 @@
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
-
-;; (eval-after-load 'org
-;;   '(progn
-;;      (defun wicked/org-clock-in-if-starting ()
-;;        "Clock in when the task is marked STARTED."
-;;        (when (and (string= state "STARTED")
-;; 		  (not (string= last-state state)))
-;; 	 (org-clock-in)))
-;;      (add-hook 'org-after-todo-state-change-hook
-;; 	       'wicked/org-clock-in-if-starting)
-;;      (defadvice org-clock-in (after wicked activate)
-;;       "Set this task's status to 'STARTED'."
-;;       (org-todo "STARTED"))
-;;     (defun wicked/org-clock-out-if-waiting ()
-;;       "Clock out when the task is marked WAITING."
-;;       (when (and (string= state "WAITING")
-;;                  (equal (marker-buffer org-clock-marker) (current-buffer))
-;;                  (< (point) org-clock-marker)
-;; 	         (> (save-excursion (outline-next-heading) (point))
-;; 		    org-clock-marker)
-;; 		 (not (string= last-state state)))
-;; 	(org-clock-out)))
-;;     (add-hook 'org-after-todo-state-change-hook
-;;               'wicked/org-clock-out-if-waiting)))
 
 (eval-after-load 'org
   '(progn
@@ -83,13 +56,8 @@
        #'(lambda nil (interactive) (org-todo "WAITING")))
      ))
 
-;; Remember mode
-(require 'remember)
-(add-hook 'remember-mode-hook 'org-remember-apply-template)
-
 ;; Key binding for remember
 (define-key global-map [(control meta ?r)] 'remember)
-
 
 ;; Custom settings
 (custom-set-variables

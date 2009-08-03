@@ -2,13 +2,13 @@
 (require 'ido)
 (setq ido-mode t)
 (setq ido-save-directory-list-file nil)
-(setq ido-enable-flex-matching t) ; fuzzy matching is a must have
+(setq ido-enable-flex-matching nil) ; fuzzy matching is a must have
 (setq ido-decorations (quote (" (" ")" "  " " ..." " [" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]")))
 (setq ido-default-buffer-method (quote selected-window))
 (setq ido-default-file-method (quote selected-window))
 (setq ido-enable-tramp-completion t)
 (setq ido-everywhere nil)
-(setq ido-use-filename-at-point nil)
+(setq ido-use-filename-at-point t)
 (setq ido-use-url-at-point nil)
 (setq ido-max-prospects 10)
 (setq ido-enable-prefix nil)

@@ -11,8 +11,10 @@
 ;;
 ;;  * verify the spec file associated with the current buffer (bound to `\C-c ,v`)
 ;;
-;;  * verify the spec defined in the current buffer if it is a spec
+;;  * verify the spec defined inn the current buffer if it is a spec
 ;;    file (bound to `\C-c ,v`)
+;;
+;;  * verify the example defined at the point of the current buffer (bound to `\C-c ,s`)
 ;;
 ;;  * toggle the pendingness of the example at the point (bound to
 ;;    `\C-c ,d`)
@@ -47,6 +49,7 @@
 ;; Public License.
 
 (require 'ruby-mode)
+(require 'snippet)
 
 (defconst rspec-mode-abbrev-table (make-abbrev-table))
 
@@ -54,6 +57,7 @@
   "Creates a keymap for spec files"
   (let ((km (make-sparse-keymap)))
     (define-key km (kbd "C-c ,v") 'rspec-verify)
+    (define-key km (kbd "C-c ,s") 'rspec-verify-single)
     (define-key km (kbd "C-c ,a") 'rspec-verify-all)
     (define-key km (kbd "C-c ,d") 'rspec-toggle-example-pendingness)
     (define-key km (kbd "C-c ,t") 'rspec-toggle-spec-and-target)
@@ -65,13 +69,13 @@
   :keymap  (rspec-keymap))
 
 ;; Snippets
-;;(snippet-with-abbrev-table
-;; 'rspec-mode-abbrev-table
-;; ("helper" . "require 'pathname'\nrequire Pathname(__FILE__).dirname + '../spec_helper'\n\n$.")
-;; ("desc"   . "describe $${ClassName} do\n  $.\nend ")
-;; ("descm"  . "describe $${ClassName}, \"$${modifier}\" do\n  $.\nend ")
-;; ("it"     . "it \"should $${what exactly?}\" do\n  $.\n  end ")
-;; ("bef"    . "before do\n  $.\n  end"))
+(snippet-with-abbrev-table
+ 'rspec-mode-abbrev-table
+ ("helper" . "require 'pathname'\nrequire Pathname(__FILE__).dirname + '../spec_helper'\n\n$.")
+ ("desc"   . "describe $${ClassName} do\n  $.\nend ")
+ ("descm"  . "describe $${ClassName}, \"$${modifier}\" do\n  $.\nend ")
+ ("it"     . "it \"should $${what exactly?}\" do\n  $.\n  end ")
+ ("bef"    . "before do\n  $.\n  end"))
 
 
 
@@ -126,12 +130,20 @@
 (defun rspec-verify ()
   "Runs the specified spec, or the spec file for the current buffer."
   (interactive)
-  (compile (concat ruby-command " " (rspec-spec-file-for (buffer-file-name)) " --format specdoc --reverse")))
+  (rspec-run-cmd (concat ruby-command " " (rspec-spec-file-for (buffer-file-name)) " --format specdoc --reverse")))
+
+(defun rspec-verify-single ()
+  "Runs the specified example at the point of the current buffer."
+  (interactive)
+  (rspec-run-cmd (concat ruby-command " " (rspec-spec-file-for (buffer-file-name))
+                         " --format specdoc --reverse --example '" (replace-regexp-in-string "'" "\\'" (rspec-example-name-at-point))
+                         "'")))
 
 (defun rspec-verify-all ()
   "Runs the 'spec' rake task for the project of the current file."
   (interactive)
-  (compile "rake spec SPEC_OPTS='--format=progress'"))
+  (let ((default-directory (or (rspec-project-root) default-directory)))
+    (rspec-run-cmd "rake spec SPEC_OPTS='--format=progress'")))
 
 (defun rspec-toggle-spec-and-target ()
   "Switches to the spec for the current buffer if it is a
@@ -142,8 +154,6 @@
    (if (rspec-buffer-is-spec-p)
        (rspec-target-file-for (buffer-file-name))
      (rspec-spec-file-for (buffer-file-name)))))
-
-
 
 (defun rspec-spec-file-for (a-file-name)
   "Find spec for the specified file"
@@ -210,9 +220,24 @@
   (and (buffer-file-name)
        (rspec-spec-file-p (buffer-file-name))))
 
+(defun rspec-example-name-at-point ()
+  "Returns the name of the example in which the point is currently positioned; or nil if it is outside of and example"
+  (save-excursion
+    (rspec-beginning-of-example)
+    (re-search-forward "it[[:space:]]+['\"]\\(.*\\)['\"][[:space:]]*\\(do\\|DO\\|Do\\|{\\)")
+    (match-string 1)))
 
+(defun rspec-run-cmd (cmd)
+  "Runs a command and puts the output in the compile buffer"
+  (compile cmd)
+  (end-of-buffer-other-window 0))
 
-
+(defun rspec-project-root (&optional directory)
+  "Finds the root directory of the project by walking the directory tree until it finds a rake file."
+  (let ((directory (file-name-as-directory (or directory default-directory))))
+    (cond ((rspec-root-directory-p directory) nil)
+          ((file-exists-p (concat directory "Rakefile")) directory)
+          (t (rspec-project-root (file-name-directory (directory-file-name directory)))))))
 
 ;; Makes sure that rSpec buffers are given the rspec minor mode by default
 (add-hook 'ruby-mode-hook
