@@ -69,6 +69,22 @@
   (interactive)
   (flyspell-mode 1))
 
+
+;;Fix html-mode highliting mode
+(defvar html-mode-keywords
+  '(("\\(<[^>]+>\\)" 1 font-lock-variable-name-face prepend)
+    ("\\(\"[^\"]*\"\\)" 1 font-lock-string-face prepend)
+    ("\\('[^']*'\\)" 1 font-lock-string-face prepend)))
+
+(font-lock-add-keywords 'rhtml-mode html-mode-keywords)
+(font-lock-add-keywords 'html-mode html-mode-keywords)
+(font-lock-add-keywords 'html-helper-mode html-mode-keywords)
+
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-saved-items 500)
+(setq recentf-max-menu-items 60)
+
 ;; Haml and Sass
 (require 'sass-mode)
 (require 'haml-mode)

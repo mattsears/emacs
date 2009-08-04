@@ -2,7 +2,7 @@
 (setq default-major-mode 'text-mode)
 
 (defvar project-root)
-(setq project-root (concat (expand-file-name "~") "/.emacs.d"))
+(setq project-root (concat (expand-file-name "~") "/emacs"))
 
 ;; always need a good font
 (set-default-font "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
@@ -25,6 +25,7 @@
         (column-number-mode "Column %c  ")
         (-3 . "%p")
         "% "))
+
 (setq line-number-mode t)
 (setq column-number-mode t)
 

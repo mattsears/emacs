@@ -1,9 +1,15 @@
 ;; Load yasnippet directory
-(add-to-list 'load-path "~/.emacs.d/vendor/yasnippet-bundle")
+;;(add-to-list 'load-path "~/.emacs.d/vendor/yasnippet-bundle")
 ;;(require 'yasnippet) ;; not yasnippet-bundle
-(require 'yasnippet-bundle) ;; not yasnippet
+
+;;(require 'yasnippet-bundle) ;; not yasnippet
+;;(yas/initialize)
+;;(yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets/")
+
+(add-to-list 'load-path "~/.emacs.d/vendor/yasnippet")
+(require 'yasnippet) ;; not yasnippet-bundle
 (yas/initialize)
-(yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets/")
+(yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets")
 
 (require 'hippie-exp)
 (setq hippie-expand-try-functions-list

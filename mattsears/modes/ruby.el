@@ -73,17 +73,9 @@
           (lambda () (rinari-launch)))
 
 (setq auto-mode-alist (cons '("\\.html\.erb$" . rhtml-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.rhtml$" . rhtml-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.html$" . rhtml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.erb$" . rhtml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.php$" . rhtml-mode) auto-mode-alist))
-
-;;Fix html-mode highliting mode
-(defvar html-mode-keywords
-  '(("\\(<[^>]+>\\)" 1 font-lock-variable-name-face prepend)
-    ("\\(\"[^\"]*\"\\)" 1 font-lock-string-face prepend)
-	("\\('[^']*'\\)" 1 font-lock-string-face prepend)))
-
-(font-lock-add-keywords 'rhtml-mode html-mode-keywords)
 
 ;; RI mode for ruby docs
 (add-to-list 'load-path "~/.emacs.d/vendor/ri-emacs")
@@ -207,6 +199,7 @@
             (font-lock-add-keywords nil
                                     '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
             (define-key ruby-mode-map (kbd "C-c s") 'rspec-toggle-spec-and-target)
+            (define-key ruby-mode-map (kbd "A-i") 'beautify-ruby)
             (define-key ruby-mode-map "\C-m" 'ruby-reindent-then-newline-and-indent)
             (define-key ruby-mode-map "\C-l" 'ruby-electric-hashrocket)))
 
@@ -225,6 +218,15 @@
 (global-set-key [f10] 'gud-next)
 (global-set-key [f11] 'gud-cont)
 (global-set-key "\C-c\C-d" 'rdebug)
+
+(defun beautify-ruby ()
+  "Run Ruby Beatify script on current region."
+  (interactive)
+  (let ((start (point-min))
+        (end (point-max))
+        (command "~/bin/beautify"))
+        (shell-command-on-region start end command t t
+             shell-command-default-error-buffer)))
 
 (provide 'ruby)
 

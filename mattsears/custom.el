@@ -37,7 +37,7 @@
  '(transient-mark-mode t)
  '(x-stretch-cursor t))
 
-;; (setq transparency-level 90)
+(setq transparency-level 90)
 ;; (set-frame-parameter nil 'alpha transparency-level)
 ;; (add-hook 'after-make-frame-functions (lambda (selected-frame) (set-frame-parameter selected-frame 'alpha transparency-level)))
 

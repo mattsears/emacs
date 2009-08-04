@@ -227,17 +227,6 @@ Otherwise point moves to beginning of line."
         (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
         (isearch-forward regexp-p no-recursive-edit)))))
 
-(defun lorem ()
-  "Insert a lorem ipsum."
-  (interactive)
-  (insert "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do "
-          "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim"
-          "ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut "
-          "aliquip ex ea commodo consequat. Duis aute irure dolor in "
-          "reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla "
-          "pariatur. Excepteur sint occaecat cupidatat non proident, sunt in "
-          "culpa qui officia deserunt mollit anim id est laborum."))
-
 (defun scroll-down-keep-cursor ()
   "Scroll without moving cursor"
   (interactive)
@@ -304,8 +293,7 @@ Otherwise point moves to beginning of line."
                                                              (cons "Resize Window" "(reset-window-position)")
                                                              (cons "Reload Emacs" "(load-file \"~/.emacs\")")
                                                              (cons "Eval Current Buffer" "(eval-current-buffer)")
-                                                             )))))
-  )
+                                                             ))))) )
 
 (defun matts-popup-symbols ()
   "Popups for the current buffer's symbols"
@@ -375,10 +363,10 @@ Otherwise point moves to beginning of line."
   (shell-command-on-region (point-min) (point-max) "wc -w"))
 
 ;; Automatically indent region when code is pasted
-;; (defadvice yank (after indent-region activate)
-;;   (if (member major-mode '(emacs-lisp-mode lisp-mode ruby-mode objc-mode nxml-mode
-;;                                            javascript-mode latex-mode plain-tex-mode))
-;;       (let ((mark-even-if-inactive t))
-;;         (indent-region (region-beginning) (region-end) nil))))
+(defadvice yank (after indent-region activate)
+  (if (member major-mode '(emacs-lisp-mode lisp-mode ruby-mode objc-mode nxml-mode
+                                           javascript-mode latex-mode plain-tex-mode))
+      (let ((mark-even-if-inactive t))
+        (indent-region (region-beginning) (region-end) nil))))
 
 (provide 'defuns)

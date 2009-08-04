@@ -78,7 +78,7 @@
                         (name . "^\\.newsrc-dribble")))))))
 
 ;;ibuffer, I like my buffers to be grouped
-(add-hook 'ibuffer-mode-hook
-          (lambda ()
-            (ibuffer-switch-to-saved-filter-groups
-             "default")))
+;; (add-hook 'ibuffer-mode-hook
+;;           (lambda ()
+;;             (ibuffer-switch-to-saved-filter-groups
+;;              "default")))

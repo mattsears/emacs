@@ -18,12 +18,6 @@
 ;; Back to indentation or beginning of line.
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning-of-line)
 
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-saved-items 500)
-(setq recentf-max-menu-items 60)
-(global-set-key [f4] 'recentf-open-files)
-
 ;; Split windows
 (global-set-key [f6] 'split-window-vertically)
 (global-set-key [f7] 'split-window-horizontally)
@@ -111,8 +105,5 @@
 
 ;; Shortcut for ehell
 (global-set-key "\C-x\C-z" 'eshell)
-
-;; Cancel current command
-(global-set-key [(alt .)] 'keyboard-quit)
 
 (provide 'bindings)
