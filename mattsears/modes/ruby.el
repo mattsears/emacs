@@ -6,6 +6,10 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/rspec-mode")
 (require 'rspec-mode)
 
+(add-hook 'rspec-mode-hook
+          '(lambda ()
+              (setq yas/mode-symbol 'ruby-mode)))
+
 ;; Cucumber
 (add-to-list 'load-path "~/.emacs.d/vendor/cucumber-mode")
 (require 'cucumber-mode)
@@ -28,21 +32,6 @@
     (setq inferior-ruby-first-prompt-pattern "^>> "
           inferior-ruby-prompt-pattern "^>> ")
     (pop-to-buffer abuf)))
-
-(defun complete-ruby-method (prefix &optional maxnum)
-  (if (capital-word-p prefix)
-      (let* ((cmd "x = []; ObjectSpace.each_object(Class){|i| x << i.to_s}; x.map{|i| i.match(/^%s/) ? i.gsub(/^%s/, '') : nil }.compact.sort{|x,y| x.size <=> y.size}") ;
-             (cmd (if maxnum (concat cmd (format "[0...%s]" maxnum)) cmd)))
-        (el4r-ruby-eval (format cmd prefix prefix)))
-    (save-excursion
-      (goto-char (- (point) (+ 1 (length prefix))))
-      (when (and (looking-at "\\.")
-                 (capital-word-p (word-at-point))
-                 (el4r-ruby-eval (format "::%s rescue nil" (word-at-point))))
-        (let* ((cmd "%s.public_methods.map{|i| i.match(/^%s/) ? i.gsub(/^%s/, '') : nil }.compact.sort{|x,y| x.size <=> y.size}")
-               (cmd (if maxnum (concat cmd (format "[0...%s]" maxnum)) cmd)))
-          (el4r-ruby-eval (format cmd (word-at-point) prefix prefix)))))))
-
 
 ;; File types
 (setq auto-mode-alist (cons '(".rb$" . ruby-mode) auto-mode-alist))
@@ -81,12 +70,6 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/ri-emacs")
 (setq ri-ruby-script (expand-file-name "~/.emacs.d/vendor/ri-emacs/ri-emacs.rb"))
 (autoload 'ri "ri-ruby" "Ri mode" t)
-
-;; Rails
-;;(add-to-list 'load-path "~/.emacs.d/vendor/emacs-rails/")
-;;(require 'rails)
-;;(require 'rails-lib)
-;;(require 'rails-ui)
 
 ;; Ruby hacks
 (vendor 'ruby-hacks)
@@ -160,9 +143,13 @@
                            (delete-trailing-whitespace))))
             (set (make-local-variable 'indent-tabs-mode) 'nil)
             (set (make-local-variable 'tab-width) 2)
+            (define-key ruby-mode-map [return] 'newline-and-indent)
+            (font-lock-add-keywords nil
+                                    '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
+            (define-key ruby-mode-map (kbd "C-c s") 'rspec-toggle-spec-and-target)
+            (define-key ruby-mode-map (kbd "A-i") 'beautify-ruby)
             (define-key ruby-mode-map "\C-m" 'ruby-reindent-then-newline-and-indent)
-            (require 'ruby-electric)
-            (ruby-electric-mode t)))
+            (define-key ruby-mode-map "\C-l" 'ruby-electric-hashrocket)))
 
 (defadvice ruby-do-run-w/compilation (before kill-buffer (name cmdlist))
   (let ((comp-buffer-name (format "*%s*" name)))
@@ -186,22 +173,6 @@
                              (if (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
                                  (flymake-mode))  ))
 
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (add-hook 'local-write-file-hooks
-                      '(lambda()
-                         (save-excursion
-                           (untabify (point-min) (point-max))
-                           (delete-trailing-whitespace))))
-            (set (make-local-variable 'indent-tabs-mode) 'nil)
-            (set (make-local-variable 'tab-width) 4)
-            (define-key ruby-mode-map [return] 'newline-and-indent)
-            (font-lock-add-keywords nil
-                                    '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
-            (define-key ruby-mode-map (kbd "C-c s") 'rspec-toggle-spec-and-target)
-            (define-key ruby-mode-map (kbd "A-i") 'beautify-ruby)
-            (define-key ruby-mode-map "\C-m" 'ruby-reindent-then-newline-and-indent)
-            (define-key ruby-mode-map "\C-l" 'ruby-electric-hashrocket)))
 
 (defadvice ruby-do-run-w/compilation (before kill-buffer (name cmdlist))
   (let ((comp-buffer-name (format "*%s*" name)))

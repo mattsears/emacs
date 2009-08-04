@@ -1,3 +1,0 @@
-#name : select { |e| .. }
-# --
-select { |${e}| $0 }

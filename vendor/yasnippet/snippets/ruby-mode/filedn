@@ -1,3 +1,0 @@
-#name : File.dirname(__FILE__)
-# --
-File.dirname(${1:__FILE__}) + "/$0"

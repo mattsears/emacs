@@ -1,3 +1,0 @@
-#name : sort_by { |e| .. }
-# --
-sort_by { |${e}| $0 }

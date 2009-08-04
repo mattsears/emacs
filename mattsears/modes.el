@@ -1,3 +1,4 @@
+(load "~/.emacs.d/mattsears/modes/snippets")
 (load "~/.emacs.d/mattsears/modes/css")
 (load "~/.emacs.d/mattsears/modes/diff")
 (load "~/.emacs.d/mattsears/modes/dired")
@@ -5,12 +6,10 @@
 (load "~/.emacs.d/mattsears/modes/javascript")
 (load "~/.emacs.d/mattsears/modes/ruby")
 (load "~/.emacs.d/mattsears/modes/ido")
-(load "~/.emacs.d/mattsears/modes/snippets")
 (load "~/.emacs.d/mattsears/modes/clojure")
 (load "~/.emacs.d/mattsears/modes/markdown")
 (load "~/.emacs.d/mattsears/modes/buffer")
 (load "~/.emacs.d/mattsears/modes/org")
-;;(load "~/.emacs.d/mattsears/modes/nxml")
 
 ;; Wrap words in text-mode
 (autoload 'longlines-mode "longlines.el" "Minor mode for editing long lines." t)

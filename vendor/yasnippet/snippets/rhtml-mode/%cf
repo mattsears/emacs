@@ -1,3 +1,0 @@
-#name : <%= render(:partial => ... ) %>
-# --
-<% content_for :${action} $0do %>
