@@ -1,5 +1,5 @@
-(require 'org-install)
-(setq load-path (cons "~/.emacs.d/vendor/org/lisp" load-path))
+;;(require 'org-install)
+(setq load-path (cons "~/.emacs.d/vendor/org-mode/lisp" load-path))
 
 ;; Use IDO for auto-complete
 (setq org-completion-use-ido t)
@@ -17,7 +17,7 @@
 (setq org-icalendar-include-todo t)
 
 ;; The location of the icalendar fiel
-(setq org-combined-agenda-icalendar-file "~/org/org.ics")
+(setq org-combined-agenda-icalendar-file "~/org-mode/org.ics")
 
 ;; Format the agenda grid
 (setq org-agenda-time-grid '((daily require-timed)
@@ -61,9 +61,9 @@
 
 ;; Custom settings
 (custom-set-variables
- '(org-agenda-files (quote ("~/org/home.org" "~/org/work.org" )))
- '(org-default-notes-file "~/org/notes.org")
- '(org-combined-agenda-icalendar-file "~/org/agenda.ics")
+ '(org-agenda-files (quote ("~/org-mode/home.org" "~/org-mode/work.org" )))
+ '(org-default-notes-file "~/org-mode/notes.org")
+ '(org-combined-agenda-icalendar-file "~/org-mode/agenda.ics")
  '(org-agenda-ndays 7)
  '(org-deadline-warning-days 14)
  '(org-agenda-show-all-dates t)
