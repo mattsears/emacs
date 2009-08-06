@@ -18,7 +18,6 @@
   (next-line)
   (beginning-of-line)
   (insert "\n"))
-(define-key global-map [M-return] 'insert-blank-line-after-current)
 
 (defun open-line-below ()
   "Open a line below the line the point is at.
@@ -130,7 +129,6 @@ Otherwise point moves to beginning of line."
         (end (line-end-position))
         (column (current-column)))
     (copy-region-as-kill beg end)))
-(define-key global-map (kbd "C-S-l") 'copy-line)
 
 (defun reset-window-position ()
   "Reset windows and frames"

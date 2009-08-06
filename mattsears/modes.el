@@ -10,6 +10,7 @@
 (load "~/.emacs.d/mattsears/modes/markdown")
 (load "~/.emacs.d/mattsears/modes/buffer")
 (load "~/.emacs.d/mattsears/modes/org")
+(load "~/.emacs.d/mattsears/modes/erc")
 
 ;; Wrap words in text-mode
 (autoload 'longlines-mode "longlines.el" "Minor mode for editing long lines." t)
@@ -98,6 +99,24 @@
 (require 'nav)
 
 ;; Enhanced M-x
+(setq smex-save-file "~/.emacs.d/smex.save")
 (require 'smex)
+(smex-initialize)
+
+;; Quicksilver like functionality
+(require 'anything)
+(require 'anything-config)
+
+(setq anything-sources
+      (list anything-c-source-buffers
+            anything-c-source-files-in-current-dir
+            anything-c-source-file-name-history
+            anything-c-source-locate
+            anything-c-source-mac-spotlight
+            anything-c-source-recentf
+            anything-c-source-file-cache
+            anything-c-source-emacs-commands))
+(setq fit-frame-inhibit-fitting-flag t)
+(setq anything-selection-face 'twilight-highlight)
 
 (provide 'modes)

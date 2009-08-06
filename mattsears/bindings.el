@@ -67,6 +67,15 @@
 ;; Duplicated the current line
 (define-key osx-key-mode-map (kbd "A-d") 'duplicate-line)
 
+;; Delete entire line without copying to kill-ring
+(define-key osx-key-mode-map (kbd "<A-backspace>") 'matts-delete-whole-line)
+
+;; Insert blank line
+(define-key global-map [M-return] 'insert-blank-line-after-current)
+
+;; Copy the current line
+(define-key global-map (kbd "C-S-l") 'copy-line)
+
 ;; Open a file with dired
 (define-key osx-key-mode-map (kbd "A-o") 'dired)
 
@@ -100,10 +109,10 @@
 ;; Kill the current buffer and window
 (define-key osx-key-mode-map (kbd "A-W") 'matts-close-and-delete-window)
 
-;; Delete entire line without copying to kill-ring
-(define-key osx-key-mode-map (kbd "<A-backspace>") 'matts-delete-whole-line)
-
 ;; Shortcut for ehell
 (global-set-key "\C-x\C-z" 'eshell)
+
+;; Shortcut for anyting
+(global-set-key (kbd "<C-SPC>") 'anything)
 
 (provide 'bindings)

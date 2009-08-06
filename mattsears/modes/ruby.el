@@ -8,7 +8,7 @@
 
 (add-hook 'rspec-mode-hook
           '(lambda ()
-              (setq yas/mode-symbol 'ruby-mode)))
+             (setq yas/mode-symbol 'rspec-mode)))
 
 ;; Cucumber
 (add-to-list 'load-path "~/.emacs.d/vendor/cucumber-mode")
@@ -33,13 +33,6 @@
           inferior-ruby-prompt-pattern "^>> ")
     (pop-to-buffer abuf)))
 
-;; File types
-(setq auto-mode-alist (cons '(".rb$" . ruby-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '(".ru$" . ruby-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '(".rake$" . ruby-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("Rakefile" . ruby-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("Capfile" . ruby-mode) auto-mode-alist))
-
 (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
 
 ;; Rinari
@@ -48,18 +41,24 @@
 (setq rinari-tags-file-name "TAGS")
 (add-hook 'rinari-minor-mode-hook
           (lambda ()
-            (define-key rinari-minor-mode-map (kbd "A-r") 'rinari-test)))
+            (define-key rinari-minor-mode-map (kbd "A-r") 'rinari-test)
+            (define-key rinari-minor-mode-map (kbd "C-c s") 'rinari-find-rspec)
+            (define-key rinari-minor-mode-map (kbd "C-c c") 'rinari-find-controller)
+            (define-key rinari-minor-mode-map (kbd "C-c m") 'rinari-find-model)
+            (define-key rinari-minor-mode-map (kbd "C-c v") 'rinari-find-view)
+            ))
 
-(define-key rinari-minor-mode-map [(control meta shift down)] 'rinari-find-rspec)
-(define-key rinari-minor-mode-map [(control meta shift left)] 'rinari-find-controller)
-(define-key rinari-minor-mode-map [(control meta shift up)] 'rinari-find-model)
-(define-key rinari-minor-mode-map [(control meta shift right)] 'rinari-find-view)
+
 
 ;;; rhtml-mode
 (add-to-list 'load-path "~/.emacs.d/vendor/rhtml/")
 (require 'rhtml-mode)
 (add-hook 'rhtml-mode-hook
-          (lambda () (rinari-launch)))
+          (lambda ()
+            (rinari-launch)
+            (setq wrap-region-tag-active t)
+            (wrap-region-mode t)
+            ))
 
 (setq auto-mode-alist (cons '("\\.html\.erb$" . rhtml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.html$" . rhtml-mode) auto-mode-alist))
@@ -118,24 +117,26 @@
   (interactive)
   (insert " => "))
 
-; rinari
+;; rinari
 (vendor 'rinari)
 (setq rinari-tags-file-name "TAGS")
 (add-hook 'rinari-minor-mode-hook
           (lambda ()
             (define-key rinari-minor-mode-map (kbd "A-r") 'rinari-test)))
 
-; ruby
+;; ruby file types
 (vendor 'ruby-hacks)
 (setq auto-mode-alist (cons '("Rakefile" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("Capfile" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.rake" . ruby-mode) auto-mode-alist))
-
-;; no warnings when compiling
-(setq ruby-dbg-flags "")
+(setq auto-mode-alist (cons '("\\.rb$" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.ru$" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.rake$" . ruby-mode) auto-mode-alist))
 
 (add-hook 'ruby-mode-hook
           (lambda ()
+            (wrap-region-mode t)
+            (flymake-mode-on)
             (add-hook 'local-write-file-hooks
                       '(lambda()
                          (save-excursion
@@ -144,12 +145,11 @@
             (set (make-local-variable 'indent-tabs-mode) 'nil)
             (set (make-local-variable 'tab-width) 2)
             (define-key ruby-mode-map [return] 'newline-and-indent)
-            (font-lock-add-keywords nil
-                                    '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))
             (define-key ruby-mode-map (kbd "C-c s") 'rspec-toggle-spec-and-target)
             (define-key ruby-mode-map (kbd "A-i") 'beautify-ruby)
             (define-key ruby-mode-map "\C-m" 'ruby-reindent-then-newline-and-indent)
             (define-key ruby-mode-map "\C-l" 'ruby-electric-hashrocket)))
+
 
 (defadvice ruby-do-run-w/compilation (before kill-buffer (name cmdlist))
   (let ((comp-buffer-name (format "*%s*" name)))
@@ -173,17 +173,11 @@
                              (if (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
                                  (flymake-mode))  ))
 
-
-(defadvice ruby-do-run-w/compilation (before kill-buffer (name cmdlist))
-  (let ((comp-buffer-name (format "*%s*" name)))
-    (when (get-buffer comp-buffer-name)
-      (kill-buffer comp-buffer-name))))
-(ad-activate 'ruby-do-run-w/compilation)
-
 ;; Treetop
 (vendor 'treetop)
 
 ;; Ruby debugging.
+(setq ruby-dbg-flags "") ;; no warnings when running with compilation
 (autoload 'rdebug "rdebug" "Ruby debugging support." t)
 (global-set-key [f9] 'gud-step)
 (global-set-key [f10] 'gud-next)
@@ -196,8 +190,8 @@
   (let ((start (point-min))
         (end (point-max))
         (command "~/bin/beautify"))
-        (shell-command-on-region start end command t t
-             shell-command-default-error-buffer)))
+    (shell-command-on-region start end command t t
+                             shell-command-default-error-buffer)))
 
 (provide 'ruby)
 

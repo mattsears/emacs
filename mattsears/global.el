@@ -218,6 +218,5 @@
                    (if (y-or-n-p-with-timeout "Do you really want to exit Emacs ? " 4 nil)
                        (save-buffers-kill-emacs))))
 
-
 ;; Start server.
 (server-start)

@@ -37,48 +37,35 @@
 (setq ibuffer-shrink-to-minimum-size t)
 (setq ibuffer-always-show-last-buffer nil)
 (setq ibuffer-sorting-mode 'recency)
-(setq ibuffer-use-header-line nil)
+(setq ibuffer-use-header-line t)
 (setq ibuffer-formats
       '((mark modified read-only " " (name 30 30)
               " " (size 10 -1) " " (mode 20 20) " " filename)
         (mark " " (name 30 -1) " " filename)))
 
-(setq ibuffer-never-show-predicates
-      (list "\\*Completions\\*"
-            "\\*Messages\\*"
-            "\\*scratch\\*"
-            "\\*Backtrace\\*"
-            "\\*compilation\\*"
-            "\\*vc\\*"))
+(add-to-list
+ 'ibuffer-fontification-alist
+ '(5 (memq major-mode
+           '(ruby-mode html-mode emacs-lisp-mode rhtml-mode css-mode
+                      javascript-mode))
+     font-lock-doc-face))
 
-;; default groups for ibuffer
+(add-to-list
+ 'ibuffer-fontification-alist
+ '(5 (memq major-mode
+           '(erc-mode))
+     font-lock-keyword-face))
+
+(setq ibuffer-show-empty-filter-groups nil)
 (setq ibuffer-saved-filter-groups
       (quote (("default"
-               ("dired" (mode . dired-mode))
-               ("org" (mode . org-mode))
-               ("ruby" (mode . ruby-mode))
-               ("rhtml" (mode . rhtml-mode))
-               ("css" (mode . css-mode))
-               ("cucumber" (mode . feature-mode))
-               ("sass" (mode . sass-mode))
-               ("yaml" (mode . yaml-mode))
-               ("haml" (mode . haml-mode))
-               ("javascript" (mode . javascript-mode))
-               ("emacs" (or
-                         (name . "^\\*.el\\*$")
-                         (name . "^\\*Messages\\*$")))
-               ("gnus" (or
-                        (mode . message-mode)
-                        (mode . bbdb-mode)
-                        (mode . mail-mode)
-                        (mode . gnus-group-mode)
-                        (mode . gnus-summary-mode)
-                        (mode . gnus-article-mode)
-                        (name . "^\\.bbdb$")
-                        (name . "^\\.newsrc-dribble")))))))
+               ("irc" (mode . erc-mode))))))
 
-;;ibuffer, I like my buffers to be grouped
-;; (add-hook 'ibuffer-mode-hook
-;;           (lambda ()
-;;             (ibuffer-switch-to-saved-filter-groups
-;;              "default")))
+;; key bindings
+(define-key ibuffer-mode-map [delete] 'ignore)
+
+(add-hook 'ibuffer-mode-hooks
+          '(lambda ()
+             ;; hide any buffers with asterisks
+             (ibuffer-switch-to-saved-filter-groups "default")
+             (ibuffer-add-to-tmp-hide "^\\*")))
