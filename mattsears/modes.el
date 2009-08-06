@@ -70,7 +70,7 @@
   (flyspell-mode 1))
 
 
-;;Fix html-mode highliting mode
+;; Hack: Add color to angle brackets and strings in html
 (defvar html-mode-keywords
   '(("\\(<[^>]+>\\)" 1 font-lock-variable-name-face prepend)
     ("\\(\"[^\"]*\"\\)" 1 font-lock-string-face prepend)
@@ -79,6 +79,13 @@
 (font-lock-add-keywords 'rhtml-mode html-mode-keywords)
 (font-lock-add-keywords 'html-mode html-mode-keywords)
 (font-lock-add-keywords 'html-helper-mode html-mode-keywords)
+
+;; Hack: Add color to strings in ERB
+(add-to-list 'rhtml-in-erb-keywords '("\\(\"[^>]*\"\\)" .
+                                     (1 font-lock-string-face prepend)) )
+
+(add-to-list 'rhtml-in-erb-keywords '("\\(\'[^>]*\'\\)" .
+                                      (1 font-lock-string-face prepend)) )
 
 (require 'recentf)
 (recentf-mode 1)
