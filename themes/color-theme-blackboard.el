@@ -218,6 +218,19 @@
      (org-done ((t (:inherit blackboard-orange))))
      (org-headline-done ((t (:inherit blackboard-green))))
 
+     ;; ERC
+     (erc-default-face ((t (:inherit blackboard-blue))))
+     (erc-fool-face ((t (:inherit blackboard-red))))
+     (erc-input-face ((t (:inherit blackboard-white))))
+     (erc-keyword-face ((t (:inherit blackboard-orange))))
+     (erc-timestamp-face ((t (:inherit blackboard-orange))))
+     (erc-notice-face ((t (:inherit blackboard-green))))
+     (erc-prompt-face ((t (:inherit blackboard-white))))
+
+     ;; Anything.el
+     (anything-header ((t (:inherit blackboard-blue))))
+     (anything-isearch-match ((t (:inherit blackboard-red))))
+
      (mode-line ((t (:background "#373c4e" :foreground "#afafaf" ))))
      (mode-line-inactive ((t (:foreground "#d2e0f6" :background "#373c4e"))))
      (modeline-buffer-id ((t (:bold t))))
