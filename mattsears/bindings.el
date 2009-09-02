@@ -106,6 +106,7 @@
 ;; Kill the current frame, but not the window
 (define-key osx-key-mode-map (kbd "A-w") 'my-close-current-window-asktosave)
 
+
 ;; Kill the current buffer and window
 (define-key osx-key-mode-map (kbd "A-W") 'matts-close-and-delete-window)
 
@@ -114,5 +115,9 @@
 
 ;; Shortcut for anyting
 (global-set-key (kbd "<C-SPC>") 'anything)
+
+;; Use org's line movement
+(global-set-key (kbd "<A-M-up>") 'org-move-line-up)
+(global-set-key (kbd "<A-M-down>") 'org-move-line-down)
 
 (provide 'bindings)

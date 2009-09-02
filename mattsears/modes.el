@@ -1,4 +1,3 @@
-(load "~/.emacs.d/mattsears/modes/snippets")
 (load "~/.emacs.d/mattsears/modes/css")
 (load "~/.emacs.d/mattsears/modes/diff")
 (load "~/.emacs.d/mattsears/modes/dired")
@@ -11,6 +10,7 @@
 (load "~/.emacs.d/mattsears/modes/buffer")
 (load "~/.emacs.d/mattsears/modes/org")
 (load "~/.emacs.d/mattsears/modes/erc")
+(load "~/.emacs.d/mattsears/modes/snippets")
 
 ;; Wrap words in text-mode
 (autoload 'longlines-mode "longlines.el" "Minor mode for editing long lines." t)
@@ -81,8 +81,14 @@
 (font-lock-add-keywords 'html-helper-mode html-mode-keywords)
 
 ;; Hack: Add color to strings in ERB
+(add-to-list 'rhtml-in-erb-keywords '("\\(#{[^>]*}\\)" .
+                                      (1 font-lock-doc-face prepend)) )
+
+(add-to-list 'rhtml-in-erb-keywords '("\\(<!--[^>]*-->\\)" .
+                                      (1 font-lock-comment-face prepend)) )
+
 (add-to-list 'rhtml-in-erb-keywords '("\\(\"[^>]*\"\\)" .
-                                     (1 font-lock-string-face prepend)) )
+                                      (1 font-lock-string-face prepend)) )
 
 (add-to-list 'rhtml-in-erb-keywords '("\\(\'[^>]*\'\\)" .
                                       (1 font-lock-string-face prepend)) )
@@ -114,16 +120,26 @@
 (require 'anything)
 (require 'anything-config)
 
+;; Make anything work with find-file-in-project
+(defvar anything-c-source-project-files
+  '((name . "Files from Current Project")
+    (candidates . project-files)
+    (volatile)
+    (type . file)))
+
 (setq anything-sources
       (list anything-c-source-buffers
-            anything-c-source-files-in-current-dir
+            anything-c-source-project-files
             anything-c-source-file-name-history
-            anything-c-source-locate
-            anything-c-source-mac-spotlight
+            ;;anything-c-source-locateg anyth
+            ;;anything-c-source-mac-spotlight
             anything-c-source-recentf
-            anything-c-source-file-cache
-            anything-c-source-emacs-commands))
+            anything-c-source-google-suggest
+            ;;anything-c-source-file-caches
+            ))
+
 (setq fit-frame-inhibit-fitting-flag t)
 (setq anything-selection-face 'twilight-highlight)
+(setq anything-header-face 'font-lock-builtin-face)
 
 (provide 'modes)

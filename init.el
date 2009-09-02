@@ -14,10 +14,13 @@
 
 (vendor 'cheat)
 (vendor 'treetop)
-(vendor 'emac-rails)
+;;(vendor 'emac-rails)
 (vendor 'css)
 (vendor 'ack)
 (vendor 'twit)
 (vendor 'rdebug)
+
+;; Autoloads
+(autoload 'google-define "google-define" nil t)
 
 (smex-initialize)

@@ -39,9 +39,9 @@
 (setq ibuffer-sorting-mode 'recency)
 (setq ibuffer-use-header-line t)
 (setq ibuffer-formats
-      '((mark modified read-only " " (name 30 30)
-              " " (size 10 -1) " " (mode 20 20) " " filename)
-        (mark " " (name 30 -1) " " filename)))
+      '((mark modified read-only " " (name 30 20)
+              " " (size 8 -1) " " filename)
+        (mark " " (name 20 -1) " " filename)))
 
 (add-to-list
  'ibuffer-fontification-alist
@@ -59,7 +59,8 @@
 (setq ibuffer-show-empty-filter-groups nil)
 (setq ibuffer-saved-filter-groups
       (quote (("default"
-               ("irc" (mode . erc-mode))))))
+               ("channels" (mode . erc-mode))
+               ("channels" (mode . twittering-mode))))))
 
 ;; key bindings
 (define-key ibuffer-mode-map [delete] 'ignore)

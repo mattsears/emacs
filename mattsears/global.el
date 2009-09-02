@@ -131,6 +131,9 @@
 ;; Yet another paste tool, this one for Gist
 (require 'gist)
 
+;; Need an twitter
+(require 'twittering-mode)
+
 ;; Allows syntax highlighting to work, among other things
 (setq global-font-lock-mode 1)
 

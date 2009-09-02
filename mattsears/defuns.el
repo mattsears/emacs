@@ -345,18 +345,6 @@ Otherwise point moves to beginning of line."
 ;; keybindings
 (global-set-key [pause] 'toggle-window-dedicated)
 
-;; buffer dedication (mostly for cscope
-(defun toggle-window-dedicated ()
-  "Toggle whether the current active window is dedicated"
-  (interactive)
-  (message
-   (if (let (window (get-buffer-window (current-buffer)))
-         (set-window-dedicated-p window
-                                 (not (window-dedicated-p window))))
-       "Window '%s' is dedicated"
-     "Window '%s' is normal")
-   (current-buffer)))
-
 (defun word-count nil "Count words in buffer" (interactive)
   (shell-command-on-region (point-min) (point-max) "wc -w"))
 
@@ -366,5 +354,12 @@ Otherwise point moves to beginning of line."
                                            javascript-mode latex-mode plain-tex-mode))
       (let ((mark-even-if-inactive t))
         (indent-region (region-beginning) (region-end) nil))))
+
+
+(defun sudo-edit (&optional arg)
+  (interactive "p")
+  (if (or arg (not buffer-file-name))
+      (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 (provide 'defuns)

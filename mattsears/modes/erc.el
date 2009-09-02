@@ -2,7 +2,7 @@
 
 (setq
  erc-autojoin-channels-alist
- '(("freenode.net" "#emacs"))
+ '(("freenode.net"))
  erc-nick "mattsears"
  erc-server "irc.freenode.net"
  erc-away-nickname "mattsears_AWAY"

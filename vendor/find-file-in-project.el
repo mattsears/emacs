@@ -15,9 +15,9 @@
 (defvar project-files-table ()
 	"alist of filenames and their path for use with `find-file-in-project'")
 
-(defvar find-file-in-project-excludes (list "vendor" "/\\." "fixtures" "tmp" "log" "build" "\\.xcodeproj" 
-											"\\.nib" "\\.framework" "\\.app" "\\.pbproj" "\\.pbxproj" "\\.xcode"
-											"\\.xcodeproj" "\\.bundle") 
+(defvar find-file-in-project-excludes (list "plugins" "rails" "/\\." "fixtures" "tmp" "log" "build" "\\.xcodeproj"
+											"\\.nib" "\\.framework" "\\.app" "\\.pbproj" "\\.pbxproj" "\\.xcode" "\\.git"
+											"\\.xcodeproj" "\\.bundle")
 	"a list of patterns against which directories are compared as the `project-files-table' is built.  Matches to one of the patterns are excluded from the `project-files-table'")
 (defvar find-file-in-project-file-excludes "~$")
 
@@ -54,7 +54,8 @@
   (if (file-directory-p file)
       (let* ((pattern (ffip-simple-regexp-opts find-file-in-project-excludes))
 						 (exclude (if pattern (string-match pattern file))))
-				(unless exclude (mapc 'populate-project-files-table (directory-files file t "^[^\.]"))))
+				(unless exclude (mapc 'populate-project-files-table (directory-files file t "^[^\.]")))
+        )
     (let* ((file-name (file-name-nondirectory file))
 					 (existing-record (assoc file-name project-files-table))
 					 (unique-parts (get-unique-directory-names file (cdr existing-record))))
@@ -72,10 +73,10 @@
   (unless find-file-in-project-cache-results (setq project-files-table nil))
 	(unless project-files-table (populate-project-files-table (rails-root)))
 	(let ((subtracted-alist project-files-table))
-		(delete nil 
-						(append 
-						 (mapcar 
-							(lambda(elem) 
+		(delete nil
+						(append
+						 (mapcar
+							(lambda(elem)
 								(setq subtracted-alist (rassq-delete-all elem subtracted-alist))
 								(rassoc elem project-files-table)) (buffer-file-name-list))
 						 subtracted-alist))))
