@@ -1,3 +1,7 @@
+;;----------------------------------------------------------------------------
+;; Custom settings for all modes
+;;----------------------------------------------------------------------------
+
 ;; Set text mode to be the default major mode
 (setq default-major-mode 'text-mode)
 
@@ -9,6 +13,7 @@
 (set-face-font 'default "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
 (set-face-font 'modeline "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
 (set-face-font 'minibuffer-prompt "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
+;;(setq transparency-level 100)
 
 ;; Set the default font-size to 16pt
 (set-face-attribute 'default nil :height 160)
@@ -26,14 +31,26 @@
         (-3 . "%p")
         "% "))
 
+;; Show column and line numbers in the mode line
 (setq line-number-mode t)
 (setq column-number-mode t)
+(column-number-mode 1)
 
 ;; Don't indent with tabs
 (setq-default indent-tabs-mode nil)
 
 ;; Make the region act quite like the text "highlight" in many apps.
 (setq transient-mark-mode t)
+
+;; Command line
+(require 'cl)
+
+;; Anything
+(require 'anything)
+(require 'anything-config)
+(require 'anything-rcodetools)
+(setq rct-get-all-methods-command "PAGER=cat fri -l")
+(define-key anything-map "\C-z" 'anything-execute-persistent-action)
 
 ;; Shutoff messages
 (setq message-log-max nil)
@@ -82,7 +99,7 @@
 (setq mac-emulate-three-button-mouse nil)
 
 ;; Set window title
-(setq frame-title-format (list '("mattsears: ") '(dired-directory dired-directory "%b")))
+;;(setq frame-title-format (list '(project-root) '(": ") '(dired-directory dired-directory "%b")))
 (setq user-full-name "Matt Sears")
 (setq user-mail-address "matt@mattsears.com")
 
@@ -128,11 +145,31 @@
 ;; Find files in project
 (require 'find-file-in-project)
 
-;; Yet another paste tool, this one for Gist
+;; Yet another paste tool, this one for Gist (awesome)
 (require 'gist)
 
 ;; Need an twitter
 (require 'twittering-mode)
+
+;; Keep a history of recent changes
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-saved-items 500)
+(setq recentf-max-menu-items 60)
+
+;; scroll smoothly
+(require 'smooth-scrolling)
+
+;; Sudo saving
+(require 'sudo)
+
+;; Navigation bar
+(require 'nav)
+
+;; Enhanced M-x
+(setq smex-save-file "~/.emacs.bak/smex.save")
+(require 'smex)
+(smex-initialize)
 
 ;; Allows syntax highlighting to work, among other things
 (setq global-font-lock-mode 1)
@@ -212,14 +249,30 @@
 
 ;; Scroll with the compilation output
 (setq compilation-scroll-output t)
-(setq compilation-window-height 16)
+(setq compilation-window-height 18)
 
-;; Prevent accidentally killing emacs.
-(global-set-key [(control x) (control c)]
-                '(lambda ()
-                   (interactive)
-                   (if (y-or-n-p-with-timeout "Do you really want to exit Emacs ? " 4 nil)
-                       (save-buffers-kill-emacs))))
+(setq confirm-kill-emacs
+      (lambda (e)
+        (y-or-n-p-with-timeout
+         "Really exit Emacs (automatically exits in 5 secs)? " 5 t)))
+
+
+;; Global MMM mode settings
+(add-to-list 'load-path "~/.emacs.d/vendor/mmm-mode")
+(require 'mmm-mode)
+(setq mmm-global-mode 'maybe)
+(require 'mmm-sample)
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'reverse)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t) ; rename after killing uniquified
+(setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
+
+;; Bookmarks
+(setq
+ bookmark-default-file "~/.emacs.d/bookmarks" ;; keep my ~/ clean
+ bookmark-save-flag 1)                        ;; autosave each change)
 
 ;; Start server.
 (server-start)

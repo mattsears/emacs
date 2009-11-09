@@ -1,4 +1,6 @@
-;; ido.el - custom ido settings
+;;----------------------------------------------------------------------------
+;; IDO options
+;;----------------------------------------------------------------------------
 (require 'ido)
 (setq ido-mode t)
 (setq ido-save-directory-list-file nil)

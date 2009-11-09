@@ -1,10 +1,11 @@
+;;----------------------------------------------------------------------------
+;; Css mode
+;;----------------------------------------------------------------------------
+(require 'css-mode)
 (autoload 'css-mode "css-mode" "Mode for editing CSS file" t)
 (add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
 (setq cssm-newline-before-closing-bracket t)
 (setq cssm-indent-function 'cssm-c-style-indenter)
-
-;; Some eval-on-load stuff
-(require 'css-mode)
 
 (defadvice cssm-complete-property
   (after cssm-complete-add-space activate)
@@ -27,7 +28,7 @@
 
 (add-hook 'css-mode-hook
 	  '(lambda ()
-	     (setq tab-width 4)
+	     (setq tab-width 2)
 		 ;;(define-key css-mode-map [return] 'newline-and-indent)
 		 (setq css-electric-brace-behavior t)
 		 (setq css-electric-semi-behavior t)

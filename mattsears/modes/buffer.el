@@ -1,4 +1,6 @@
-;; Ido mode
+;;----------------------------------------------------------------------------
+;; IDO options
+;;----------------------------------------------------------------------------
 (require 'ido)
 
 (ido-mode t)
@@ -7,7 +9,6 @@
       ido-enable-flex-matching t
       ido-use-filename-at-point t
       ido-max-prospects 20)
-
 (setq ido-ignore-buffers
       '("\\` " "^\\*ESS\\*" "^\\*Messages\\*" "^\\*Help\\*" "^\\*Buffer" "^\\*Ibuffer"
         "^\\*.*Completions\\*$" "^\\*Ediff" "^\\*tramp" "^\\*cvs-" "^\\*Minibuf-\\*"
@@ -17,8 +18,9 @@
       ido-ignore-files
       '("\\`auto/" "\\.prv/" "\\.pyc/"  "\\.class/" "_region_" "\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
 
-
-;; Ignore certain files when switching buffers
+;;----------------------------------------------------------------------------
+;; Iswitchb options
+;;----------------------------------------------------------------------------
 (require 'iswitchb)
 (add-to-list 'iswitchb-buffer-ignore "^ ")
 (add-to-list 'iswitchb-buffer-ignore "*Messages*")
@@ -30,7 +32,9 @@
 (add-to-list 'iswitchb-buffer-ignore "*jde-log")
 (add-to-list 'iswitchb-buffer-ignore "^[tT][aA][gG][sS]$")
 
+;;----------------------------------------------------------------------------
 ;; ibuffer options
+;;----------------------------------------------------------------------------
 (require 'ibuffer)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
@@ -60,7 +64,9 @@
 (setq ibuffer-saved-filter-groups
       (quote (("default"
                ("channels" (mode . erc-mode))
-               ("channels" (mode . twittering-mode))))))
+               ("channels" (mode . twittering-mode))
+               ("css" (mode . css-mode))
+               ))))
 
 ;; key bindings
 (define-key ibuffer-mode-map [delete] 'ignore)

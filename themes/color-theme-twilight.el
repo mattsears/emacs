@@ -22,7 +22,7 @@
   (interactive)
   (color-theme-install
    '(color-theme-twilight
-     ((background-color . "#0C1021")
+     ((background-color . "#141414")
       (background-mode . dark)
       (border-color . "#dedede")
       (cursor-color . "#AFAFAF")
@@ -32,9 +32,9 @@
       (list-matching-lines-face . bold)
       (sgml-set-face . "#7587A6")
       (tags-tag-face . "#7587A6"))
-     (twilight-black ((t (:foreground "#0C1021"))))
+     (twilight-black ((t (:foreground "#141414"))))
      (twilight-white ((t (:foreground "#F8F8F8"))))
-     (twilight-blue ((t (:foreground "#8798b3"))))
+     (twilight-blue ((t (:foreground "#75879e"))))
      (twilight-light-blue ((t (:foreground "#e5e5e5"))))
      (twilight-yellow ((t (:foreground "#CF6A4C"))))
      (twilight-brown ((t (:foreground "#CDA869"))))
@@ -45,8 +45,8 @@
      (twilight-red ((t (:foreground "#CF6A4C"))))
      (twilight-grey ((t (:foreground "#726d73"))))
      (twilight-bg ((t (:background "#0C1021"))))
-     (twilight-highlight ((t (:background "#344e87"))))
-     (twilight-current-line ((t (:background "#22283c"))))
+     (twilight-highlight ((t (:background "#3b4043"))))
+     (twilight-current-line ((t (:background "#1b1b1b"))))
 
      (text-face ((t (:foreground twilight-yellow))))
 
@@ -57,7 +57,7 @@
      (buffers-tab ((t (:inherit twilight-blue))))
 
      (font-lock-builtin-face ((t (:inherit twilight-orange))))
-     (font-lock-comment-face ((t (:inherit twilight-grey))))
+     (font-lock-comment-face ((t (:italic t :inherit twilight-grey))))
      (font-lock-comment-delimiter-face ((t (:inherit twilight-grey))))
      (font-lock-constant-face ((t (:inherit twilight-red))))
      (font-lock-doc-string-face ((t (:inherit twilight-green))))

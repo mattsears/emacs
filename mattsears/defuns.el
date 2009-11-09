@@ -1,4 +1,8 @@
-;;; defuns.el - Custom functions
+;;----------------------------------------------------------------------------
+;; Custom functions
+;;----------------------------------------------------------------------------
+
+
 
 (defun iwb ()
   "indent whole buffer"
@@ -117,10 +121,15 @@ Otherwise point moves to beginning of line."
   (interactive)
   (beginning-of-line)
   (copy-region-as-kill (point) (progn (end-of-line) (point)))
-  (textmate-next-line)
+  (matts-next-line)
   (yank)
   (beginning-of-line)
   (indent-according-to-mode))
+
+(defun matts-next-line ()
+  (interactive)
+  (end-of-line)
+  (newline-and-indent))
 
 (defun copy-line()
   "Copy the current line"
@@ -147,6 +156,7 @@ Otherwise point moves to beginning of line."
 (defun matts-close-and-delete-window ()
   "Kill the current frame and the window"
   (interactive)
+  (other-window 1)
   (kill-buffer (current-buffer))
   (delete-window))
 
@@ -361,5 +371,36 @@ Otherwise point moves to beginning of line."
   (if (or arg (not buffer-file-name))
       (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(defun ido-goto-symbol ()
+  "Will update the imenu index and then use ido to select a
+   symbol to navigate to"
+  (interactive)
+  (imenu--make-index-alist)
+  (let ((name-and-pos '())
+        (symbol-names '()))
+    (flet ((addsymbols (symbol-list)
+                       (when (listp symbol-list)
+                         (dolist (symbol symbol-list)
+                           (let ((name nil) (position nil))
+                             (cond
+                              ((and (listp symbol) (imenu--subalist-p symbol))
+                               (addsymbols symbol))
+
+                              ((listp symbol)
+                               (setq name (car symbol))
+                               (setq position (cdr symbol)))
+
+                              ((stringp symbol)
+                               (setq name symbol)
+                               (setq position (get-text-property 1 'org-imenu-marker symbol))))
+
+                             (unless (or (null position) (null name))
+                               (add-to-list 'symbol-names name)
+                               (add-to-list 'name-and-pos (cons name position))))))))
+      (addsymbols imenu--index-alist))
+    (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
+           (position (cdr (assoc selected-symbol name-and-pos))))
+      (goto-char position))))
 
 (provide 'defuns)

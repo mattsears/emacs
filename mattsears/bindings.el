@@ -1,4 +1,6 @@
-;; bindings.el - Custom key bindings
+;;----------------------------------------------------------------------------
+;; Custom key bindings
+;;----------------------------------------------------------------------------
 
 ;; Newline and then indent.
 (global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
@@ -33,9 +35,7 @@
 (global-set-key "\M-i" 'insert-soft-tab)
 (global-set-key "\C-R" 'replace-string)
 
-;; Use ido to match commands in the mini-buffer
-;;(global-set-key "\M-x" 'ido-execute-command)
-
+;; Smex is awesome
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 (global-set-key (kbd "C-c M-x") 'smex-update-and-run)
@@ -67,6 +67,15 @@
 ;; Duplicated the current line
 (define-key osx-key-mode-map (kbd "A-d") 'duplicate-line)
 
+;; Insert new line without breaking the text
+(define-key global-map [A-return] 'matts-next-line)
+
+;; Comment or uncomment the entire line
+(define-key global-map (kbd "A-/") 'comment-or-uncomment-region-or-line)
+
+;; Align
+(define-key global-map (kbd "A-M-]") 'align)
+
 ;; Delete entire line without copying to kill-ring
 (define-key osx-key-mode-map (kbd "<A-backspace>") 'matts-delete-whole-line)
 
@@ -83,7 +92,7 @@
 (define-key osx-key-mode-map (kbd "A-O") 'ido-find-file)
 
 ;; Find a file from the list of most recently open files
-(define-key osx-key-mode-map (kbd "C-x r") 'matts-ido-choose-from-recentf)
+;;(define-key osx-key-mode-map (kbd "C-x r") 'matts-ido-choose-from-recentf)
 
 ;; Indent the buffer
 (define-key osx-key-mode-map (kbd "A-i") 'iwb)
@@ -98,7 +107,7 @@
 (define-key osx-key-mode-map (kbd "A-m") 'matts-popup-commands)
 
 ;; Popup a window for all the methods on the buffer
-(define-key osx-key-mode-map (kbd "A-T") 'matts-popup-symbols)
+ (define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
 
 ;; Find file in project
 (define-key osx-key-mode-map (kbd "A-t") 'find-file-in-project)
@@ -106,9 +115,9 @@
 ;; Kill the current frame, but not the window
 (define-key osx-key-mode-map (kbd "A-w") 'my-close-current-window-asktosave)
 
-
-;; Kill the current buffer and window
-(define-key osx-key-mode-map (kbd "A-W") 'matts-close-and-delete-window)
+;; Kill the other buffer and window
+;;(global-set-key (kbd "<A-W>") 'matts-close-and-delete-window)
+(define-key osx-key-mode-map (kbd "A-k") 'matts-close-and-delete-window)
 
 ;; Shortcut for ehell
 (global-set-key "\C-x\C-z" 'eshell)

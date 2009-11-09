@@ -1,4 +1,6 @@
-;;(require 'org-install)
+;;----------------------------------------------------------------------------
+;; Org mode options
+;;----------------------------------------------------------------------------
 (setq load-path (cons "~/.emacs.d/vendor/org-mode/lisp" load-path))
 
 ;; Use IDO for auto-complete
@@ -82,14 +84,6 @@
         ("Journal" ?j "* %U %?\n\n  %i\n  %a" "~/org/journal.org")
         ("Idea" ?i "* %^{Title}\n  %i\n  %a" "~/org/journal.org" "New Ideas")))
 
-;; (setq org-remember-templates (quote (("todo" ?t "* TODO %?
-;;   %u" nil bottom nil)
-;;                                      ("note" ?n "* %?                                        :NOTE:
-;;   %u" nil bottom nil)
-;;                                      ("phone" ?p "* PHONE %:name - %:company -                :PHONE:
-;;   Contact Info: %a
-;;   %u" nil bottom nil))))
-
 ;; Default states for todos
 (setq org-todo-keywords '("TODO" "STARTED" "WAITING" "DONE" "DEFERRED" "CANCELLED"))
 (setq org-todo-keyword-faces (quote (("TODO" :foreground "red" :weight bold)
@@ -107,8 +101,6 @@
               ("w" "Tasks waiting on something" tags "WAITING" ((org-use-tag-inheritance nil)))
               ("r" "Refile New Notes and Tasks" tags "REFILE" ((org-agenda-todo-ignore-with-date nil)))
               ("n" "Notes" tags "NOTE" nil))))
-
-;; Refiling
 
 ;; Use IDO for target completion
 (setq org-completion-use-ido t)

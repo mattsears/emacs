@@ -1,15 +1,20 @@
-;; Load yasnippet
+;;----------------------------------------------------------------------------
+;; Snippets
+;;----------------------------------------------------------------------------
+
 (vendor 'yasnippet)
-(require 'yasnippet) ;; not yasnippet-bundle
+(require 'yasnippet)
+
+;; (add-hook 'ruby-mode-hook
+;;           '(lambda ()
+;;              (make-variable-buffer-local 'yas/trigger-key)
+;;              (setq yas/trigger-key [tab])))
+
 (yas/initialize)
+(setq yas/text-popup-function
+      'yas/dropdown-list-popup-for-template)
+
 ;; Load my custom snippets
 (yas/load-directory "~/.emacs.d/mattsears/snippets")
-
-;(require 'hippie-exp)
-(setq hippie-expand-try-functions-list
-      '(yas/hippie-try-expand
-        try-expand-dabbrev
-        try-expand-dabbrev-all-buffers
-        try-expand-dabbrev-from-kill
-        try-complete-file-name
-        try-complete-lisp-symbol))
+(make-variable-buffer-local 'yas/trigger-key)
+(setq yas/global-mode t)

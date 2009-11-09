@@ -1,18 +1,23 @@
-
+;;----------------------------------------------------------------------------
 ;; Clojure mode
+;;----------------------------------------------------------------------------
 (add-to-list 'load-path "~/.emacs.d/vendor/clojure-mode")
 (setq inferior-lisp-program "~/bin/clojure")
 (require  'clojure-auto)
 (require 'clojure-paredit)
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
 
+;;----------------------------------------------------------------------------
 ;; Slime
+;;----------------------------------------------------------------------------
 ;(setq inferior-lisp-program "/usr/local/bin/sbcl")
 (add-to-list 'load-path "~/.emacs.d/vendor/slime")
 (require 'slime)
 (slime-setup '(slime-fancy slime-asdf))
 
-;; Swank clojure
+;;----------------------------------------------------------------------------
+;; Swank
+;;----------------------------------------------------------------------------
 (add-to-list 'load-path "~/.emacs.d/vendor/swank-clojure")
 (setq swank-clojure-binary "~/bin/clojure")
 (require  'swank-clojure-autoload)
