@@ -76,6 +76,10 @@
 ;; Align
 (define-key global-map (kbd "A-M-]") 'align)
 
+;; Indenting whole lines
+(define-key osx-key-mode-map (kbd "A-]")  'textmate-shift-right)
+(define-key osx-key-mode-map (kbd "A-[") 'textmate-shift-left)
+
 ;; Delete entire line without copying to kill-ring
 (define-key osx-key-mode-map (kbd "<A-backspace>") 'matts-delete-whole-line)
 
