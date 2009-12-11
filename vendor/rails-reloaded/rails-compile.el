@@ -47,31 +47,40 @@
     ("`\\(.+\\)'"
      (1 font-lock-function-name-face))))
 
-(defun rails/compile/match-error (limit)
-  (catch 'found
-    (while (re-search-forward "\\(?:\\[\\|^\\|\\s+\\|(\\)?\\([^ :\n\]+\\):\\([0-9]+\\)+\\b" limit t)
-      (let ((file (match-string 1))
-            (root (rails/root default-directory)))
-        (when root
-          (unless (file-name-absolute-p file)
-            (setq file (concat root file)))
-          (setq file (expand-file-name file))
-          (when (and (file-exists-p file)
-                     (not (files-ext/file-in-directory-p (concat root "vendor/") file)))
-            (throw 'found t)))))))
+(defun rails/compile/match-error ()
+	(let ((file (match-string 1))
+				(root (rails/root default-directory)))
+		(when root
+			(unless (file-name-absolute-p file)
+				(setq file (concat root file)))
+			(setq file (expand-file-name file))
+			(if (and (file-exists-p file)
+							 (not (files-ext/file-in-directory-p (concat root "vendor/") file)))
+					(list file)
+				 nil))))
 
 (defun rails/compile/error-regexp-alist ()
   (list
-   (list 'rails/compile/error 'rails/compile/match-error 1 2 nil 2 1)))
+   (list 'rails/compile/error
+				 (concat "\\(?:\\[\\|^\\|\\s+\\|(\\)?"
+								 ;; rails framefork files should be a 'info'
+								 "\\(\\([^ :\n\]+vendor/rails[^ :\n\]+\\)\\|"
+								 ;; all files from vendor/ (plugins and etc) should be
+								 ;; a 'warning'
+								 "\\([^ :\n\]+vendor/[^ :\n\]+\\)\\|"
+								 ;; all other is 'error'
+								 "[^ :\n\]+\\)"
+								 ":\\([0-9]+\\)+\\b")
+				 1 4 nil '(3 . 2) 1)))
 
 
 (define-derived-mode rails/compilation-mode compilation-mode "RCompile"
   "Major mode for RoR tests."
   (set (make-local-variable 'font-lock-keywords-only) t)
   (set (make-local-variable 'font-lock-keywords) nil)
-;;  (set (make-local-variable 'font-lock-defaults) nil) ; to enable fontify by ansi-color
-;;   (set (make-local-variable 'font-lock-defaults)
-;;        '(rails/compile/font-lock-keywords t))
+	;; (set (make-local-variable 'font-lock-defaults) nil) ; to enable fontify by ansi-color
+  ;; (set (make-local-variable 'font-lock-defaults)
+  ;;      '(rails/compile/font-lock-keywords t))
   (set (make-local-variable 'compilation-mode-font-lock-keywords)
        rails/compile/font-lock-keywords)
   (set (make-local-variable 'compilation-error-regexp-alist-alist)

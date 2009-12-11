@@ -37,6 +37,23 @@
         (setq action (buffer-substring-no-properties (match-beginning 1) (match-end 1)))))
     action))
 
+(defun rails/ruby/current-test-method ()
+  (let ((action (rails/ruby/current-method))
+	(re "^[[:space:]]*test[[:space:]]+\\(\\'\\|\"\\)\\([^\\1]+\\)\\1[[:space:]]+do[[:space:]]*$"))
+    (unless action
+      (save-excursion
+	(end-of-line)
+	(when (re-search-backward re nil t)
+	  (setq action
+		(concat "test_"
+			(replace-regexp-in-string
+			 "[[:space:]]"
+			 "_"
+			 (buffer-substring-no-properties
+			  (match-beginning 2)
+			  (match-end 2)))))))
+      action)))
+
 (defun rails/ruby/goto-method-in-current-buffer (action)
     (let* (pos
            (cur-pos (point))
@@ -62,8 +79,8 @@
     (inferior-ruby-mode)
     (make-local-variable 'inferior-ruby-first-prompt-pattern)
     (make-local-variable 'inferior-ruby-prompt-pattern)
-    (setq inferior-ruby-first-prompt-pattern "^>> "
-          inferior-ruby-prompt-pattern "^>> ")
+    (setq inf-ruby-first-prompt-pattern "^>> "
+          inf-ruby-prompt-pattern "^>> ")
     (setq ruby-buffer abuf)
     (rails-minor-mode t)
     (pop-to-buffer abuf)))

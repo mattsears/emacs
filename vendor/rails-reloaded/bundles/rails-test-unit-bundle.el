@@ -6,16 +6,16 @@
   (rails/compile/run-file
    root
    rails-buffer
-   rails/ruby/command
+   (concat rails/ruby/command " -I\"lib:test\"")
    "%s"
    "_test\\.rb$"))
 
 (defun rails/test-unit-bundle/current-method (root rails-buffer)
-  (when-bind (method (rails/ruby/current-method))
+  (when-bind (method (rails/ruby/current-test-method))
     (rails/compile/run-file
      root
      rails-buffer
-     rails/ruby/command
+     (concat rails/ruby/command " -I\"lib:test\"")
      (concat "%s --name=" method)
      "_test\\.rb$")))
 
@@ -79,5 +79,12 @@
                      :group 'unit-test
                      :dir "test/functional"
                      :file-suffix  "_controller_test"
+                     :file-ext  "rb"
+                     :test-to 'controller)
+
+  (rails/defresource 'integration-test "Integration Test"
+                     :group 'unit-test
+                     :dir "test/integration"
+                     :file-suffix  "_test"
                      :file-ext  "rb"
                      :test-to 'controller))

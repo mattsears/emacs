@@ -57,7 +57,7 @@
   (interactive)
   (when-bind (root (rails/root))
     (let ((version
-           (ido-completing-read "Version: "
+           (completing-read "Version: "
                                 (rails/database-bundle/versions root)
                                 nil
                                 t)))

@@ -2,8 +2,6 @@
 ;; Custom functions
 ;;----------------------------------------------------------------------------
 
-
-
 (defun iwb ()
   "indent whole buffer"
   (interactive)
@@ -402,5 +400,22 @@ Otherwise point moves to beginning of line."
     (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
            (position (cdr (assoc selected-symbol name-and-pos))))
       (goto-char position))))
+
+;; Borrowed from defunkt's textmate.el http://github.com/defunkt/textmate.el/blob/master/textmate.el
+(defun textmate-shift-right (&optional arg)
+  "Shift the line or region to the ARG places to the right.
+
+A place is considered `tab-width' character columns."
+  (interactive)
+  (let ((deactivate-mark nil)
+        (beg (or (and mark-active (region-beginning))
+                 (line-beginning-position)))
+        (end (or (and mark-active (region-end)) (line-end-position))))
+    (indent-rigidly beg end (* (or arg 1) tab-width))))
+
+(defun textmate-shift-left (&optional arg)
+  "Shift the line or region to the ARG places to the left."
+  (interactive)
+  (textmate-shift-right (* -1 (or arg 1))))
 
 (provide 'defuns)
