@@ -55,6 +55,7 @@
             ))
 (setq auto-mode-alist (cons '("\\.html\.erb$" . rhtml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.rhtml$" . rhtml-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.mustache$" . rhtml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.liquidl$" . rhtml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.html$" . rhtml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.erb$" . rhtml-mode) auto-mode-alist))

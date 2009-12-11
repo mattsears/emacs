@@ -22,7 +22,7 @@
   (interactive)
   (color-theme-install
    '(color-theme-twilight
-     ((background-color . "#141414")
+     ((background-color . "#121212")
       (background-mode . dark)
       (border-color . "#dedede")
       (cursor-color . "#AFAFAF")
@@ -32,7 +32,7 @@
       (list-matching-lines-face . bold)
       (sgml-set-face . "#7587A6")
       (tags-tag-face . "#7587A6"))
-     (twilight-black ((t (:foreground "#141414"))))
+     (twilight-black ((t (:foreground "#121212"))))
      (twilight-white ((t (:foreground "#F8F8F8"))))
      (twilight-blue ((t (:foreground "#75879e"))))
      (twilight-light-blue ((t (:foreground "#e5e5e5"))))
@@ -70,7 +70,7 @@
      (font-lock-regexp-grouping-backslash ((t (:inherit twilight-orange))))
      (font-lock-regexp-grouping-construct ((t (:inherit twilight-red))))
      (font-lock-string-face ((t (:inherit twilight-green))))
-     (font-lock-type-face ((t (:inherit twilight-orange))))
+     (font-lock-type-face ((t (:inherit twilight-purple))))
      (font-lock-variable-name-face ((t (:inherit twilight-blue))))
      (font-lock-warning-face ((t (:inherit twilight-red))))
      (font-lock-negation-char-face ((t (nil))))
