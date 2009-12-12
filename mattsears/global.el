@@ -167,6 +167,7 @@
 (require 'nav)
 
 ;; Enhanced M-x
+(add-to-list 'load-path "~/.emacs.d/vendor/smex")
 (setq smex-save-file "~/.emacs.bak/smex.save")
 (require 'smex)
 (smex-initialize)

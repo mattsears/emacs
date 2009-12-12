@@ -15,7 +15,7 @@
 (load "~/.emacs.d/mattsears/modes/org")
 (load "~/.emacs.d/mattsears/modes/erc")
 (load "~/.emacs.d/mattsears/modes/shell")
-(load "~/.emacs.d/mattsears/modes/autocomplete")
+;;(load "~/.emacs.d/mattsears/modes/autocomplete")
 (load "~/.emacs.d/mattsears/modes/anything")
 
 ;; Wrap words in text-mode

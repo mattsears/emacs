@@ -11,7 +11,6 @@
 (setq dired-dwim-target t)
 (setq dired-recursive-deletes 'top)
 
-
 ;; Remap 'o' in dired mode to open a file
 (defun matts-dired-open-mac ()
   (interactive)

@@ -1,0 +1,6 @@
+[submodule "vendor/smex"]
+	path = vendor/smex
+	url = git://github.com/nonsequitur/smex.git
+[submodule "vendor/rails-reloaded"]
+	path = vendor/rails-reloaded
+	url = git://github.com/hron/emacs-rails-reloaded.git

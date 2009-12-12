@@ -404,7 +404,6 @@ Otherwise point moves to beginning of line."
 ;; Borrowed from defunkt's textmate.el http://github.com/defunkt/textmate.el/blob/master/textmate.el
 (defun textmate-shift-right (&optional arg)
   "Shift the line or region to the ARG places to the right.
-
 A place is considered `tab-width' character columns."
   (interactive)
   (let ((deactivate-mark nil)
