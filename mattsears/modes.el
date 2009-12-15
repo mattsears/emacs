@@ -27,6 +27,7 @@
           '(lambda ()
              (turn-on-auto-fill)
              (auto-fill-mode 1)
+             (column-marker-1 80)
              ))
 
 ;; Bash

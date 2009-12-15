@@ -275,5 +275,9 @@
  bookmark-default-file "~/.emacs.d/.bookmarks" ;; keep my ~/ clean
  bookmark-save-flag 1)                        ;; autosave each change)
 
+(require 'column-marker)
+;; Highlight column 80 in foo mode.
+;;(add-hook ruby-mode-hook (lambda () (interactive) (column-marker-1 80)))
+
 ;; Start server.
 (server-start)

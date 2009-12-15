@@ -4,3 +4,6 @@
 [submodule "vendor/rails-reloaded"]
 	path = vendor/rails-reloaded
 	url = git://github.com/hron/emacs-rails-reloaded.git
+[submodule "vendor/magit"]
+	path = vendor/magit
+	url = git://github.com/jwiegley/magit.git
