@@ -33,7 +33,6 @@
             anything-c-source-project-files
             anything-c-source-file-name-history
             anything-c-source-recentf
-            anything-c-source-cheat
             ))
 
 (setq fit-frame-inhibit-fitting-flag t)

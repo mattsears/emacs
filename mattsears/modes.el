@@ -6,6 +6,7 @@
 (load "~/.emacs.d/mattsears/modes/css")
 (load "~/.emacs.d/mattsears/modes/dired")
 (load "~/.emacs.d/mattsears/modes/javascript")
+(load "~/.emacs.d/mattsears/modes/html")
 (load "~/.emacs.d/mattsears/modes/ruby")
 (load "~/.emacs.d/mattsears/modes/rails")
 (load "~/.emacs.d/mattsears/modes/ido")
