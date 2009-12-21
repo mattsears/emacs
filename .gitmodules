@@ -7,3 +7,30 @@
 [submodule "vendor/magit"]
 	path = vendor/magit
 	url = git://github.com/jwiegley/magit.git
+[submodule "vendor/smart-tab"]
+	path = vendor/smart-tab
+	url = git://github.com/thomas11/smart-tab.git
+[submodule "vendor/clojure-mode"]
+	path = vendor/clojure-mode
+	url = git://github.com/jochu/clojure-mode.git
+[submodule "vendor/swank-clojure"]
+	path = vendor/swank-clojure
+	url = git://github.com/jochu/swank-clojure.git
+[submodule "vendor/slime"]
+	path = vendor/slime
+	url = git://github.com/nablaone/slime.git
+[submodule "vendor/org-mode"]
+	path = vendor/org-mode
+	url = git://github.com/emacsmirror/org-mode.git
+[submodule "zencoding"]
+	path = zencoding
+	url = git://github.com/chrisdone/zencoding.git
+[submodule "vendor/zencoding"]
+	path = vendor/zencoding
+	url = git://github.com/chrisdone/zencoding.git
+[submodule "smart-tab"]
+	path = smart-tab
+	url = git://github.com/thomas11/smart-tab.git
+[submodule "vendor/ruby-test-mode"]
+	path = vendor/ruby-test-mode
+	url = git://github.com/febeling/ruby-test-mode.git
