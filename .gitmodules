@@ -43,3 +43,6 @@
 [submodule "vendor/rspec-mode"]
 	path = vendor/rspec-mode
 	url = git://github.com/pezra/rspec-mode.git
+[submodule "vendor/cucumber"]
+	path = vendor/cucumber
+	url = git://github.com/michaelklishin/cucumber.el.git
