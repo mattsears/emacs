@@ -34,3 +34,6 @@
 [submodule "vendor/ruby-test-mode"]
 	path = vendor/ruby-test-mode
 	url = git://github.com/febeling/ruby-test-mode.git
+[submodule "vendor/yasnippets-shoulda"]
+	path = vendor/yasnippets-shoulda
+	url = git://github.com/rwc9u/yasnippets-shoulda.git
