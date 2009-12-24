@@ -37,3 +37,9 @@
 [submodule "vendor/yasnippets-shoulda"]
 	path = vendor/yasnippets-shoulda
 	url = git://github.com/rwc9u/yasnippets-shoulda.git
+[submodule "vendor/shoulda-mode"]
+	path = vendor/shoulda-mode
+	url = git://github.com/pezra/shoulda-mode.git
+[submodule "vendor/rspec-mode"]
+	path = vendor/rspec-mode
+	url = git://github.com/pezra/rspec-mode.git
