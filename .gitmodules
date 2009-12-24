@@ -46,3 +46,6 @@
 [submodule "vendor/cucumber"]
 	path = vendor/cucumber
 	url = git://github.com/michaelklishin/cucumber.el.git
+[submodule "vendor/emacs-ruby-electric"]
+	path = vendor/emacs-ruby-electric
+	url = git://github.com/rodimius/emacs-ruby-electric.git
