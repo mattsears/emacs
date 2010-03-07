@@ -36,7 +36,7 @@
      (neptune-white ((t (:foreground "#F8F8F8"))))
      (neptune-blue ((t (:foreground "#75879e"))))
      (neptune-light-blue ((t (:foreground "#8dc1de"))))
-     (neptune-orange ((t (:foreground "#CF6A4C")))) 
+     (neptune-orange ((t (:foreground "#CF6A4C"))))
      (neptune-brown ((t (:foreground "#CDA869"))))
      (neptune-purple ((t (:foreground "#aa97ab"))))
      (neptune-turquoise ((t (:foreground "#87c4bf")))) ;
@@ -45,9 +45,10 @@
      (neptune-red ((t (:foreground "#CF6A4C"))))
      (neptune-grey ((t (:foreground "#726d73"))))
      (neptune-gold ((t (:foreground "#cdc098"))))
+     (neptune-yellow ((t (:foreground "#dad085"))))
      (neptune-bg ((t (:background "#0C1021"))))
      (neptune-highlight ((t (:background "#3b4043"))))
-     (neptune-current-line ((t (:background "#1b1b1b"))))
+     (neptune-current-line ((t (:background "#1a1d2f"))))
 
      (text-face ((t (:foreground neptune-orange))))
 
@@ -88,6 +89,7 @@
      (dired-face-socket ((t (:inherit neptune-red))))
      (dired-face-symlink ((t (:inherit neptune-green))))
 
+	 ;; The Shell
      (eshell-prompt-face ((t (:inherit neptune-green))))
      (eshell-prompt ((t (:inherit neptune-green))))
      (eshell-ls-archive-face ((t (:inherit neptune-blue))))
@@ -112,9 +114,10 @@
      (eshell-ls-symlink ((t (:inherit neptune-blue))))
      (eshell-ls-unreadable-face ((t (:inherit neptune-red))))
      (eshell-ls-unreadable ((t (:inherit neptune-red))))
-
+	
+	 ;; Spelling mistakes
      (flyspell-duplicate-face ((t (:underline t))))
-     (flyspell-incorrect-face ((t (:box (:line-width 1 :color "#b9402a")))))
+     (flyspell-incorrect-face ((t (:underline "#b9402a"))))
      (fringe ((t (:inherit neptune-bg))))
 
      (isearch ((t (:inherit neptune-highlight))))
@@ -123,17 +126,17 @@
      (isearch-fail ((t (:inherit neptune-red))))
 
      ;; ibuffer
-     (ibuffer-deletion-face ((t (neptune-red))))
-     (ibuffer-filter-group-name-face ((t (neptune-blue))))
-     (ibuffer-marked-face ((t (neptune-grey))))
-     (ibuffer-title-face ((t (neptune-green))))
-     (ibuffer-dired-buffer-face ((t (neptune-blue))))
-     (ibuffer-help-buffer-face ((t (neptune-blue))))
-     (ibuffer-hidden-buffer-face ((t (neptune-red))))
-     (ibuffer-occur-match-face ((t (neptune-red))))
-     (ibuffer-read-only-buffer-face ((t (neptune-red))))
-     (ibuffer-special-buffer-face ((t (neptune-red))))
-     (ibuffer-title-face ((t (neptune-blue))))
+     (ibuffer-deletion-face ((t (:inherit neptune-red))))
+     (ibuffer-filter-group-name-face ((t (:inherit neptune-blue))))
+     (ibuffer-marked-face ((t (:inherit neptune-grey))))
+     (ibuffer-title-face ((t (:inherit neptune-green))))
+     (ibuffer-dired-buffer-face ((t (:inherit neptune-blue))))
+     (ibuffer-help-buffer-face ((t (:inherit neptune-blue))))
+     (ibuffer-hidden-buffer-face ((t (:inherit neptune-red))))
+     (ibuffer-occur-match-face ((t (:inherit neptune-red))))
+     (ibuffer-read-only-buffer-face ((t (:inherit neptune-red))))
+     (ibuffer-special-buffer-face ((t (:inherit neptune-red))))
+     (ibuffer-title-face ((t (:inherit neptune-blue))))
 
      ;; ido
      (ido-first-match ((t (:inherit neptune-green))))
@@ -204,7 +207,6 @@
      (erb-comment-delim-face ((t (:inherit neptune-grey))))
      (erb-comment-face ((t (:italic t :inherit neptune-grey))))
 
-
      ;; Do not highlight snippets
      (yas/field-highlight-face ((t (nil))))
 
@@ -237,9 +239,17 @@
      (anything-header ((t (:inherit neptune-blue))))
      (anything-isearch-match ((t (:inherit neptune-red))))
 
-     (mode-line ((t (:background "#373c4e" :foreground "#afafaf" ))))
+ 	 ;; Full Ack
+     (ack-match ((t (:inherit neptune-yellow))))
+     (ack-file ((t (:inherit neptune-green))))
+     (ack-line ((t (:inherit neptune-blue))))
+
+	 ;; Fixme
+	 (font-lock-fixme-face ((t (:foreground "#ffffff" :background "#75879e"))))
+
+     (modeline ((t (:background "#373c4e" :foreground "#d2e0f6"))))
      (mode-line-inactive ((t (:foreground "#d2e0f6" :background "#373c4e"))))
-     (modeline-buffer-id ((t (:bold t))))
+     (modeline-buffer-id ((t (:bold nil))))
 
      (lazy-highlight-face ((t (:inherit neptune-current-line))))
      (hl-line ((t (:inherit neptune-current-line))))

@@ -111,7 +111,7 @@
 (define-key osx-key-mode-map (kbd "A-m") 'matts-popup-commands)
 
 ;; Popup a window for all the methods on the buffer
- (define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
+(define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
 
 ;; Find file in project
 (define-key osx-key-mode-map (kbd "A-t") 'find-file-in-project)
@@ -132,5 +132,9 @@
 ;; Use org's line movement
 (global-set-key (kbd "<A-M-up>") 'org-move-line-up)
 (global-set-key (kbd "<A-M-down>") 'org-move-line-down)
+
+;; Navigate errors
+(global-set-key [(meta n)] 'next-error)
+(global-set-key [(meta p)] 'previous-error)
 
 (provide 'bindings)

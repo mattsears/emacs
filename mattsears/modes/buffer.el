@@ -51,7 +51,7 @@
  'ibuffer-fontification-alist
  '(5 (memq major-mode
            '(ruby-mode html-mode emacs-lisp-mode rhtml-mode css-mode
-                      javascript-mode))
+                       javascript-mode))
      font-lock-doc-face))
 
 (add-to-list
@@ -66,6 +66,11 @@
                ("channels" (mode . erc-mode))
                ("channels" (mode . twittering-mode))
                ("css" (mode . css-mode))
+               ("javascript" (mode . espresso-mode))
+               ("html" (mode . rhtml-mode))
+               ("haml" (mode . haml-mode))
+               ("yaml" (mode . yaml-mode))
+               ("controllers" (name . "^\\*_controller.rb\\*$"))
                ))))
 
 ;; key bindings

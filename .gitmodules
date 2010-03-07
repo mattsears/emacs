@@ -49,3 +49,6 @@
 [submodule "vendor/emacs-ruby-electric"]
 	path = vendor/emacs-ruby-electric
 	url = git://github.com/rodimius/emacs-ruby-electric.git
+[submodule "vendor/find-file-in-project"]
+	path = vendor/find-file-in-project
+	url = git://github.com/technomancy/find-file-in-project.git

@@ -5,6 +5,27 @@
 (load-file "~/.emacs.d/vendor/color-theme-neptune.el")
 (color-theme-neptune)
 
+;; Set the default font-size to 16pt
+(set-face-attribute 'default nil :height 150)
+
+(setq transparency-level 85)
+
+;; turn off 3d modeline
+(set-face-attribute 'mode-line nil :box nil)
+
+;; Modify the mode-line as well. This is a cleaner setup than the default
+; (setq default-mode-line-format
+;       '(" "
+;         mode-line-frame-identification
+;         mode-line-buffer-identification
+;         "  "
+;         global-mode-string
+;         "   %[(" mode-name mode-line-process minor-mode-alist "%n" ")%]  "
+;         (line-number-mode "Line %l  ")
+;         (column-number-mode "Column %c  ")
+;         (-3 . "%p")
+;         "% "))
+
 ;;----------------------------------------------------------------------------
 ;; Ruby specific color hacks
 ;;----------------------------------------------------------------------------
@@ -13,6 +34,10 @@
   (lambda ()
    (font-lock-add-keywords nil
     '(
+	  ("(\\(lambda\\)\\>" (0 (prog1 ()
+	                             (compose-region (match-beginning 1)
+	                                             (match-end 1)
+	                                             ?λ))))
       ("\\<\\(private\\)" 1 font-lock-function-name-face prepend)
       ("\\<\\(protected\\)" 1 font-lock-function-name-face prepend)
       ("\\<\\(require\\)" 1 font-lock-function-name-face prepend)
@@ -37,6 +62,20 @@
 (font-lock-add-keywords 'rhtml-mode html-mode-keywords)
 (font-lock-add-keywords 'html-mode html-mode-keywords)
 (font-lock-add-keywords 'html-helper-mode html-mode-keywords)
+
+;;----------------------------------------------------------------------------
+;; Diff mode cosmetics
+;;----------------------------------------------------------------------------
+
+(eval-after-load 'diff-mode
+  '(progn
+     (set-face-foreground 'diff-added "#9fab7d")
+     (set-face-foreground 'diff-removed "#CF6A4C")))
+
+(eval-after-load 'magit
+  '(progn
+     (set-face-foreground 'magit-diff-add "#9fab7d")
+     (set-face-foreground 'magit-diff-del "#CF6A4C")))
 
 ;;----------------------------------------------------------------------------
 ;; Rails specific color hacks

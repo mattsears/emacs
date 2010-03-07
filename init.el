@@ -5,20 +5,18 @@
 (load custom-file)
 
 (load "mattsears/global")
-(load "mattsears/defuns")
 (load "mattsears/bindings")
+(load "mattsears/defuns")
 (load "mattsears/modes")
 (load "mattsears/theme")
 (load "mattsears/local")
+(load "mattsears/snippets")
+
 
 (vendor 'cheat)
 (vendor 'treetop)
 (vendor 'css)
-(vendor 'ack)
-(vendor 'twit)
+(vendor 'full-ack)
 (vendor 'rdebug)
-
-;; Autoloads
-(autoload 'google-define "google-define" nil t)
 
 (smex-initialize)

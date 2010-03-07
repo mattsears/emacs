@@ -13,23 +13,6 @@
 (set-face-font 'default "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
 (set-face-font 'modeline "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
 (set-face-font 'minibuffer-prompt "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
-;;(setq transparency-level 100)
-
-;; Set the default font-size to 16pt
-(set-face-attribute 'default nil :height 160)
-
-;; Modify the mode-line as well. This is a cleaner setup than the default
-(setq default-mode-line-format
-      '(" "
-        mode-line-frame-identification
-        mode-line-buffer-identification
-        "  "
-        global-mode-string
-        "   %[(" mode-name mode-line-process minor-mode-alist "%n" ")%]  "
-        (line-number-mode "Line %l  ")
-        (column-number-mode "Column %c  ")
-        (-3 . "%p")
-        "% "))
 
 ;; Show column and line numbers in the mode line
 (setq line-number-mode t)
@@ -159,6 +142,10 @@
 
 ;; scroll smoothly
 (require 'smooth-scrolling)
+(setq
+ scroll-margin 0
+ scroll-conservatively 100000
+ scroll-preserve-screen-position 1)
 
 ;; Sudo saving
 (require 'sudo)
@@ -252,12 +239,6 @@
 (setq compilation-scroll-output t)
 (setq compilation-window-height 18)
 
-(setq confirm-kill-emacs
-      (lambda (e)
-        (y-or-n-p-with-timeout
-         "Really exit Emacs (automatically exits in 5 secs)? " 5 t)))
-
-
 ;; Global MMM mode settings
 (add-to-list 'load-path "~/.emacs.d/vendor/mmm-mode")
 (require 'mmm-mode)
@@ -275,9 +256,15 @@
  bookmark-default-file "~/.emacs.d/.bookmarks" ;; keep my ~/ clean
  bookmark-save-flag 1)                        ;; autosave each change)
 
-(require 'column-marker)
-;; Highlight column 80 in foo mode.
-;;(add-hook ruby-mode-hook (lambda () (interactive) (column-marker-1 80)))
+;; smart-tab
+(add-to-list 'load-path "~/.emacs.d/vendor/smart-tab")
+(require 'smart-tab)
+(global-smart-tab-mode 1)
+(setq smart-tab-using-hippie-expand t)
+
+;; Smart pairing
+(require 'autopair)
+(autopair-global-mode) ;; to enable in all buffers
 
 ;; Start server.
 (server-start)

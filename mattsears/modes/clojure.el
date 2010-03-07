@@ -3,8 +3,8 @@
 ;;----------------------------------------------------------------------------
 (add-to-list 'load-path "~/.emacs.d/vendor/clojure-mode")
 (setq inferior-lisp-program "~/bin/clojure")
-(require  'clojure-auto)
-(require 'clojure-paredit)
+;;(require  'clojure-auto)
+;;(require 'clojure-paredit)
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
 
 ;;----------------------------------------------------------------------------
@@ -20,7 +20,7 @@
 ;;----------------------------------------------------------------------------
 (add-to-list 'load-path "~/.emacs.d/vendor/swank-clojure")
 (setq swank-clojure-binary "~/bin/clojure")
-(require  'swank-clojure-autoload)
+;;(require  'swank-clojure-autoload)
 
 (defun clojure ()
   "Starts clojure in Slime"

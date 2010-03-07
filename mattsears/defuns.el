@@ -162,47 +162,12 @@ Otherwise point moves to beginning of line."
   "Reset windows and frames with room"
   (interactive)
   (delete-other-windows)
-  (maximize-frame)
   (set-frame-position (selected-frame) 50 70)
   (split-window-horizontally)
-  (other-window 1)
+  ;;(other-window 1)
   (split-window-vertically)
   (other-window 1)
   )
-
-(defun matts-reset-window-position-with-shell ()
-  "Reset windows and frames with a shell"
-  (interactive)
-  (matts-split-window-three-ways)
-  (shrink-window 20)
-  (eshell)
-  (other-window 0)
-  )
-
-(defun matts-reset-window-position-with-calendar ()
-  "Reset windows and frames with a shell"
-  (interactive)
-  (matts-split-window-three-ways)
-  (other-window 1)
-  (matts-flip-windows)
-  (calendar)
-  (shrink-window 25)
-  (other-window 1)
-  )
-
-(defun matts-delete-whole-line ()
-  "Delete an entire line, including trailing newline"
-  (interactive)
-  (setq previous-column (current-column))
-  (end-of-line)
-  (if (= (current-column) 0)
-      (delete-char 1)
-    (progn
-      (beginning-of-line)
-      (kill-line)
-      (delete-char 1)
-      (move-to-column previous-column))))
-
 (defun matts-delete-whole-line ()
   "Deletes the whole line with copying the text to the kill-ring"
   (interactive)
@@ -232,18 +197,6 @@ Otherwise point moves to beginning of line."
         (setq isearch-initial-string (buffer-substring begin end))
         (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
         (isearch-forward regexp-p no-recursive-edit)))))
-
-(defun scroll-down-keep-cursor ()
-  "Scroll without moving cursor"
-  (interactive)
-  (scroll-down 1))
-
-(defun scroll-up-keep-cursor ()
-  " Scroll the text one line up while keeping the cursor"
-  (interactive)
-  (scroll-up 1))
-(global-set-key '[C-M-up] 'scroll-down-keep-cursor)
-(global-set-key '[C-M-down] 'scroll-up-keep-cursor)
 
 (defun matts-flip-windows ()
   ";; Swap windows if in split-screen mode"
@@ -288,17 +241,24 @@ Otherwise point moves to beginning of line."
 (defun matts-popup-commands ()
   "Show a popup menu of commands."
   (interactive)
-  (eval-expression (car (read-from-string (choose-from-menu "Commands"
+  (eval-expression (car (read-from-string (choose-from-menu "My Menu"
                                                             (list
-                                                             (cons "Goto Line" "(call-interactively 'goto-line)")
+                                                             (cons "Twitter" "(call-interactively 'twittering-mode)")
+															 (cons "IRC" "(call-interactively 'erc)")
+         													 (cons "Shell" "(eshell)")
+															 (cons "Bookmarks" "(call-interactively 'list-bookmarks)")
+															 (cons "Export Calendar" "(call-interactively 'matts-org-export-icalendar)")
                                                              (cons "-" "")
+ 															 (cons "Today's Agenda" "(org-agenda-list)")
+															 (cons "Todos" "(matts-todos)")
+                               (cons "Appointments" "(matts-appointments)")
+														     (cons "-" "")
+															 (cons "Show/hide line numbers " "(linum)")
                                                              (cons "Nuke all buffers " "(nuke-all-buffers)")
-                                                             (cons "Shell (C-x C-z) " "(matts-reset-window-position-with-shell)")
-                                                             (cons "Flip Windows" "(matts-flip-windows)")
-                                                             (cons "Calendar" "(matts-reset-window-position-with-calendar)")
-                                                             (cons "Resize Window" "(reset-window-position)")
+                                                             (cons "Calendar" "(calendar)")
+                                                             (cons "Reset Window" "(reset-window-position)")
+                                                             (cons "Split Window" "(matts-split-window-three-ways)")
                                                              (cons "Reload Emacs" "(load-file \"~/.emacs\")")
-                                                             (cons "Eval Current Buffer" "(eval-current-buffer)")
                                                              ))))) )
 
 (defun matts-popup-symbols ()

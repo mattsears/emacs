@@ -2,13 +2,11 @@
 ;; Initialize individual mode customizations
 ;;----------------------------------------------------------------------------
 
-(load "~/.emacs.d/mattsears/modes/snippets")
 (load "~/.emacs.d/mattsears/modes/css")
 (load "~/.emacs.d/mattsears/modes/dired")
 (load "~/.emacs.d/mattsears/modes/javascript")
 (load "~/.emacs.d/mattsears/modes/html")
 (load "~/.emacs.d/mattsears/modes/ruby")
-(load "~/.emacs.d/mattsears/modes/rails")
 (load "~/.emacs.d/mattsears/modes/ido")
 (load "~/.emacs.d/mattsears/modes/clojure")
 (load "~/.emacs.d/mattsears/modes/markdown")
@@ -16,7 +14,6 @@
 (load "~/.emacs.d/mattsears/modes/org")
 (load "~/.emacs.d/mattsears/modes/erc")
 (load "~/.emacs.d/mattsears/modes/shell")
-;;(load "~/.emacs.d/mattsears/modes/autocomplete")
 (load "~/.emacs.d/mattsears/modes/anything")
 
 ;; Wrap words in text-mode
@@ -28,7 +25,6 @@
           '(lambda ()
              (turn-on-auto-fill)
              (auto-fill-mode 1)
-             (column-marker-1 80)
              ))
 
 ;; Bash
@@ -73,10 +69,11 @@
   (interactive)
   (flyspell-mode 1))
 
-(add-to-list 'load-path "~/.emacs.d/vendor/zencoding-mode.el")
-(require 'zencoding-mode)
-(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
-(add-hook 'rhtml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
+;; Ack
+(autoload 'ack-same "full-ack" nil t)
+(autoload 'ack "full-ack" nil t)
+(autoload 'ack-find-same-file "full-ack" nil t)
+(autoload 'ack-find-file "full-ack" nil t)
 
 (provide 'modes)
 
