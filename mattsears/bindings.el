@@ -114,7 +114,8 @@
 (define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
 
 ;; Find file in project
-(define-key osx-key-mode-map (kbd "A-t") 'find-file-in-project)
+;;(define-key osx-key-mode-map (kbd "A-t") 'find-file-in-project)
+(define-key osx-key-mode-map (kbd "A-t") 'peepopen-goto-file-gui)
 
 ;; Kill the current frame, but not the window
 (define-key osx-key-mode-map (kbd "A-w") 'my-close-current-window-asktosave)

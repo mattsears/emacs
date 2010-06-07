@@ -19,6 +19,9 @@
 (setq column-number-mode t)
 (column-number-mode 1)
 
+;; Opens files in the existing frame instead of making new ones.
+;;(setq ns-pop-up-frames nil)
+
 ;; Don't indent with tabs
 (setq-default indent-tabs-mode nil)
 
@@ -42,17 +45,17 @@
 (setq mouse-drag-copy-region nil)
 
 ;; stops killing/yanking interacting with primary X11 selection
-(setq x-select-enable-primary nil)
+;;(setq x-select-enable-primary nil)
 
 ;; Copy-paste should work with other X clients
-(setq x-select-enable-clipboard t)
-(setq interprogram-cut-function 'x-select-text)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+;;(setq x-select-enable-clipboard t)
+;;(setq interprogram-cut-function 'x-select-text)
+;;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;; highlighting doesn't overwrite the clipboard or alter the kill ring,
 ;; but you can paste in merely highlightedtext with the mouse if you want to)
-(setq select-active-regions t) ;  active region sets primary X11 selection
-(setq yank-pop-change-selection t)
+;;(setq select-active-regions t) ;  active region sets primary X11 selection
+;;(setq yank-pop-change-selection t)
 
 ;; Set column with
 (setq fill-column 80)
@@ -144,8 +147,8 @@
 (require 'smooth-scrolling)
 (setq
  scroll-margin 0
- scroll-conservatively 100000
- scroll-preserve-screen-position 1)
+ scroll-conservatively 100000)
+ ;;scroll-preserve-screen-position 1)
 
 ;; Sudo saving
 (require 'sudo)
@@ -265,6 +268,13 @@
 ;; Smart pairing
 (require 'autopair)
 (autopair-global-mode) ;; to enable in all buffers
+
+
+(add-to-list 'load-path "~/.emacs.d/vendor/textmate.el")
+(require 'textmate)
+(textmate-mode)
+(add-to-list 'load-path "~/.emacs.d/vendor/")
+(require 'peepopen)
 
 ;; Start server.
 (server-start)

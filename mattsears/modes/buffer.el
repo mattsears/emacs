@@ -38,14 +38,30 @@
 (require 'ibuffer)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
+;; integrate git and Ibuffer!
+(require 'ibuffer-git)
+
+; (mark modified read-only git-status-mini " "
+;       (name 18 18 :left :elide)
+;       " "
+;       (size 9 -1 :right)
+;       " "
+;       (mode 16 16 :left :elide)
+;       " "
+;       (eproject 16 16 :left :elide)
+;       " "
+;       (git-status 8 8 :left)
+;       " " filename-and-process)
+
 (setq ibuffer-shrink-to-minimum-size t)
 (setq ibuffer-always-show-last-buffer nil)
 (setq ibuffer-sorting-mode 'recency)
 (setq ibuffer-use-header-line t)
 (setq ibuffer-formats
-      '((mark modified read-only " " (name 40 20)
-              " " filename)
-        (mark " " (name 20 -1) " " filename)))
+      '((mark modified read-only " " 
+	     (name 40 20) " " (git-status 8 8 :left) " " filename)
+;;         (mark " " (name 20 -1) " " filename)
+       ))
 
 (add-to-list
  'ibuffer-fontification-alist
@@ -81,3 +97,6 @@
              ;; hide any buffers with asterisks
              (ibuffer-switch-to-saved-filter-groups "default")
              (ibuffer-add-to-tmp-hide "^\\*")))
+
+
+
