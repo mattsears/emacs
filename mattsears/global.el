@@ -128,9 +128,6 @@
 ;; Yet another paste tool, this one for Gist (awesome)
 (require 'gist)
 
-;; Need an twitter
-(require 'twittering-mode)
-
 ;; Keep a history of recent changes
 (require 'recentf)
 (recentf-mode 1)
@@ -146,9 +143,6 @@
 
 ;; Sudo saving
 (require 'sudo)
-
-;; Navigation bar
-(require 'nav)
 
 ;; Enhanced M-x
 (add-to-list 'load-path "~/.emacs.d/vendor/smex")

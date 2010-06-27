@@ -38,9 +38,6 @@
 (require 'ibuffer)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
-;; integrate git and Ibuffer!
-(require 'ibuffer-git)
-
 ; (mark modified read-only git-status-mini " "
 ;       (name 18 18 :left :elide)
 ;       " "
@@ -80,7 +77,6 @@
 (setq ibuffer-saved-filter-groups
       (quote (("default"
                ("channels" (mode . erc-mode))
-               ("channels" (mode . twittering-mode))
                ("css" (mode . css-mode))
                ("javascript" (mode . espresso-mode))
                ("html" (mode . rhtml-mode))

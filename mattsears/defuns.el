@@ -243,7 +243,6 @@ Otherwise point moves to beginning of line."
   (interactive)
   (eval-expression (car (read-from-string (choose-from-menu "My Menu"
                                                             (list
-                                                             (cons "Twitter" "(call-interactively 'twittering-mode)")
 															 (cons "IRC" "(call-interactively 'erc)")
          													 (cons "Shell" "(eshell)")
 															 (cons "Bookmarks" "(call-interactively 'list-bookmarks)")
