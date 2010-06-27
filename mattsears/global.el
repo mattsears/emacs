@@ -31,13 +31,6 @@
 ;; Command line
 (require 'cl)
 
-;; Anything
-(require 'anything)
-(require 'anything-config)
-(require 'anything-rcodetools)
-(setq rct-get-all-methods-command "PAGER=cat fri -l")
-(define-key anything-map "\C-z" 'anything-execute-persistent-action)
-
 ;; Shutoff messages
 (setq message-log-max nil)
 
@@ -64,6 +57,7 @@
 (setq-default tab-width 2)
 (setq tab-width 2)
 (setq standard-indent 2)
+(setq ns-pop-up-frames nil)
 
 ;; Behaviors
 (prefer-coding-system 'utf-8)

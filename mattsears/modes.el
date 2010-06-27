@@ -14,7 +14,7 @@
 (load "~/.emacs.d/mattsears/modes/org")
 (load "~/.emacs.d/mattsears/modes/erc")
 (load "~/.emacs.d/mattsears/modes/shell")
-(load "~/.emacs.d/mattsears/modes/anything")
+
 
 ;; Wrap words in text-mode
 (autoload 'longlines-mode "longlines.el" "Minor mode for editing long lines." t)

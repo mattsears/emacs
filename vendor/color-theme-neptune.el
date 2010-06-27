@@ -50,7 +50,7 @@
      (neptune-highlight ((t (:background "#3b4043"))))
      (neptune-current-line ((t (:background "#1a1d2f"))))
 
-     (text-face ((t (:foreground neptune-orange))))
+     ;;(text-face ((t (:foreground neptune-orange))))
 
      (bold ((t (:bold t))))
      (bold-italic ((t (:bold t))))
@@ -114,7 +114,7 @@
      (eshell-ls-symlink ((t (:inherit neptune-blue))))
      (eshell-ls-unreadable-face ((t (:inherit neptune-red))))
      (eshell-ls-unreadable ((t (:inherit neptune-red))))
-	
+
 	 ;; Spelling mistakes
      (flyspell-duplicate-face ((t (:underline t))))
      (flyspell-incorrect-face ((t (:underline "#b9402a"))))
@@ -234,10 +234,6 @@
      (erc-timestamp-face ((t (:inherit neptune-light-blue))))
      (erc-notice-face ((t (:inherit neptune-green))))
      (erc-prompt-face ((t (:inherit neptune-white))))
-
-     ;; Anything.el
-     (anything-header ((t (:inherit neptune-blue))))
-     (anything-isearch-match ((t (:inherit neptune-red))))
 
  	 ;; Full Ack
      (ack-match ((t (:inherit neptune-yellow))))

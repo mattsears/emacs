@@ -116,6 +116,7 @@
 ;; Find file in project
 ;;(define-key osx-key-mode-map (kbd "A-t") 'find-file-in-project)
 (define-key osx-key-mode-map (kbd "A-t") 'peepopen-goto-file-gui)
+(global-set-key (kbd "<A-t>") 'peepopen-goto-file-gui)
 
 ;; Kill the current frame, but not the window
 (define-key osx-key-mode-map (kbd "A-w") 'my-close-current-window-asktosave)
@@ -126,9 +127,6 @@
 
 ;; Shortcut for ehell
 (global-set-key "\C-x\C-z" 'eshell)
-
-;; Shortcut for anyting
-(global-set-key (kbd "<C-SPC>") 'anything)
 
 ;; Use org's line movement
 (global-set-key (kbd "<A-M-up>") 'org-move-line-up)
