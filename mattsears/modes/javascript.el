@@ -35,3 +35,14 @@
          :back "\"")))
      (dolist (mode (list 'html-mode 'rhtml-mode))
        (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?$" 'html-js))))
+
+(defun js-insert-console ()
+ (interactive)
+ (insert "console.log()")
+ (backward-char))
+
+(add-hook 'espresso-mode
+          '(lambda ()
+             (add-hook 'before-save-hook 'delete-trailing-whitespace)
+             (define-key espresso-mode-map "\C-L" 'js-insert-console) ))
+            

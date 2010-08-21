@@ -12,11 +12,8 @@
 (load "mattsears/local")
 (load "mattsears/snippets")
 
-
 (vendor 'cheat)
 (vendor 'treetop)
 (vendor 'css)
 (vendor 'full-ack)
-(vendor 'rdebug)
-
 (smex-initialize)

@@ -51,7 +51,6 @@
 (require 'ansi-color)
 (require 'pcmpl-rake)
 (require 'compile)
-(require 'inf-ruby)
 (require 'which-func)
 
 (defvar ruby-compilation-error-regexp

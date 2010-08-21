@@ -1,15 +1,9 @@
 [submodule "vendor/smex"]
 	path = vendor/smex
 	url = git://github.com/nonsequitur/smex.git
-[submodule "vendor/rails-reloaded"]
-	path = vendor/rails-reloaded
-	url = git://github.com/hron/emacs-rails-reloaded.git
 [submodule "vendor/magit"]
 	path = vendor/magit
 	url = git://github.com/jwiegley/magit.git
-[submodule "vendor/smart-tab"]
-	path = vendor/smart-tab
-	url = git://github.com/thomas11/smart-tab.git
 [submodule "vendor/clojure-mode"]
 	path = vendor/clojure-mode
 	url = git://github.com/jochu/clojure-mode.git
@@ -19,21 +13,6 @@
 [submodule "vendor/slime"]
 	path = vendor/slime
 	url = git://github.com/nablaone/slime.git
-[submodule "vendor/org-mode"]
-	path = vendor/org-mode
-	url = git://github.com/emacsmirror/org-mode.git
-[submodule "zencoding"]
-	path = zencoding
-	url = git://github.com/chrisdone/zencoding.git
-[submodule "vendor/zencoding"]
-	path = vendor/zencoding
-	url = git://github.com/chrisdone/zencoding.git
-[submodule "smart-tab"]
-	path = smart-tab
-	url = git://github.com/thomas11/smart-tab.git
-[submodule "vendor/ruby-test-mode"]
-	path = vendor/ruby-test-mode
-	url = git://github.com/febeling/ruby-test-mode.git
 [submodule "vendor/yasnippets-shoulda"]
 	path = vendor/yasnippets-shoulda
 	url = git://github.com/rwc9u/yasnippets-shoulda.git
@@ -46,9 +25,6 @@
 [submodule "vendor/cucumber"]
 	path = vendor/cucumber
 	url = git://github.com/michaelklishin/cucumber.el.git
-[submodule "vendor/emacs-ruby-electric"]
-	path = vendor/emacs-ruby-electric
-	url = git://github.com/rodimius/emacs-ruby-electric.git
-[submodule "vendor/find-file-in-project"]
-	path = vendor/find-file-in-project
-	url = git://github.com/technomancy/find-file-in-project.git
+[submodule "vendor/rvm.el"]
+	path = vendor/rvm.el
+	url = git://github.com/senny/rvm.el.git

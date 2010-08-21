@@ -11,7 +11,6 @@
 (load "~/.emacs.d/mattsears/modes/clojure")
 (load "~/.emacs.d/mattsears/modes/markdown")
 (load "~/.emacs.d/mattsears/modes/buffer")
-(load "~/.emacs.d/mattsears/modes/org")
 (load "~/.emacs.d/mattsears/modes/erc")
 (load "~/.emacs.d/mattsears/modes/shell")
 
@@ -61,7 +60,6 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/flyspell.el")
 (require 'flyspell)
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
-(add-hook 'org-mode-hook 'turn-on-flyspell)
 (add-to-list 'flyspell-prog-text-faces 'nxml-text-face)
 
 (defun turn-on-flyspell ()

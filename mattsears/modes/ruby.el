@@ -3,7 +3,7 @@
 (eval-after-load 'ruby-mode
   '(progn
      (require 'ruby-compilation)
-     (add-hook 'ruby-mode-hook 'inf-ruby-keys)
+     ;;(add-hook 'ruby-mode-hook 'inf-ruby-keys)
      (define-key ruby-mode-map (kbd "RET") 'ruby-newline-and-indent)
      (define-key ruby-mode-map (kbd "C-M-h") 'backward-kill-word)
      (define-key ruby-mode-map (kbd "C-c l") "lambda")))
@@ -37,6 +37,10 @@
 ;; Cucumber
 (add-to-list 'load-path "~/.emacs.d/vendor/cucumber")
 (require 'feature-mode)
+
+;; RVM
+(add-to-list 'load-path "~/.emacs.d/vendor/rvm.el")
+(require 'rvm)
 
 ;;----------------------------------------------------------------------------
 ;; Ruby - haml & sass
@@ -72,25 +76,6 @@
 ;;----------------------------------------------------------------------------
 ;; Ruby related functions
 ;;----------------------------------------------------------------------------
-
-;; Code borrowed from Emacs starter kit
-
-(defun pcomplete/rake ()
-  "Completion rules for the `ssh' command."
-  (pcomplete-here (pcmpl-rake-tasks)))
-
-(defun pcmpl-rake-tasks ()
-   "Return a list of all the rake tasks defined in the current
-projects.  I know this is a hack to put all the logic in the
-exec-to-string command, but it works and seems fast"
-   (delq nil (mapcar '(lambda(line)
-			(if (string-match "rake \\([^ ]+\\)" line) (match-string 1 line)))
-		     (split-string (shell-command-to-string "rake -T") "[\n]"))))
-
-(defun rake (task)
-  (interactive (list (completing-read "Rake (default: default): "
-                                      (pcmpl-rake-tasks))))
-  (shell-command-to-string (concat "rake " (if (= 0 (length task)) "default" task))))
 
 (defun rr (&optional arg)
   "Run a Ruby interactive shell session in a buffer."

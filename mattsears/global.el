@@ -19,9 +19,6 @@
 (setq column-number-mode t)
 (column-number-mode 1)
 
-;; Opens files in the existing frame instead of making new ones.
-;;(setq ns-pop-up-frames nil)
-
 ;; Don't indent with tabs
 (setq-default indent-tabs-mode nil)
 
@@ -37,19 +34,6 @@
 ;; stops selection with a mouse being immediately injected to the kill ring
 (setq mouse-drag-copy-region nil)
 
-;; stops killing/yanking interacting with primary X11 selection
-;;(setq x-select-enable-primary nil)
-
-;; Copy-paste should work with other X clients
-;;(setq x-select-enable-clipboard t)
-;;(setq interprogram-cut-function 'x-select-text)
-;;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
-
-;; highlighting doesn't overwrite the clipboard or alter the kill ring,
-;; but you can paste in merely highlightedtext with the mouse if you want to)
-;;(setq select-active-regions t) ;  active region sets primary X11 selection
-;;(setq yank-pop-change-selection t)
-
 ;; Set column with
 (setq fill-column 80)
 
@@ -59,8 +43,16 @@
 (setq standard-indent 2)
 (setq ns-pop-up-frames nil)
 
-;; Behaviors
+;; fix broken backspace
+(global-set-key "\b" 'backward-delete-char)
+(setq vc-handled-backends nil)
+
+;; UTF-8 goodness
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+
+;; Behaviors
 (setq require-final-newline t)
 (setq display-buffer-reuse-frames t)
 (setq truncate-partial-width-windows t)
@@ -123,7 +115,7 @@
 (require 'find-recursive)
 
 ;; Find files in project
-(require 'find-file-in-project)
+;;(require 'find-file-in-project)
 
 ;; Yet another paste tool, this one for Gist (awesome)
 (require 'gist)
@@ -133,13 +125,6 @@
 (recentf-mode 1)
 (setq recentf-max-saved-items 500)
 (setq recentf-max-menu-items 60)
-
-;; scroll smoothly
-(require 'smooth-scrolling)
-(setq
- scroll-margin 0
- scroll-conservatively 100000)
- ;;scroll-preserve-screen-position 1)
 
 ;; Sudo saving
 (require 'sudo)
@@ -159,10 +144,6 @@
 (global-set-key [wheel-down]'(lambda ()(interactive)(scroll-up 2)))
 (setq mouse-wheel-scroll-amount '(2.1))
 
-;; Remember where I left off
-(require 'session)
-(add-hook 'after-init-hook 'session-initialize)
-
 ;; Switch windows with M-up, M-down, M-right, M-left
 (windmove-default-keybindings 'meta)
 
@@ -179,6 +160,7 @@
 (setq backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
 (setq make-backup-files nil)
 (setq backup-inhibited t)
+(global-auto-revert-mode -1)
 
 ;; Delete trailing whitespace before save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -230,12 +212,6 @@
 (setq compilation-scroll-output t)
 (setq compilation-window-height 18)
 
-;; Global MMM mode settings
-(add-to-list 'load-path "~/.emacs.d/vendor/mmm-mode")
-(require 'mmm-mode)
-(setq mmm-global-mode 'maybe)
-(require 'mmm-sample)
-
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
 (setq uniquify-separator "/")
@@ -247,16 +223,9 @@
  bookmark-default-file "~/.emacs.d/.bookmarks" ;; keep my ~/ clean
  bookmark-save-flag 1)                        ;; autosave each change)
 
-;; smart-tab
-(add-to-list 'load-path "~/.emacs.d/vendor/smart-tab")
-(require 'smart-tab)
-(global-smart-tab-mode 1)
-(setq smart-tab-using-hippie-expand t)
-
 ;; Smart pairing
 (require 'autopair)
 (autopair-global-mode) ;; to enable in all buffers
-
 
 (add-to-list 'load-path "~/.emacs.d/vendor/textmate.el")
 (require 'textmate)

@@ -210,22 +210,6 @@
      ;; Do not highlight snippets
      (yas/field-highlight-face ((t (nil))))
 
-     ;; org mode
-     (org-level-1 ((t (:inherit neptune-blue))))
-     (org-level-2 ((t (:inherit neptune-light-blue))))
-     (org-level-3 ((t (:inherit neptune-green))))
-     (org-level-4 ((t (:inherit neptune-blue))))
-     (org-special-keyword ((t (:inherit neptune-blue))))
-     (org-property-value ((t (:inherit neptune-green))))
-     (org-link ((t (:inherit neptune-green :underline t))))
-     (org-target ((t (:inherit neptune-white))))
-     (org-date ((t (:inherit neptune-red))))
-     (org-sexp-date ((t (:inherit neptune-red))))
-     (org-tag ((t (:inherit neptune-green))))
-     (org-todo ((t (:inherit neptune-green))))
-     (org-done ((t (:inherit neptune-light-blue))))
-     (org-headline-done ((t (:inherit neptune-green))))
-
      ;; ERC
      (erc-default-face ((t (:inherit neptune-blue))))
      (erc-fool-face ((t (:inherit neptune-red))))

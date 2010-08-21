@@ -17,7 +17,6 @@ sass -
 markdown
 ido - Interactively do things with buffers and files.
 magit - Control Git from Emacs.
-org-mode
 rails-reloaded
 rhtml
 ri-emacs

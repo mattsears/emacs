@@ -56,7 +56,7 @@
 (setq ibuffer-use-header-line t)
 (setq ibuffer-formats
       '((mark modified read-only " " 
-	     (name 40 20) " " (git-status 8 8 :left) " " filename)
+	     (name 40 20) " " filename)
 ;;         (mark " " (name 20 -1) " " filename)
        ))
 
