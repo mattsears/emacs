@@ -3,10 +3,14 @@
 (eval-after-load 'ruby-mode
   '(progn
      (require 'ruby-compilation)
-     ;;(add-hook 'ruby-mode-hook 'inf-ruby-keys)
-     (define-key ruby-mode-map (kbd "RET") 'ruby-newline-and-indent)
+     (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
      (define-key ruby-mode-map (kbd "C-M-h") 'backward-kill-word)
      (define-key ruby-mode-map (kbd "C-c l") "lambda")))
+	
+;; A few formatting options
+(setq ruby-deep-indent-paren-style nil) 
+(setq ruby-deep-arglist nil)		
+(setq ruby-dbg-flags "-W0")
 
 ;;----------------------------------------------------------------------------
 ;; Ruby - Testing
@@ -41,6 +45,7 @@
 ;; RVM
 (add-to-list 'load-path "~/.emacs.d/vendor/rvm.el")
 (require 'rvm)
+(rvm-use-default) 
 
 ;;----------------------------------------------------------------------------
 ;; Ruby - haml & sass
@@ -56,6 +61,7 @@
 ;; Ruby related file types
 ;;----------------------------------------------------------------------------
 (setq auto-mode-alist (cons '("Rakefile$" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("Gemfile$" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("Capfile" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.rake" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.rb$" . ruby-mode) auto-mode-alist))

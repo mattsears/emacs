@@ -14,7 +14,6 @@
 (load "~/.emacs.d/mattsears/modes/erc")
 (load "~/.emacs.d/mattsears/modes/shell")
 
-
 ;; Wrap words in text-mode
 (autoload 'longlines-mode "longlines.el" "Minor mode for editing long lines." t)
 (add-hook 'text-mode-hook 'longlines-mode)

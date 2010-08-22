@@ -253,10 +253,9 @@ Otherwise point moves to beginning of line."
                                (cons "Appointments" "(matts-appointments)")
 														     (cons "-" "")
 															 (cons "Show/hide line numbers " "(linum)")
+															 (cons "Open file in Github " "(open-file-in-github)")
                                                              (cons "Nuke all buffers " "(nuke-all-buffers)")
-                                                             (cons "Calendar" "(calendar)")
                                                              (cons "Reset Window" "(reset-window-position)")
-                                                             (cons "Split Window" "(matts-split-window-three-ways)")
                                                              (cons "Reload Emacs" "(load-file \"~/.emacs\")")
                                                              ))))) )
 

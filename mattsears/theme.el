@@ -13,19 +13,6 @@
 ;; turn off 3d modeline
 (set-face-attribute 'mode-line nil :box nil)
 
-;; Modify the mode-line as well. This is a cleaner setup than the default
-; (setq default-mode-line-format
-;       '(" "
-;         mode-line-frame-identification
-;         mode-line-buffer-identification
-;         "  "
-;         global-mode-string
-;         "   %[(" mode-name mode-line-process minor-mode-alist "%n" ")%]  "
-;         (line-number-mode "Line %l  ")
-;         (column-number-mode "Column %c  ")
-;         (-3 . "%p")
-;         "% "))
-
 ;;----------------------------------------------------------------------------
 ;; Ruby specific color hacks
 ;;----------------------------------------------------------------------------

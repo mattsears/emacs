@@ -114,9 +114,6 @@
 ;; keep searching throughout the file
 (require 'find-recursive)
 
-;; Find files in project
-;;(require 'find-file-in-project)
-
 ;; Yet another paste tool, this one for Gist (awesome)
 (require 'gist)
 

@@ -28,3 +28,6 @@
 [submodule "vendor/rvm.el"]
 	path = vendor/rvm.el
 	url = git://github.com/senny/rvm.el.git
+[submodule "vendor/open-file-in-github"]
+	path = vendor/open-file-in-github
+	url = git://gist.github.com/170861.git

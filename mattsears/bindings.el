@@ -20,12 +20,6 @@
 ;; Back to indentation or beginning of line.
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning-of-line)
 
-;; Undo tree
-(global-set-key (kbd "A-z") 'aquamacs-undo)
-(define-key osx-key-mode-map (kbd "A-z") 'aquamacs-undo)
-(global-set-key (kbd "A-S-z") 'aquamacs-redo)
-(define-key osx-key-mode-map (kbd "A-S-z") 'aquamacs-redo)
-
 ;; Split windows
 (global-set-key [f6] 'split-window-vertically)
 (global-set-key [f7] 'split-window-horizontally)
