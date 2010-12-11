@@ -31,3 +31,6 @@
 [submodule "vendor/open-file-in-github"]
 	path = vendor/open-file-in-github
 	url = git://gist.github.com/170861.git
+[submodule "vendor/simplenote"]
+	path = vendor/simplenote
+	url = http://github.com/cefstat/simplenote.el.git
