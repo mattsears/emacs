@@ -7,6 +7,12 @@
      (define-key ruby-mode-map (kbd "C-M-h") 'backward-kill-word)
      (define-key ruby-mode-map (kbd "C-c l") "lambda")))
 	
+	
+;; RVM
+(add-to-list 'load-path "~/.emacs.d/vendor/rvm.el")
+(require 'rvm)
+;;(rvm-use-default)
+	
 ;; A few formatting options
 (setq ruby-deep-indent-paren-style nil) 
 (setq ruby-deep-arglist nil)		
@@ -41,11 +47,6 @@
 ;; Cucumber
 (add-to-list 'load-path "~/.emacs.d/vendor/cucumber")
 (require 'feature-mode)
-
-;; RVM
-(add-to-list 'load-path "~/.emacs.d/vendor/rvm.el")
-(require 'rvm)
-(rvm-use-default) 
 
 ;;----------------------------------------------------------------------------
 ;; Ruby - haml & sass

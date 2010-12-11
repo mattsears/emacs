@@ -35,8 +35,9 @@
 (autoload 'mode-compile-kill "mode-compile"
   "Command to kill a compilation launched by `mode-compile'" t)
 (global-set-key (kbd "C-c k") 'mode-compile-kill)
+
 ;; Set custom flags when running the ruby command in mode-compile
-(setq ruby-dbg-flags nil)
+(setq ruby-dbg-flags "-W0")
 
 ;; Indicate syntax errors
 (add-to-list 'load-path "~/.emacs.d/vendor/flymake.el")
@@ -71,6 +72,10 @@
 (autoload 'ack "full-ack" nil t)
 (autoload 'ack-find-same-file "full-ack" nil t)
 (autoload 'ack-find-file "full-ack" nil t)
+
+;; Simplenotes
+(vendor 'simplenote)
+(require 'simplenote)
 
 (provide 'modes)
 

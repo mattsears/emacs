@@ -5,6 +5,7 @@
 (require 'css-mode)
 (add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
 (add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
+(add-to-list 'auto-mode-alist '("\\.scss$" . css-mode))
 
 (setq cssm-newline-before-closing-bracket t)
 (setq cssm-indent-function 'cssm-c-style-indenter)

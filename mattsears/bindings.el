@@ -28,6 +28,7 @@
 ;; Buffers
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "<C-tab>") 'ibuffer)
+(define-key osx-key-mode-map (kbd "<C-tab>") 'ibuffer)
 (global-set-key "\C-x\C-b" 'buffer-menu)
 
 ;; General
@@ -75,6 +76,9 @@
 
 ;; Align
 (define-key global-map (kbd "A-M-]") 'align)
+
+(global-set-key (kbd "<A-M-up>") 'move-text-up) 	
+(global-set-key (kbd "<A-M-down>") 'move-text-down)
 
 ;; Indenting whole lines
 (define-key osx-key-mode-map (kbd "A-]")  'textmate-shift-right)

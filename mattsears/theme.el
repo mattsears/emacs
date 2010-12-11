@@ -38,6 +38,14 @@
   "Ruby keywords")
 
 ;;----------------------------------------------------------------------------
+;; Hack: Add color specific keywords in javascript mode
+;;----------------------------------------------------------------------------
+
+(defvar js-mode-keywords
+  '(("\\<\\(self\\)"  1 font-lock-keyword-face append)))
+(font-lock-add-keywords 'js-mode js-mode-keywords)
+
+;;----------------------------------------------------------------------------
 ;; Hack: Add color to angle brackets and strings in html
 ;;----------------------------------------------------------------------------
 
@@ -143,13 +151,3 @@
                       . (1 font-lock-string-face prepend))
                     '("[^$\\?]\\('[^\\']*\\(\\\\\\(.\\|\n\\)[^\\']*\\)*'\\)"
                       . (1 font-lock-string-face prepend)))))
-
-;; Hack: Add color to strings in ERB
-;; (add-to-list 'rhtml-in-erb-keywords '("\\(#{[^>]*}\\)" .
-;;                                       (1 font-lock-doc-face prepend)) )
-;; (add-to-list 'rhtml-in-erb-keywords '("\\(<!--[^>]*-->\\)" .
-;;                                       (1 font-lock-comment-face prepend)) )
-;; (add-to-list 'rhtml-in-erb-keywords '("\\(\"[^>]*\"\\)" .
-;;                                       (1 font-lock-string-face prepend)) )
-;; (add-to-list 'rhtml-in-erb-keywords '("\\(\'[^>]*\'\\)" .
-;;                                       (1 font-lock-string-face prepend)) )
