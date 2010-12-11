@@ -49,7 +49,6 @@
      (neptune-bg ((t (:background "#0C1021"))))
      (neptune-highlight ((t (:background "#3b4043"))))
      (neptune-current-line ((t (:background "#1a1d2f"))))
-
      ;;(text-face ((t (:foreground neptune-orange))))
 
      (bold ((t (:bold t))))
@@ -88,6 +87,13 @@
      (dired-face-setuid ((t (:inherit neptune-red))))
      (dired-face-socket ((t (:inherit neptune-red))))
      (dired-face-symlink ((t (:inherit neptune-green))))
+
+	 ;; Speedbar
+	 (speedbar-file-face ((t (:inherit neptune-white))))
+	 (speedbar-directory-face ((t (:inherit neptune-purple))))
+     (speedbar-button-face ((t (:inherit neptune-blue))))
+     (speedbar-selected-face ((t (:inherit neptune-red))))
+	 (speedbar-highlight-face ((t (:inherit neptune-highlight))))
 
 	 ;; The Shell
      (eshell-prompt-face ((t (:inherit neptune-green))))
