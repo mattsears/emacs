@@ -8,12 +8,6 @@
 (defvar project-root)
 (setq project-root (concat (expand-file-name "~") "/emacs"))
 
-;; always need a good font
-(set-default-font "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
-(set-face-font 'default "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
-(set-face-font 'modeline "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
-(set-face-font 'minibuffer-prompt "-apple-monaco-medium-r-normal--0-0-0-0-m-0-mac-roman")
-
 ;; Show column and line numbers in the mode line
 (setq line-number-mode t)
 (setq column-number-mode t)
@@ -51,6 +45,7 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+(ansi-color-for-comint-mode-on)
 
 ;; Behaviors
 (setq require-final-newline t)
@@ -134,6 +129,7 @@
 
 ;; Allows syntax highlighting to work, among other things
 (setq global-font-lock-mode 1)
+(set-face-bold-p 'bold nil)
 
 ;; Fix mouse wheel scrolling
 (setq mac-emulate-three-button-mouse nil)
@@ -165,7 +161,6 @@
 ;; Misc settings
 (blink-cursor-mode 1)
 (setq delete-old-versions t)
-(setq global-font-lock-mode 1)
 (setq global-hl-line-mode 1)
 (setq indicate-buffer-boundaries nil)
 (setq kill-whole-line t)
@@ -227,8 +222,41 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/textmate.el")
 (require 'textmate)
 (textmate-mode)
+
 (add-to-list 'load-path "~/.emacs.d/vendor/")
 (require 'peepopen)
 
-;; Start server.
+(add-to-list 'load-path "~/.emacs.d/vendor/nav")
+(require 'nav)
+
+
+;; Speedbar options
+
+(setq speedbar-show-unknown-files t)
+(setq speedbar-use-images nil)
+(setq speedbar-directory-button-trim-method 'trim)
+(setq speedbar-track-mouse-flag nil)
+(setq speedbar-smart-directory-expand-flag nil)
+(setq speedbar-hide-button-brackets-flag t)
+(setq speedbar-indentation-width 2)
+
+(add-to-list 'load-path "~/.emacs.d/vendor/sr-speedbar")
+(require 'sr-speedbar)
+(setq sr-speedbar-right-side nil)
+(setq sr-speedbar-auto-refresh nil)
+(setq sr-speedbar-width-x 34)
+
+(add-hook 'speedbar-reconfigure-keymaps-hook
+   '(lambda ()
+      (define-key speedbar-key-map (kbd "<up>") 'speedbar-prev)      
+      (define-key speedbar-key-map (kbd "<down>") 'speedbar-next)
+      (define-key speedbar-key-map (kbd "<right>") 'speedbar-expand-line)
+      (define-key speedbar-key-map (kbd "<left>") 'speedbar-contract-line )
+      (define-key speedbar-key-map (kbd "M-<up>") 'speedbar-up-directory)
+      (define-key speedbar-key-map (kbd "<f5>") 'speedbar-refresh)
+
+    )
+)
+
+; Start server.
 (server-start)
