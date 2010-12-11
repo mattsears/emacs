@@ -4,7 +4,7 @@
 (defvar preferred-mmm-javascript-mode 'espresso-mode)
 (autoload 'espresso-mode "espresso" "An enhanced version of javascript-mode")
 (setq espresso-indent-level 2)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . espresso-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
 
 (autoload 'javascript-mode "javascript" nil t)
 (setq js-indent-level 2)
@@ -41,7 +41,7 @@
  (insert "console.log()")
  (backward-char))
 
-(add-hook 'espresso-mode
+(add-hook 'js-mode
           '(lambda ()
              (add-hook 'before-save-hook 'delete-trailing-whitespace)
              (define-key espresso-mode-map "\C-L" 'js-insert-console) ))
