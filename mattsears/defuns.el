@@ -359,6 +359,41 @@ Otherwise point moves to beginning of line."
            (position (cdr (assoc selected-symbol name-and-pos))))
       (goto-char position))))
 
+;; Move line or region (if none selected) up or down
+(defun move-text-internal (arg) 
+   (cond 
+    ((and mark-active transient-mark-mode) 
+     (if (> (point) (mark)) 
+        (exchange-point-and-mark)) 
+     (let ((column (current-column)) 
+          (text (delete-and-extract-region (point) (mark)))) 
+       (forward-line arg) 
+       (move-to-column column t) 
+       (set-mark (point)) 
+       (insert text) 
+       (exchange-point-and-mark) 
+       (setq deactivate-mark nil))) 
+    (t 
+     (beginning-of-line) 
+     (when (or (> arg 0) (not (bobp))) 
+       (forward-line) 
+       (when (or (< arg 0) (not (eobp))) 
+        (transpose-lines arg)) 
+       (forward-line -1))))) 
+	
+(defun move-text-down (arg) 
+   "Move region (transient-mark-mode active) or current line 
+  arg lines down." 
+   (interactive "*p") 
+   (move-text-internal arg)) 
+	
+(defun move-text-up (arg) 
+   "Move region (transient-mark-mode active) or current line 
+  arg lines up." 
+   (interactive "*p") 
+   (move-text-internal (- arg)))
+	
+	
 ;; Borrowed from defunkt's textmate.el http://github.com/defunkt/textmate.el/blob/master/textmate.el
 (defun textmate-shift-right (&optional arg)
   "Shift the line or region to the ARG places to the right.
@@ -374,5 +409,19 @@ A place is considered `tab-width' character columns."
   "Shift the line or region to the ARG places to the left."
   (interactive)
   (textmate-shift-right (* -1 (or arg 1))))
+
+(defun delete-this-buffer-and-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (when (yes-or-no-p "Are you sure you want to remove this file? ")
+        (delete-file filename)
+        (kill-buffer buffer)
+        (message "File '%s' successfully removed" filename)))))
+(global-set-key (kbd "C-c k") 'delete-this-buffer-and-file)
 
 (provide 'defuns)
