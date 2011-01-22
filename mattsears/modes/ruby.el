@@ -39,6 +39,8 @@
 (add-to-list 'auto-mode-alist '("_spec.rb$" . rspec-mode))
 (require 'rspec-mode)
 
+;;(setq rspec-use-rvm t)
+
 ;; Shoulda
 (vendor 'shoulda-mode)
 (add-to-list 'auto-mode-alist '("_test.rb$" . shoulda-mode))
@@ -84,20 +86,6 @@
 ;; Ruby related functions
 ;;----------------------------------------------------------------------------
 
-(defun rr (&optional arg)
-  "Run a Ruby interactive shell session in a buffer."
-  (interactive "P")
-  (let ((impl (if (not arg)
-                  "mri"
-                (completing-read "Ruby Implementation: "
-                                 '("ruby" "jruby" "rubinius" "yarv")))))
-    (run-ruby (cdr (assoc impl '(("mri" . "irb")
-                                 ("jruby" . "jruby -S irb")
-                                 ("rubinius" . "rbx")
-                                 ("yarv" . "irb1.9")))))
-    (with-current-buffer "*ruby*"
-      (rename-buffer (format "*%s*" impl) t))))
-
 (defun ruby-reindent-then-newline-and-indent ()
   "Reindents the current line then creates an indented newline."
   (interactive "*")
@@ -107,7 +95,7 @@
     (indent-according-to-mode)
     (delete-region (point) (progn (skip-chars-backward " \t") (point))))
   (when (ruby-previous-line-is-comment)
-    (insert "# "))
+      (insert "# "))
   (indent-according-to-mode))
 
 (defun ruby-previous-line-is-comment ()
