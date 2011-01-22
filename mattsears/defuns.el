@@ -168,6 +168,7 @@ Otherwise point moves to beginning of line."
   (split-window-vertically)
   (other-window 1)
   )
+
 (defun matts-delete-whole-line ()
   "Deletes the whole line with copying the text to the kill-ring"
   (interactive)
@@ -360,40 +361,40 @@ Otherwise point moves to beginning of line."
       (goto-char position))))
 
 ;; Move line or region (if none selected) up or down
-(defun move-text-internal (arg) 
-   (cond 
-    ((and mark-active transient-mark-mode) 
-     (if (> (point) (mark)) 
-        (exchange-point-and-mark)) 
-     (let ((column (current-column)) 
-          (text (delete-and-extract-region (point) (mark)))) 
-       (forward-line arg) 
-       (move-to-column column t) 
-       (set-mark (point)) 
-       (insert text) 
-       (exchange-point-and-mark) 
-       (setq deactivate-mark nil))) 
-    (t 
-     (beginning-of-line) 
-     (when (or (> arg 0) (not (bobp))) 
-       (forward-line) 
-       (when (or (< arg 0) (not (eobp))) 
-        (transpose-lines arg)) 
-       (forward-line -1))))) 
-	
-(defun move-text-down (arg) 
-   "Move region (transient-mark-mode active) or current line 
-  arg lines down." 
-   (interactive "*p") 
-   (move-text-internal arg)) 
-	
-(defun move-text-up (arg) 
-   "Move region (transient-mark-mode active) or current line 
-  arg lines up." 
-   (interactive "*p") 
+(defun move-text-internal (arg)
+   (cond
+    ((and mark-active transient-mark-mode)
+     (if (> (point) (mark))
+        (exchange-point-and-mark))
+     (let ((column (current-column))
+          (text (delete-and-extract-region (point) (mark))))
+       (forward-line arg)
+       (move-to-column column t)
+       (set-mark (point))
+       (insert text)
+       (exchange-point-and-mark)
+       (setq deactivate-mark nil)))
+    (t
+     (beginning-of-line)
+     (when (or (> arg 0) (not (bobp)))
+       (forward-line)
+       (when (or (< arg 0) (not (eobp)))
+        (transpose-lines arg))
+       (forward-line -1)))))
+
+(defun move-text-down (arg)
+   "Move region (transient-mark-mode active) or current line
+  arg lines down."
+   (interactive "*p")
+   (move-text-internal arg))
+
+(defun move-text-up (arg)
+   "Move region (transient-mark-mode active) or current line
+  arg lines up."
+   (interactive "*p")
    (move-text-internal (- arg)))
-	
-	
+
+
 ;; Borrowed from defunkt's textmate.el http://github.com/defunkt/textmate.el/blob/master/textmate.el
 (defun textmate-shift-right (&optional arg)
   "Shift the line or region to the ARG places to the right.
@@ -423,5 +424,20 @@ A place is considered `tab-width' character columns."
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
 (global-set-key (kbd "C-c k") 'delete-this-buffer-and-file)
+
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file name new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
 
 (provide 'defuns)
