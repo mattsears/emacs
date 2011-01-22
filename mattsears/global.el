@@ -25,7 +25,7 @@
 ;; Shutoff messages
 (setq message-log-max nil)
 
-;; stops selection with a mouse being immediately injected to the kill ring
+;; Stops selection with a mouse being immediately injected to the kill ring
 (setq mouse-drag-copy-region nil)
 
 ;; Set column with
@@ -46,9 +46,14 @@
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (ansi-color-for-comint-mode-on)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 ;; Behaviors
-(setq require-final-newline t)
+(setq require-final-newline nil)
 (setq display-buffer-reuse-frames t)
 (setq truncate-partial-width-windows t)
 
@@ -191,15 +196,6 @@
 (add-hook 'shell-mode-hook
           'ansi-color-for-comint-mode-on)
 
-;; Fix foolish calendar-mode scrolling.
-(add-hook 'calendar-load-hook
-          '(lambda ()
-             (setq mark-holidays-in-calendar t)
-             (define-key calendar-mode-map ">" 'scroll-calendar-left)
-             (define-key calendar-mode-map "<" 'scroll-calendar-right)
-             (define-key calendar-mode-map "\C-x>" 'scroll-calendar-left)
-             (define-key calendar-mode-map "\C-x<" 'scroll-calendar-right)))
-
 ;; Scroll with the compilation output
 (setq compilation-scroll-output t)
 (setq compilation-window-height 18)
@@ -229,9 +225,10 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/nav")
 (require 'nav)
 
+;; TAGS
+(setq tags-file-name ".TAGS")
 
 ;; Speedbar options
-
 (setq speedbar-show-unknown-files t)
 (setq speedbar-use-images nil)
 (setq speedbar-directory-button-trim-method 'trim)
@@ -248,7 +245,7 @@
 
 (add-hook 'speedbar-reconfigure-keymaps-hook
    '(lambda ()
-      (define-key speedbar-key-map (kbd "<up>") 'speedbar-prev)      
+      (define-key speedbar-key-map (kbd "<up>") 'speedbar-prev)
       (define-key speedbar-key-map (kbd "<down>") 'speedbar-next)
       (define-key speedbar-key-map (kbd "<right>") 'speedbar-expand-line)
       (define-key speedbar-key-map (kbd "<left>") 'speedbar-contract-line )
