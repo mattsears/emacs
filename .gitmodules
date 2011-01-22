@@ -19,9 +19,6 @@
 [submodule "vendor/shoulda-mode"]
 	path = vendor/shoulda-mode
 	url = git://github.com/pezra/shoulda-mode.git
-[submodule "vendor/rspec-mode"]
-	path = vendor/rspec-mode
-	url = git://github.com/pezra/rspec-mode.git
 [submodule "vendor/cucumber"]
 	path = vendor/cucumber
 	url = git://github.com/michaelklishin/cucumber.el.git
@@ -37,3 +34,6 @@
 [submodule "vendor/smart-tab"]
 	path = vendor/smart-tab
 	url = https://github.com/genehack/smart-tab.git
+[submodule "rspec-mode"]
+	path = rspec-mode
+	url = git://github.com/anildigital/rspec-mode.git
