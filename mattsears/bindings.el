@@ -6,7 +6,7 @@
 (global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
 
 ;; Re-assign the tab key
-(global-set-key (kbd "TAB") 'insert-soft-tab);
+;;(global-set-key (kbd "TAB") 'insert-soft-tab);
 
 ;; make the delete key delete
 (global-set-key [delete] 'delete-char)
@@ -77,7 +77,7 @@
 ;; Align
 (define-key global-map (kbd "A-M-]") 'align)
 
-(global-set-key (kbd "<A-M-up>") 'move-text-up) 	
+(global-set-key (kbd "<A-M-up>") 'move-text-up)
 (global-set-key (kbd "<A-M-down>") 'move-text-down)
 
 ;; Indenting whole lines
