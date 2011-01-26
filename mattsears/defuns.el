@@ -244,17 +244,17 @@ Otherwise point moves to beginning of line."
   (interactive)
   (eval-expression (car (read-from-string (choose-from-menu "My Menu"
                                                             (list
-															 (cons "IRC" "(call-interactively 'erc)")
-         													 (cons "Shell" "(eshell)")
-															 (cons "Bookmarks" "(call-interactively 'list-bookmarks)")
-															 (cons "Export Calendar" "(call-interactively 'matts-org-export-icalendar)")
+                                                             (cons "IRC" "(call-interactively 'erc)")
+                                                             (cons "Shell" "(eshell)")
+                                                             (cons "Bookmarks" "(call-interactively 'list-bookmarks)")
+                                                             (cons "Export Calendar" "(call-interactively 'matts-org-export-icalendar)")
                                                              (cons "-" "")
- 															 (cons "Today's Agenda" "(org-agenda-list)")
-															 (cons "Todos" "(matts-todos)")
-                               (cons "Appointments" "(matts-appointments)")
-														     (cons "-" "")
-															 (cons "Show/hide line numbers " "(linum)")
-															 (cons "Open file in Github " "(open-file-in-github)")
+                                                             (cons "Today's Agenda" "(org-agenda-list)")
+                                                             (cons "Todos" "(matts-todos)")
+                                                             (cons "Appointments" "(matts-appointments)")
+                                                             (cons "-" "")
+                                                             (cons "Show/hide line numbers " "(linum)")
+                                                             (cons "Open file in Github " "(open-file-in-github)")
                                                              (cons "Nuke all buffers " "(nuke-all-buffers)")
                                                              (cons "Reset Window" "(reset-window-position)")
                                                              (cons "Reload Emacs" "(load-file \"~/.emacs\")")
@@ -362,37 +362,37 @@ Otherwise point moves to beginning of line."
 
 ;; Move line or region (if none selected) up or down
 (defun move-text-internal (arg)
-   (cond
-    ((and mark-active transient-mark-mode)
-     (if (> (point) (mark))
+  (cond
+   ((and mark-active transient-mark-mode)
+    (if (> (point) (mark))
         (exchange-point-and-mark))
-     (let ((column (current-column))
+    (let ((column (current-column))
           (text (delete-and-extract-region (point) (mark))))
-       (forward-line arg)
-       (move-to-column column t)
-       (set-mark (point))
-       (insert text)
-       (exchange-point-and-mark)
-       (setq deactivate-mark nil)))
-    (t
-     (beginning-of-line)
-     (when (or (> arg 0) (not (bobp)))
-       (forward-line)
-       (when (or (< arg 0) (not (eobp)))
+      (forward-line arg)
+      (move-to-column column t)
+      (set-mark (point))
+      (insert text)
+      (exchange-point-and-mark)
+      (setq deactivate-mark nil)))
+   (t
+    (beginning-of-line)
+    (when (or (> arg 0) (not (bobp)))
+      (forward-line)
+      (when (or (< arg 0) (not (eobp)))
         (transpose-lines arg))
-       (forward-line -1)))))
+      (forward-line -1)))))
 
 (defun move-text-down (arg)
-   "Move region (transient-mark-mode active) or current line
+  "Move region (transient-mark-mode active) or current line
   arg lines down."
-   (interactive "*p")
-   (move-text-internal arg))
+  (interactive "*p")
+  (move-text-internal arg))
 
 (defun move-text-up (arg)
-   "Move region (transient-mark-mode active) or current line
+  "Move region (transient-mark-mode active) or current line
   arg lines up."
-   (interactive "*p")
-   (move-text-internal (- arg)))
+  (interactive "*p")
+  (move-text-internal (- arg)))
 
 
 ;; Borrowed from defunkt's textmate.el http://github.com/defunkt/textmate.el/blob/master/textmate.el
@@ -439,5 +439,44 @@ A place is considered `tab-width' character columns."
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
+;; Borrowed from http://atomized.org/2011/01/toggle-between-root-non-root-in-emacs-with-tramp/
+(defun find-file-as-root ()
+  "Find a file as root."
+  (interactive)
+  (let* ((parsed (when (tramp-tramp-file-p default-directory)
+                   (coerce (tramp-dissect-file-name default-directory)
+                           'list)))
+         (default-directory
+           (if parsed
+               (apply 'tramp-make-tramp-file-name
+                      (append '("sudo" "root") (cddr parsed)))
+             (tramp-make-tramp-file-name "sudo" "root" "localhost"
+                                         default-directory))))
+    (call-interactively 'find-file)))
+
+(defun toggle-alternate-file-as-root (&optional filename)
+  "Toggle between the current file as the default user and as root."
+  (interactive)
+  (let* ((filename (or filename (buffer-file-name)))
+         (parsed (when (tramp-tramp-file-p filename)
+                   (coerce (tramp-dissect-file-name filename)
+                           'list))))
+    (unless filename
+      (error "No file in this buffer."))
+    (find-alternate-file
+     (if (equal '("sudo" "root") (butlast parsed 2))
+         ;; As non-root
+         (if (or
+              (string= "localhost" (nth 2 parsed))
+              (string= (system-name) (nth 2 parsed)))
+             (nth -1 parsed)
+           (apply 'tramp-make-tramp-file-name
+                  (append (list tramp-default-method nil) (cddr parsed))))
+       ;; As root
+       (if parsed
+           (apply 'tramp-make-tramp-file-name
+                  (append '("sudo" "root") (cddr parsed)))
+         (tramp-make-tramp-file-name "sudo" "root" "localhost" filename))))))
 
 (provide 'defuns)
