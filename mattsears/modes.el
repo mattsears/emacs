@@ -28,6 +28,14 @@
 ;; Bash
 (setq auto-mode-alist (cons '("\\.bash_profile" . sh-mode) auto-mode-alist))
 
+;; Make rc.* files default to shell-script-mode
+;; (setq auto-mode-alist (cons '("\\rc" . shell-script-mode) auto-mode-alist))
+
+;;(setq auto-mode-alist
+;;      (append
+;;       '(("rc\\." . shell-script-mode))
+;;       auto-mode-alist))
+
 ;; Install mode-compile to give friendlier compiling support!
 (autoload 'mode-compile "mode-compile"
   "Command to compile current buffer file based on the major mode" t)

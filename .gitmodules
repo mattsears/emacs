@@ -40,3 +40,6 @@
 [submodule "vendor/rspec-mode"]
 	path = vendor/rspec-mode
 	url = git://github.com/anildigital/rspec-mode.git
+[submodule "vendor/yasnippets"]
+	path = vendor/yasnippets
+	url = git://github.com/rejeep/yasnippets.git
