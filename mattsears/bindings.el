@@ -5,11 +5,13 @@
 ;; Newline and then indent.
 (global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
 
-;; Re-assign the tab key
-;;(global-set-key (kbd "TAB") 'insert-soft-tab);
-
 ;; make the delete key delete
 (global-set-key [delete] 'delete-char)
+
+;; Prefer backward-kill-word over Backspace
+(global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\C-x\C-k" 'kill-region)
+(global-set-key "\C-c\C-k" 'kill-region)
 
 ;; Open line below and go to that line.
 (global-set-key (kbd "M-n") 'open-line-below)
@@ -40,6 +42,10 @@
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 (global-set-key (kbd "C-c M-x") 'smex-update-and-run)
+
+(global-set-key "\C-x\C-m" 'smex)
+(global-set-key "\C-c\C-m" 'smex)
+
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
@@ -68,9 +74,6 @@
 ;; Duplicated the current line
 (define-key osx-key-mode-map (kbd "A-d") 'duplicate-line)
 
-;; Insert new line without breaking the text
-(define-key global-map [A-return] 'matts-next-line)
-
 ;; Comment or uncomment the entire line
 (define-key global-map (kbd "A-/") 'comment-or-uncomment-region-or-line)
 
@@ -90,6 +93,9 @@
 ;; Insert blank line
 (define-key global-map [M-return] 'insert-blank-line-after-current)
 
+;; Insert blank above current line
+(global-set-key (kbd "A-\\") 'insert-blank-line-before-current)
+
 ;; Copy the current line
 (define-key global-map (kbd "C-S-l") 'copy-line)
 
@@ -100,7 +106,7 @@
 (define-key osx-key-mode-map (kbd "A-O") 'ido-find-file)
 
 ;; Find a file from the list of most recently open files
-;;(define-key osx-key-mode-map (kbd "C-x r") 'matts-ido-choose-from-recentf)
+(define-key osx-key-mode-map (kbd "C-x r") 'matts-ido-choose-from-recentf)
 
 ;; Indent the buffer
 (define-key osx-key-mode-map (kbd "A-i") 'iwb)
@@ -109,10 +115,11 @@
 (define-key osx-key-mode-map (kbd "A-b") 'ibuffer)
 
 ;; Compile buffer in it's current mode
-(define-key osx-key-mode-map (kbd "A-r") 'mode-compile)
+;;(define-key osx-key-mode-map (kbd "A-r") 'mode-compile)
 
 ;; Custom set of commands in popup window
 (define-key osx-key-mode-map (kbd "A-m") 'matts-popup-commands)
+
 
 ;; Popup a window for all the methods on the buffer
 (define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
@@ -133,7 +140,7 @@
 (global-set-key "\C-x\C-z" 'eshell)
 
 ;; Navigate errors
-(global-set-key [(meta n)] 'next-error)
-(global-set-key [(meta p)] 'previous-error)
+;;(global-set-key [(meta n)] 'next-error)
+;;(global-set-key [(meta p)] 'previous-error)
 
 (provide 'bindings)
