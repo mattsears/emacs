@@ -21,6 +21,15 @@
   (beginning-of-line)
   (insert "\n"))
 
+(defun insert-blank-line-before-current ()
+  "Insert a line above the current line and indent accordingly"
+  (interactive)
+  (previous-line)
+  (beginning-of-line)
+  (insert-blank-line-after-current)
+  (previous-line)
+  (indent-according-to-mode))
+
 (defun open-line-below ()
   "Open a line below the line the point is at.
    Then move to that line and indent accordning to mode"
@@ -439,6 +448,11 @@ A place is considered `tab-width' character columns."
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
+(defun refresh-file ()
+  (interactive)
+  (revert-buffer t t t))
+(global-set-key [f5] 'refresh-file)
 
 ;; Borrowed from http://atomized.org/2011/01/toggle-between-root-non-root-in-emacs-with-tramp/
 (defun find-file-as-root ()
