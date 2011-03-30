@@ -18,3 +18,4 @@
 (vendor 'full-ack)
 (vendor 'open-file-in-github)
 (smex-initialize)
+
