@@ -7,13 +7,6 @@
 (add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . css-mode))
 
-(setq cssm-newline-before-closing-bracket t)
-(setq cssm-indent-function 'cssm-c-style-indenter)
-(setq cssm-indent-level 2)
-(setq cssm-newline-before-closing-bracket t)
-(setq cssm-indent-function #'cssm-c-style-indenter)
-(setq cssm-mirror-mode t)
-
 (defadvice cssm-complete-property
   (after cssm-complete-add-space activate)
   "Modify CSS completion to add a space after full completion."
@@ -58,8 +51,11 @@
 (add-hook 'css-mode-hook
           'hexcolour-add-to-font-lock
           '(lambda ()
+             (setq cssm-indent-level 2)
+             (setq cssm-newline-before-closing-bracket t)
+             (setq cssm-indent-function #'cssm-c-style-indenter)
+             (setq cssm-mirror-mode nil)
              (setq tab-width 2)
-             (setq css-indent-level 2)
              (define-key css-mode-map [return] 'newline-and-indent)
              (setq css-electric-brace-behavior t)
              (setq css-electric-semi-behavior t)
