@@ -55,7 +55,7 @@
 (setq ibuffer-sorting-mode 'recency)
 (setq ibuffer-use-header-line t)
 (setq ibuffer-formats
-      '((mark modified read-only " " 
+      '((mark modified read-only " "
 	     (name 40 20) " " filename)
 ;;         (mark " " (name 20 -1) " " filename)
        ))
@@ -81,6 +81,8 @@
                ("javascript" (mode . espresso-mode))
                ("html" (mode . rhtml-mode))
                ("haml" (mode . haml-mode))
+               ("sass" (mode . sass-mode))
+               ("coffee" (mode . coffee-mode))
                ("yaml" (mode . yaml-mode))
                ("controllers" (name . "^\\*_controller.rb\\*$"))
                ))))
