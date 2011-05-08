@@ -3,6 +3,7 @@ auto-save-list/*
 tramp-autosave/*
 .DS_Store
 mattsears/local.el
+vendor/freshbooks
 *.elc
 smex.*
 bookmarks
