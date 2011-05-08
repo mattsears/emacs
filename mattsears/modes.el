@@ -16,8 +16,8 @@
 (load "~/.emacs.d/mattsears/modes/shell")
 
 ;; Wrap words in text-mode
-(autoload 'longlines-mode "longlines.el" "Minor mode for editing long lines." t)
-(add-hook 'text-mode-hook 'longlines-mode)
+;;(autoload 'longlines-mode "longlines.el" "Minor mode for editing long lines." t)
+;;(add-hook 'text-mode-hook 'longlines-mode)
 
 ;; Other text mode improvements
 (add-hook 'text-mode-hook
@@ -28,14 +28,6 @@
 
 ;; Bash
 (setq auto-mode-alist (cons '("\\.bash_profile" . sh-mode) auto-mode-alist))
-
-;; Make rc.* files default to shell-script-mode
-;; (setq auto-mode-alist (cons '("\\rc" . shell-script-mode) auto-mode-alist))
-
-;;(setq auto-mode-alist
-;;      (append
-;;       '(("rc\\." . shell-script-mode))
-;;       auto-mode-alist))
 
 ;; Install mode-compile to give friendlier compiling support!
 (autoload 'mode-compile "mode-compile"
@@ -84,7 +76,6 @@
 
 (add-to-list 'load-path "~/.emacs.d/vendor/mustache-mode.el")
 (require 'mustache-mode)
-
 
 ;; Simplenotes
 (vendor 'simplenote)
