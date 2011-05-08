@@ -176,8 +176,13 @@
 
 ;; Balancing the parentheses
 (setq show-paren-delay 0)
-(setq show-paren-mode t)
+(setq show-paren-mode 1)
 (setq show-paren-style 'expression)
+
+(require 'paren)
+(set-face-background 'show-paren-match-face (face-background 'default))
+(set-face-foreground 'show-paren-match-face "#def")
+(set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
 
 ;; No tooltips
 (setq tooltip-mode nil)
@@ -212,8 +217,8 @@
  bookmark-save-flag 1)                        ;; autosave each change)
 
 ;; Smart pairing
-(require 'autopair)
-(autopair-global-mode) ;; to enable in all buffers
+;;(require 'autopair)
+;;(autopair-global-mode) ;; to enable in all buffers
 
 (add-to-list 'load-path "~/.emacs.d/vendor/textmate.el")
 (require 'textmate)
