@@ -6,16 +6,16 @@
      (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
      (define-key ruby-mode-map (kbd "C-M-h") 'backward-kill-word)
      (define-key ruby-mode-map (kbd "C-c l") "lambda")))
-	
-	
+
+
 ;; RVM
 (add-to-list 'load-path "~/.emacs.d/vendor/rvm.el")
 (require 'rvm)
 ;;(rvm-use-default)
-	
+
 ;; A few formatting options
-(setq ruby-deep-indent-paren-style nil) 
-(setq ruby-deep-arglist nil)		
+(setq ruby-deep-indent-paren-style nil)
+(setq ruby-deep-arglist nil)
 (setq ruby-dbg-flags "-W0")
 
 ;;----------------------------------------------------------------------------
@@ -66,6 +66,7 @@
 (setq auto-mode-alist (cons '("Rakefile$" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("Gemfile$" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("Capfile" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("Guardfile" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.rake" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.rb$" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.ru$" . ruby-mode) auto-mode-alist))
