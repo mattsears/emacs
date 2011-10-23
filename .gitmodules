@@ -46,3 +46,9 @@
 [submodule "vendor/coffee-mode"]
 	path = vendor/coffee-mode
 	url = git://github.com/defunkt/coffee-mode.git
+[submodule "vendor/ruby-block"]
+	path = vendor/ruby-block
+	url = https://github.com/adolfosousa/ruby-block.el.git
+[submodule "vendor/ruby-end"]
+	path = vendor/ruby-end
+	url = git://github.com/rejeep/ruby-end.git
