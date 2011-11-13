@@ -62,6 +62,10 @@
 (require 'flyspell)
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
 (add-to-list 'flyspell-prog-text-faces 'nxml-text-face)
+(add-hook 'message-mode-hook 'turn-on-flyspell)
+(add-hook 'text-mode-hook 'turn-on-flyspell)
+(add-hook 'yaml-mode-hook 'turn-on-flyspell)
+(add-hook 'shell-mode-hook 'turn-on-flyspell)
 
 (defun turn-on-flyspell ()
   "Force flyspell-mode on using a positive arg.  For use in hooks."
@@ -82,3 +86,16 @@
 (require 'simplenote)
 
 (provide 'modes)
+
+;; Graphically indicates the fill column
+(setq fill-column 80)
+(require 'fill-column-indicator)
+(setq fci-rule-width 1)
+(setq fci-rule-color "#1a1d2f")
+(add-hook 'ruby-mode-hook 'fci-mode)
+(add-hook 'haml-mode-hook 'fci-mode)
+(add-hook 'markdown-mode-hook 'fci-mode)
+(add-hook 'coffee-mode-hook 'fci-mode)
+(add-hook 'js-mode-hook 'fci-mode)
+(add-hook 'espresso-mode-hook 'fci-mode)
+(add-hook 'text-mode-hook 'fci-mode)
