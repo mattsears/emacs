@@ -30,6 +30,7 @@
 
 ;; Set column with
 (setq fill-column 80)
+(setq-default fill-column 80)
 
 ;; Default tabs/indents are 2 spaces
 (setq-default tab-width 2)
@@ -69,6 +70,9 @@
 
 ;; Eeek! A mouse!
 (setq mac-emulate-three-button-mouse nil)
+
+;; Automatically refresh buffers if file changes
+(global-auto-revert-mode t)
 
 ;; Set window title
 ;;(setq frame-title-format (list '(project-root) '(": ") '(dired-directory dired-directory "%b")))
