@@ -3,6 +3,20 @@
 ;;----------------------------------------------------------------------------
 (require 'dired)
 (require 'wdired)
+(require 'dired-x)
+
+;; Omit certain files/directories from showing up in dired mode
+(setq dired-omit-files
+      (rx (or (seq bol (? ".") "#")         ;; emacs autosave files
+              (seq "~" eol)                 ;; backup-files
+              (seq "coverage" eol)          ;; code coverage files
+              )))
+(setq dired-omit-extensions
+      (append dired-latex-unclean-extensions
+              dired-bibtex-unclean-extensions
+              dired-texinfo-unclean-extensions))
+(add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
+(put 'dired-find-alternate-file 'disabled nil)
 
 (setq dired-details-hidden-string "[ ... ] ")
 (setq dired-listing-switches "-l")
