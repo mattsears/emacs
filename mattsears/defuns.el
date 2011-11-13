@@ -164,8 +164,8 @@ Otherwise point moves to beginning of line."
   "Kill the current frame and the window"
   (interactive)
   (other-window 1)
-  (kill-buffer (current-buffer))
-  (delete-window))
+  (kill-buffer (current-buffer)))
+  ;;(delete-window))
 
 (defun matts-split-window-three-ways ()
   "Reset windows and frames with room"
@@ -450,8 +450,10 @@ A place is considered `tab-width' character columns."
           (set-buffer-modified-p nil))))))
 
 (defun refresh-file ()
+  "Refresh the buffer from the disk (prompt if modified)"
   (interactive)
-  (revert-buffer t t t))
+  (revert-buffer t (not (buffer-modified-p)) t))
+
 (global-set-key [f5] 'refresh-file)
 
 ;; Borrowed from http://atomized.org/2011/01/toggle-between-root-non-root-in-emacs-with-tramp/
