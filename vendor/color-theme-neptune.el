@@ -96,6 +96,9 @@
      (speedbar-selected-face ((t (:inherit neptune-red))))
 	 (speedbar-highlight-face ((t (:inherit neptune-highlight))))
 
+   ;; Markdown
+   (markdown-list-face ((t (:inherit neptune-orange))))
+
 	 ;; The Shell
      (eshell-prompt-face ((t (:inherit neptune-green))))
      (eshell-prompt ((t (:inherit neptune-green))))
@@ -122,9 +125,9 @@
      (eshell-ls-unreadable-face ((t (:inherit neptune-red))))
      (eshell-ls-unreadable ((t (:inherit neptune-red))))
 
-	 ;; Spelling mistakes
+	   ;; Spelling mistakes
      (flyspell-duplicate-face ((t (:underline t))))
-     (flyspell-incorrect-face ((t (:underline "#b9402a"))))
+     (flyspell-incorrect-face ((t (:underline "red" :foreground "#eeeeee"))))
      (fringe ((t (:inherit neptune-bg))))
 
      (isearch ((t (:inherit neptune-highlight))))

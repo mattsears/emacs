@@ -163,6 +163,11 @@ Operating on "basic.coffee" and running this command will save a
 "basic.js" in the same directory. Subsequent runs will overwrite the
 file.
 
+If there are compilation errors and we the compiler have returned a
+line number to us for the first error, the point is moved to that
+line, so you can investigate.  If this annoys you, you can set
+`coffee-compile-jump-to-error` to `nil`.
+
 ### coffee-compile-buffer
 
 Compiles the current buffer to JavaScript using the command specified
@@ -182,6 +187,20 @@ configuration variables as `coffee-compile-buffer`.
 Bind it:
 
     (define-key coffee-mode-map [(meta R)] 'coffee-compile-region)
+
+### Compile-on-save
+
+Hitting the key sequence `C-c C-o C-s` turns on (toggles) the
+compile-on-save minor mode in `coffee-mode`.  To enable it by default:
+
+    (add-hook 'coffee-mode-hook '(lambda () (coffee-cos-mode t)))
+
+To enable it only if it looks like you may want to:
+
+    (add-hook 'coffee-mode-hook '(lambda ()
+                                   (and (file-exists-p (buffer-file-name))
+                                        (file-exists-p (coffee-compiled-file-name))
+                                        (coffee-cos-mode t))))
 
 ### coffee-repl
 
@@ -203,7 +222,7 @@ Naturally. Example:
       (setq coffee-js-mode 'javascript-mode)
 
       ;; If you don't want your compiled files to be wrapped
-      (setq coffee-args-compile '("-c" "--no-wrap"))
+      (setq coffee-args-compile '("-c" "--bare"))
 
       ;; *Messages* spam
       (setq coffee-debug-mode t)
@@ -212,15 +231,14 @@ Naturally. Example:
       (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
 
       ;; Riding edge.
-      (setq coffee-command "~/dev/coffee"))
+      (setq coffee-command "~/dev/coffee")
 
       ;; Compile '.coffee' files on every save
-      (add-hook 'after-save-hook
-          '(lambda ()
-             (when (string-match "\.coffee$" (buffer-name))
-              (coffee-compile-file))))
+      (and (file-exists-p (buffer-file-name))
+           (file-exists-p (coffee-compiled-file-name))
+           (coffee-cos-mode t)))
 
-    (add-hook 'coffee-mode-hook '(lambda () (coffee-custom)))
+    (add-hook 'coffee-mode-hook 'coffee-custom)
 
 ## Configuration
 
@@ -279,6 +297,15 @@ Default: `'("-c")`
 The name of the scratch buffer used when compiling CoffeeScript.
 
 Default: `"*coffee-compiled*"`
+
+### coffee-compile-jump-to-error
+
+Whether to jump to the first error if compilation fails.  Please note
+that the coffee compiler doesn't always give a line number for the
+issue and in that case it is not possible to jump to the error, of
+course.
+
+Default: `t`
 
 ## Thanks
 
