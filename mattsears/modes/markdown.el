@@ -1,8 +1,10 @@
 ;;----------------------------------------------------------------------------
 ;; Markdown mode options
 ;;----------------------------------------------------------------------------
-(autoload 'markdown-mode "markdown-mode.el"
-   "Major mode for editing Markdown files" t)
+
+(vendor 'markdown-mode)
+(require 'markdown-mode)
+
 (setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.mkd" . markdown-mode) auto-mode-alist))
