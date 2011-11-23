@@ -495,4 +495,14 @@ A place is considered `tab-width' character columns."
                   (append '("sudo" "root") (cddr parsed)))
          (tramp-make-tramp-file-name "sudo" "root" "localhost" filename))))))
 
+(defun search-github ()
+  "Search Github for selected region if any."
+  (interactive)
+  (browse-url
+   (concat
+    "http://github.com/search?&type=Repositories&repo=&langOverride=&start_value=1&q="
+    (if mark-active
+        (buffer-substring (region-beginning) (region-end))
+      (read-string "Github: ")))))
+
 (provide 'defuns)
