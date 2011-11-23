@@ -8,4 +8,6 @@ vendor/freshbooks
 smex.*
 bookmarks
 .bookmarks
+.emacs-desktop
+.emacs.desktop.lock
 anything-c-adaptive-history
