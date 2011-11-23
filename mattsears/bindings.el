@@ -139,8 +139,13 @@
 ;; Shortcut for ehell
 (global-set-key "\C-x\C-z" 'eshell)
 
-;; Navigate errors
-;;(global-set-key [(meta n)] 'next-error)
-;;(global-set-key [(meta p)] 'previous-error)
+;; Key-chord bindings
+
+(add-to-list 'load-path "~/.emacs.d/vendor/key-chord.el")
+(require 'key-chord)
+(key-chord-mode 1)
+
+(key-chord-define-global "4r" "$")
+(key-chord-define-global "gh" 'search-github)
 
 (provide 'bindings)
