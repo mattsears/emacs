@@ -264,5 +264,13 @@
     )
 )
 
+;; Save the open buffers so they reopen when restarting emacs
+(desktop-save-mode 1)
+(setq desktop-path '("~/.emacs.d/"))
+(setq desktop-dirname "~/.emacs.d/")
+(setq desktop-base-file-name ".emacs-desktop")
+(setq desktop-save t) ;; don't ask, just always save the session
+
+
 ; Start server.
 (server-start)
