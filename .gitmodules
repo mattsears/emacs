@@ -55,3 +55,6 @@
 [submodule "vendor/markdown-mode"]
 	path = vendor/markdown-mode
 	url = git://github.com/defunkt/markdown-mode.git
+[submodule "vendor/iedit"]
+	path = vendor/iedit
+	url = git://github.com/eproxus/emacs-iedit.git

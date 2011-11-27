@@ -99,3 +99,7 @@
 (add-hook 'js-mode-hook 'fci-mode)
 (add-hook 'espresso-mode-hook 'fci-mode)
 (add-hook 'text-mode-hook 'fci-mode)
+
+;; Iedit mode
+(vendor 'iedit)
+(require 'iedit)

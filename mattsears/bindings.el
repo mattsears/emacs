@@ -145,7 +145,8 @@
 (require 'key-chord)
 (key-chord-mode 1)
 
-(key-chord-define-global "4r" "$")
+;; Search github
 (key-chord-define-global "gh" 'search-github)
+(key-chord-define-global "er" 'iedit-mode)
 
 (provide 'bindings)
