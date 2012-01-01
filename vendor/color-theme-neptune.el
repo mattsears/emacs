@@ -22,7 +22,7 @@
   (interactive)
   (color-theme-install
    '(color-theme-neptune
-     ((background-color . "#222222")
+     ((background-color . "#0C1021")
       (background-mode . dark)
       (border-color . "#dedede")
       (cursor-color . "#AFAFAF")
@@ -34,19 +34,19 @@
       (tags-tag-face . "#7587A6"))
      (neptune-black ((t (:foreground "#222222"))))
      (neptune-white ((t (:foreground "#eeeeee"))))
-     (neptune-blue ((t (:foreground "#519de6"))))
-     (neptune-light-blue ((t (:foreground "#89bdff"))))
+     (neptune-blue ((t (:foreground "#93bfdd"))))
+     (neptune-light-blue ((t (:foreground "#e1f3f8"))))
 
-     (neptune-orange ((t (:foreground "#ffb05e"))))
+     (neptune-orange ((t (:foreground "#f98d53"))))
      (neptune-brown ((t (:foreground "#9b5c2e"))))
      (neptune-purple ((t (:foreground "#ab99ad"))))
      (neptune-turquoise ((t (:foreground "#87c4bf")))) ;
      (neptune-green ((t (:foreground "#79b958"))))
      (neptune-light-green ((t (:foreground "#daefa3"))))
-     (neptune-red ((t (:foreground "#CF6A4C"))))
+     (neptune-red ((t (:foreground "#d33224"))))
      (neptune-grey ((t (:foreground "#5f5a60"))))
      (neptune-gold ((t (:foreground "#cdc098"))))
-     (neptune-yellow ((t (:foreground "#ffb05e"))))
+     (neptune-yellow ((t (:foreground "#fddf88"))))
      (neptune-peach ((t (:foreground "#e28964"))))
      (neptune-bg ((t (:background "#0C1021"))))
      (neptune-highlight ((t (:background "#2f3f50"))))
@@ -65,14 +65,14 @@
      (font-lock-doc-string-face ((t (:inherit neptune-green))))
      (font-lock-doc-face ((t (:inherit neptune-light-green))))
      (font-lock-function-name-face ((t (:inherit neptune-light-blue))))
-     (font-lock-keyword-face ((t (:inherit neptune-peach))))
+     (font-lock-keyword-face ((t (:inherit neptune-orange))))
      (font-lock-preprocessor-face ((t (:inherit neptune-light-green))))
 
-     (font-lock-reference-face ((t (:inherit neptune-orange))))
+     (font-lock-reference-face ((t (:inherit neptune-yellow))))
      (font-lock-regexp-grouping-backslash ((t (:inherit neptune-light-blue))))
      (font-lock-regexp-grouping-construct ((t (:inherit neptune-red))))
      (font-lock-string-face ((t (:inherit neptune-green))))
-     (font-lock-type-face ((t (:inherit neptune-purple))))
+     (font-lock-type-face ((t (:inherit neptune-red))))
      (font-lock-variable-name-face ((t (:inherit neptune-blue))))
      (font-lock-warning-face ((t (:inherit neptune-red))))
      (font-lock-negation-char-face ((t (nil))))
@@ -97,7 +97,14 @@
 	 (speedbar-highlight-face ((t (:inherit neptune-highlight))))
 
    ;; Markdown
+
+   (markdown-header-face ((t (:inherit neptune-blue))))
    (markdown-list-face ((t (:inherit neptune-orange))))
+   (markdown-inline-code-face ((t (:inherit neptune-gray))))
+   (markdown-comment-face ((t (:inherit neptune-gray))))
+   (markdown-pre-face ((t (:inherit neptune-gray))))
+   (markdown-blockquote-face ((t (:inherit neptune-gray))))
+   (markdown-link-face ((t (:inherit neptune-green))))
 
 	 ;; The Shell
      (eshell-prompt-face ((t (:inherit neptune-green))))
