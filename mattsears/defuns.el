@@ -163,9 +163,14 @@ Otherwise point moves to beginning of line."
 (defun matts-close-and-delete-window ()
   "Kill the current frame and the window"
   (interactive)
+  (matts-first-window)
   (other-window 1)
-  (kill-buffer (current-buffer)))
-  ;;(delete-window))
+  (kill-buffer (current-buffer))
+  (delete-window))
+
+(defun matts-first-window ()
+  (interactive)
+  (select-window (frame-first-window)))
 
 (defun matts-split-window-three-ways ()
   "Reset windows and frames with room"
@@ -504,5 +509,19 @@ A place is considered `tab-width' character columns."
     (if mark-active
         (buffer-substring (region-beginning) (region-end))
       (read-string "Github: ")))))
+
+(defun markdown-preview-file ()
+  "run Marked on the current file and revert the buffer"
+  (interactive)
+  (shell-command
+   (format "open -a /Applications/Marked.app %s"
+           (shell-quote-argument (buffer-file-name))))
+  )
+(global-set-key "\C-cm" 'markdown-preview-file)
+
+(defun reload-theme ()
+  "Reload the color them to quickly see new color changes"
+  (interactive)
+  (color-theme-neptune))
 
 (provide 'defuns)
