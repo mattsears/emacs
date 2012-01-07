@@ -6,35 +6,23 @@ Javascript, and Coffeescript.
 
 Includes a customized color theme called Neptune.
 
-Features
+A Few Features
 ========
-
 
 Feature            | Description
 :------------------|:---------------------------|
-peepopen           | Quickly project file search
-coffee-mode        | Coffeescript files
+auto-complete      | Auto complete with popup menu.
+ruby-mode          | Ruby mode with a bunch of extras.
+coffee-mode        | Coffeescript files.
+peepopen           | Quickly project file search.
+full-ack           | Fast text search
 js-mode            | A robust javascript mode.
+gist               | Emacs integration for gist.github.com.
+haml               | Haml mode.
+sass               | Handles .sass and .scss.
+markdown           | Markdown mode with Marked.app integration.
+magit              | Awesome Git mode from Emacs.
+smex               | M-x with IDO integration. (Can't live without)
+yaml               | Yaml
+snippets           | With help from yasnippets and auto-complete
 
-peepopen - Quickly access specific objects in Emacs;
-coffee-mode
-project-root - Build cache of files in a project for quick switching
-gist - Emacs integration for gist.github.com
-haml -
-sass -
-markdown
-ido - Interactively do things with buffers and files.
-magit - Control Git from Emacs.
-rails-reloaded
-rhtml
-ri-emacs
-slime
-swank
-smex
-yaml
-snippets
-
-TODO
-====
-
-Snippets don't work in Ruby mode
