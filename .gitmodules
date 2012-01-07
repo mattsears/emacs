@@ -58,3 +58,12 @@
 [submodule "vendor/iedit"]
 	path = vendor/iedit
 	url = git://github.com/eproxus/emacs-iedit.git
+[submodule "vendor/tomatinho"]
+	path = vendor/tomatinho
+	url = git://github.com/konr/tomatinho.git
+[submodule "vendor/nyan-mode"]
+	path = vendor/nyan-mode
+	url = git://github.com/TeMPOraL/nyan-mode.git
+[submodule "vendor/full-ack"]
+	path = vendor/full-ack
+	url = https://github.com/nschum/full-ack.git
