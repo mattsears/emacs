@@ -5,8 +5,11 @@
 ;; Newline and then indent.
 (global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
 
-;; make the delete key delete
+;; Make the delete key delete
 (global-set-key [delete] 'delete-char)
+
+;; Searching
+(define-key global-map (kbd "A-F") 'ack)
 
 ;; Prefer backward-kill-word over Backspace
 (global-set-key "\C-w" 'backward-kill-word)
@@ -115,17 +118,16 @@
 (define-key osx-key-mode-map (kbd "A-b") 'ibuffer)
 
 ;; Compile buffer in it's current mode
-;;(define-key osx-key-mode-map (kbd "A-r") 'mode-compile)
+(define-key osx-key-mode-map (kbd "A-r") 'mode-compile)
 
 ;; Custom set of commands in popup window
 (define-key osx-key-mode-map (kbd "A-m") 'matts-popup-commands)
-
 
 ;; Popup a window for all the methods on the buffer
 (define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
 
 ;; Find file in project
-;;(define-key osx-key-mode-map (kbd "A-t") 'find-file-in-project)
+;; (define-key osx-key-mode-map (kbd "A-t") 'find-file-in-project)
 (define-key osx-key-mode-map (kbd "A-t") 'peepopen-goto-file-gui)
 (global-set-key (kbd "<A-t>") 'peepopen-goto-file-gui)
 
@@ -133,20 +135,24 @@
 (define-key osx-key-mode-map (kbd "A-w") 'my-close-current-window-asktosave)
 
 ;; Kill the other buffer and window
-;;(global-set-key (kbd "<A-W>") 'matts-close-and-delete-window)
 (define-key osx-key-mode-map (kbd "A-k") 'matts-close-and-delete-window)
 
 ;; Shortcut for ehell
 (global-set-key "\C-x\C-z" 'eshell)
 
-;; Key-chord bindings
+;; IEdit
+(define-key osx-key-mode-map (kbd "C-;") 'iedit-mode)
+(define-key global-map (kbd "C-;") 'iedit-mode)
+(global-set-key (kbd "C-;") 'iedit-mode)
+(define-key isearch-mode-map (kbd "C-;") 'iedit-mode)
 
+;; Key-chord bindings
 (add-to-list 'load-path "~/.emacs.d/vendor/key-chord.el")
 (require 'key-chord)
 (key-chord-mode 1)
 
 ;; Search github
 (key-chord-define-global "gh" 'search-github)
-(key-chord-define-global "er" 'iedit-mode)
+;;(key-chord-define-global "rr" 'iedit-mode)
 
 (provide 'bindings)

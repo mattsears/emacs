@@ -271,6 +271,25 @@
 (setq desktop-base-file-name ".emacs-desktop")
 (setq desktop-save t) ;; don't ask, just always save the session
 
+; Edit server for editing text area boxes in Chrome
+(add-to-list 'load-path "~/.emacs.d/vendor/edit-server.el")
+(require 'edit-server)
 
-; Start server.
-(server-start)
+;; Edit text in an existing frame
+(when (require 'edit-server nil t)
+  (setq edit-server-new-frame nil)
+  (edit-server-start))
+
+;; Edit text in markdown mode for any text area box on github
+(add-hook 'edit-server-start-hook
+          (lambda ()
+            (when (string-match "github.com" (buffer-name))
+      (markdown-mode))))
+
+;; Autocomplete mode
+(add-to-list 'load-path "~/.emacs.d/vendor/")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/vendor/ac-dict")
+(ac-config-default)
+(setq ac-delay 0.5)
+(setq ac-show-menu-immediately-on-auto-complete nil)

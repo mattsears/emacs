@@ -253,27 +253,6 @@ Otherwise point moves to beginning of line."
      `((500 200) ,(selected-frame))
      (list menu-title (cons menu-title (nreverse item-list))))))
 
-(defun matts-popup-commands ()
-  "Show a popup menu of commands."
-  (interactive)
-  (eval-expression (car (read-from-string (choose-from-menu "My Menu"
-                                                            (list
-                                                             (cons "IRC" "(call-interactively 'erc)")
-                                                             (cons "Shell" "(eshell)")
-                                                             (cons "Bookmarks" "(call-interactively 'list-bookmarks)")
-                                                             (cons "Export Calendar" "(call-interactively 'matts-org-export-icalendar)")
-                                                             (cons "-" "")
-                                                             (cons "Today's Agenda" "(org-agenda-list)")
-                                                             (cons "Todos" "(matts-todos)")
-                                                             (cons "Appointments" "(matts-appointments)")
-                                                             (cons "-" "")
-                                                             (cons "Show/hide line numbers " "(linum)")
-                                                             (cons "Open file in Github " "(open-file-in-github)")
-                                                             (cons "Nuke all buffers " "(nuke-all-buffers)")
-                                                             (cons "Reset Window" "(reset-window-position)")
-                                                             (cons "Reload Emacs" "(load-file \"~/.emacs\")")
-                                                             ))))) )
-
 (defun matts-popup-symbols ()
   "Popups for the current buffer's symbols"
   (interactive)
@@ -519,9 +498,17 @@ A place is considered `tab-width' character columns."
   )
 (global-set-key "\C-cm" 'markdown-preview-file)
 
-(defun reload-theme ()
-  "Reload the color them to quickly see new color changes"
-  (interactive)
-  (color-theme-neptune))
+;; Simulate smooth scrolling
+(defun smooth-scroll (increment)
+  (scroll-up increment) (sit-for 0.05)
+  (scroll-up increment) (sit-for 0.02)
+  (scroll-up increment) (sit-for 0.01)
+  (scroll-up increment) (sit-for 0.02)
+  (scroll-up increment) (sit-for 0.05)
+  (scroll-up increment) (sit-for 0.06)
+  (scroll-up increment))
+;; Map Command+Space to scroll down & Shift+Spacebar for scroll up
+(global-set-key (kbd "<A-SPC>") '(lambda () (interactive) (smooth-scroll 2)))
+(global-set-key (kbd "<S-SPC>") '(lambda () (interactive) (smooth-scroll -2)))
 
 (provide 'defuns)
