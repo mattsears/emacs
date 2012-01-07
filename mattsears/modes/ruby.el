@@ -5,18 +5,34 @@
      (require 'ruby-compilation)
      (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
      (define-key ruby-mode-map (kbd "C-M-h") 'backward-kill-word)
+     (define-key ruby-mode-map (kbd "C-r") 'ruby-compilation-this-buffer)
      (define-key ruby-mode-map (kbd "C-c l") "lambda")))
 
+;; Set custom flags when running the ruby command in mode-compile
+(setq ruby-dbg-flags "-W0")
 
 ;; RVM
 (add-to-list 'load-path "~/.emacs.d/vendor/rvm.el")
 (require 'rvm)
-;;(rvm-use-default)
+
+(add-hook 'ruby-mode-hook
+          (lambda () (rvm-activate-corresponding-ruby)))
 
 ;; A few formatting options
 (setq ruby-deep-indent-paren-style nil)
 (setq ruby-deep-arglist nil)
 (setq ruby-dbg-flags "-W0")
+
+;; RSense
+(setq rsense-home "/usr/local/lib/rsense-0.3")
+(add-to-list 'load-path (concat rsense-home "/etc"))
+(require 'rsense)
+
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c .") 'ac-complete-rsense)
+            (add-to-list 'ac-sources 'ac-source-rsense-method)
+            (add-to-list 'ac-sources 'ac-source-rsense-constant)))
 
 ;;----------------------------------------------------------------------------
 ;; Ruby - Testing
@@ -32,14 +48,12 @@
              (delete-region (point-min) (point-max))))))
      (ad-activate 'ruby-do-run-w/compilation)))
 
-(add-hook 'ruby-mode-hook 'coding-hook)
+;; (add-hook 'ruby-mode-hook 'coding-hook)
 
 ;; RSpec
 (vendor 'rspec-mode)
 (add-to-list 'auto-mode-alist '("_spec.rb$" . rspec-mode))
 (require 'rspec-mode)
-
-;;(setq rspec-use-rvm t)
 
 ;; Shoulda
 (vendor 'shoulda-mode)
@@ -55,7 +69,6 @@
 ;;----------------------------------------------------------------------------
 (require 'sass-mode)
 (require 'haml-mode)
-
 (setq auto-mode-alist (cons '("\\.haml$" . haml-mode) auto-mode-alist))
 
 (vendor 'ruby-hacks)
@@ -93,11 +106,11 @@
 (add-hook 'ruby-mode-hook
           (function (lambda ()
                       (flymake-mode)
-					  (add-hook 'local-write-file-hooks
-					    '(lambda()
-					      (save-excursion
-					        (untabify (point-min) (point-max))
-					        (delete-trailing-whitespace))))
+                      (add-hook 'local-write-file-hooks
+                                '(lambda()
+                                   (save-excursion
+                                     (untabify (point-min) (point-max))
+                                     (delete-trailing-whitespace))))
                       )))
 
 ;;----------------------------------------------------------------------------
@@ -113,7 +126,7 @@
     (indent-according-to-mode)
     (delete-region (point) (progn (skip-chars-backward " \t") (point))))
   (when (ruby-previous-line-is-comment)
-      (insert "# "))
+    (insert "# "))
   (indent-according-to-mode))
 
 (defun ruby-previous-line-is-comment ()

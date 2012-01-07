@@ -38,18 +38,6 @@
 (require 'ibuffer)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
-; (mark modified read-only git-status-mini " "
-;       (name 18 18 :left :elide)
-;       " "
-;       (size 9 -1 :right)
-;       " "
-;       (mode 16 16 :left :elide)
-;       " "
-;       (eproject 16 16 :left :elide)
-;       " "
-;       (git-status 8 8 :left)
-;       " " filename-and-process)
-
 (setq ibuffer-shrink-to-minimum-size t)
 (setq ibuffer-always-show-last-buffer nil)
 (setq ibuffer-sorting-mode 'recency)
@@ -57,7 +45,6 @@
 (setq ibuffer-formats
       '((mark modified read-only " "
 	     (name 40 20) " " filename)
-;;         (mark " " (name 20 -1) " " filename)
        ))
 
 (add-to-list
@@ -78,13 +65,14 @@
       (quote (("default"
                ("channels" (mode . erc-mode))
                ("css" (mode . css-mode))
-               ("javascript" (mode . espresso-mode))
                ("html" (mode . rhtml-mode))
                ("haml" (mode . haml-mode))
                ("sass" (mode . sass-mode))
                ("coffee" (mode . coffee-mode))
+               ("javascript" (mode . js-mode))
                ("yaml" (mode . yaml-mode))
-               ("controllers" (name . "^\\*_controller.rb\\*$"))
+               ("lisp" (mode . emacs-lisp-mode))
+               ("ruby" (mode . ruby-mode))
                ))))
 
 ;; key bindings
