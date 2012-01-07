@@ -67,6 +67,7 @@
 ;;----------------------------------------------------------------------------
 ;; Ruby - haml & sass
 ;;----------------------------------------------------------------------------
+(vendor 'sass-mode)
 (require 'sass-mode)
 (require 'haml-mode)
 (setq auto-mode-alist (cons '("\\.haml$" . haml-mode) auto-mode-alist))

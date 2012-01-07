@@ -67,3 +67,6 @@
 [submodule "vendor/full-ack"]
 	path = vendor/full-ack
 	url = https://github.com/nschum/full-ack.git
+[submodule "vendor/sass-mode"]
+	path = vendor/sass-mode
+	url = https://github.com/nex3/sass-mode.git
