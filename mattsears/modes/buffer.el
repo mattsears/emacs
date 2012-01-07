@@ -70,6 +70,7 @@
                ("sass" (mode . sass-mode))
                ("coffee" (mode . coffee-mode))
                ("javascript" (mode . js-mode))
+               ("markdown" (mode . markdown-mode))
                ("yaml" (mode . yaml-mode))
                ("lisp" (mode . emacs-lisp-mode))
                ("ruby" (mode . ruby-mode))
