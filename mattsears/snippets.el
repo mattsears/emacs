@@ -7,7 +7,7 @@
 (yas/initialize)
 
 ;; Load my custom snippets
-(yas/load-directory "~/.emacs.d/vendor/yasnippets")
+(yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets")
 (yas/load-directory "~/.emacs.d/vendor/yasnippets-shoulda")
 (yas/load-directory "~/.emacs.d/vendor/cucumber/snippets/feature-mode")
 (setq yas/global-mode t)
