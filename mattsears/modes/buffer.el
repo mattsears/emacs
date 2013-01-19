@@ -66,9 +66,13 @@
                ("channels" (mode . erc-mode))
                ("css" (mode . css-mode))
                ("html" (mode . rhtml-mode))
+               ("handlebars" (or
+                             (name . "^\\*.jst.hbs.haml\\*$")
+                             (name . "^\\*.jst.hbs\\*$")))
                ("haml" (mode . haml-mode))
                ("sass" (mode . sass-mode))
                ("coffee" (mode . coffee-mode))
+               ("cucumber" (mode . feature-mode))
                ("javascript" (mode . js-mode))
                ("markdown" (mode . markdown-mode))
                ("yaml" (mode . yaml-mode))

@@ -13,12 +13,6 @@
 [submodule "vendor/slime"]
 	path = vendor/slime
 	url = git://github.com/nablaone/slime.git
-[submodule "vendor/yasnippets-shoulda"]
-	path = vendor/yasnippets-shoulda
-	url = git://github.com/rwc9u/yasnippets-shoulda.git
-[submodule "vendor/shoulda-mode"]
-	path = vendor/shoulda-mode
-	url = git://github.com/pezra/shoulda-mode.git
 [submodule "vendor/cucumber"]
 	path = vendor/cucumber
 	url = git://github.com/michaelklishin/cucumber.el.git
@@ -34,21 +28,12 @@
 [submodule "vendor/smart-tab"]
 	path = vendor/smart-tab
 	url = https://github.com/genehack/smart-tab.git
-[submodule "rspec-mode"]
-	path = rspec-mode
-	url = git://github.com/anildigital/rspec-mode.git
-[submodule "vendor/rspec-mode"]
-	path = vendor/rspec-mode
-	url = git://github.com/anildigital/rspec-mode.git
 [submodule "vendor/yasnippets"]
 	path = vendor/yasnippets
 	url = git://github.com/rejeep/yasnippets.git
 [submodule "vendor/coffee-mode"]
 	path = vendor/coffee-mode
 	url = git://github.com/defunkt/coffee-mode.git
-[submodule "vendor/ruby-block"]
-	path = vendor/ruby-block
-	url = https://github.com/adolfosousa/ruby-block.el.git
 [submodule "vendor/ruby-end"]
 	path = vendor/ruby-end
 	url = git://github.com/rejeep/ruby-end.git
@@ -58,9 +43,6 @@
 [submodule "vendor/iedit"]
 	path = vendor/iedit
 	url = git://github.com/eproxus/emacs-iedit.git
-[submodule "vendor/tomatinho"]
-	path = vendor/tomatinho
-	url = git://github.com/konr/tomatinho.git
 [submodule "vendor/nyan-mode"]
 	path = vendor/nyan-mode
 	url = git://github.com/TeMPOraL/nyan-mode.git
@@ -73,3 +55,21 @@
 [submodule "vendor/yasnippet"]
 	path = vendor/yasnippet
 	url = git://github.com/capitaomorte/yasnippet.git
+[submodule "vendor/expand-region"]
+	path = vendor/expand-region
+	url = git://github.com/magnars/expand-region.el.git
+[submodule "vendor/rspec-mode"]
+	path = vendor/rspec-mode
+	url = git://github.com/pezra/rspec-mode.git
+[submodule "vendor/ruby-tools"]
+	path = vendor/ruby-tools
+	url = git://github.com/rejeep/ruby-tools.git
+[submodule "vendor/flycheck"]
+	path = vendor/flycheck
+	url = git://github.com/lunaryorn/flycheck.git
+[submodule "vendor/dash"]
+	path = vendor/dash
+	url = git://github.com/magnars/dash.el.git
+[submodule "vendor/smartparens"]
+	path = vendor/smartparens
+	url = git://github.com/Fuco1/smartparens.git

@@ -62,7 +62,7 @@
 ;; Leave wrapping on for vertically split windows
 (setq truncate-partial-width-windows nil)
 
-;; Not interested in printing
+;;Not interested in printing
 (when (boundp 'osx-key-mode-map)
  (define-key osx-key-mode-map (kbd "A-p")
    '(lambda () (interactive) (message "noop"))))
@@ -152,7 +152,7 @@
 (key-chord-mode 1)
 
 ;; Search github
-(key-chord-define-global "gh" 'search-github)
+;; (key-chord-define-global "gh" 'search-github)
 ;;(key-chord-define-global "rr" 'iedit-mode)
 
 (provide 'bindings)

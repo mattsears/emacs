@@ -1,6 +1,6 @@
 (add-to-list 'load-path "~/.emacs.d/vendor")
 
-; custom place to save customizations
+;; Loat Aquamacs customizations
 (setq custom-file "~/.emacs.d/mattsears/custom.el")
 (load custom-file)
 
@@ -12,7 +12,6 @@
 (load "mattsears/local")
 (load "mattsears/snippets")
 
-(vendor 'cheat)
 (vendor 'treetop)
 (vendor 'css)
 (vendor 'full-ack)

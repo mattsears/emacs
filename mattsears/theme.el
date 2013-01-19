@@ -6,9 +6,9 @@
 (color-theme-neptune)
 
 ;; Set the default font-size to 16pt
-(set-face-attribute 'default nil :height 150)
+(set-face-attribute 'default nil :height 180)
 
-(setq transparency-level 85)
+(setq transparency-level 100)
 
 ;; turn off 3d modeline
 (set-face-attribute 'mode-line nil :box nil)

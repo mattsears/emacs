@@ -85,13 +85,6 @@ Otherwise point moves to beginning of line."
       (beginning-of-line)
     (back-to-indentation)))
 
-(defun my-new-frame-with-new-scratch ()
-  "Create a new scratch area"
-  (interactive)
-  (let ((one-buffer-one-frame t))
-    (new-frame-with-new-scratch)))
-(define-key osx-key-mode-map (kbd "A-n") 'my-new-frame-with-new-scratch)
-
 (defun insert-soft-tab ()
   " Tab with spaces"
   (interactive)
@@ -437,7 +430,6 @@ A place is considered `tab-width' character columns."
   "Refresh the buffer from the disk (prompt if modified)"
   (interactive)
   (revert-buffer t (not (buffer-modified-p)) t))
-
 (global-set-key [f5] 'refresh-file)
 
 ;; Borrowed from http://atomized.org/2011/01/toggle-between-root-non-root-in-emacs-with-tramp/
@@ -489,6 +481,9 @@ A place is considered `tab-width' character columns."
         (buffer-substring (region-beginning) (region-end))
       (read-string "Github: ")))))
 
+;; This function will open Marked.app and monitor the current markdown document
+;; for anything changes.  In other words, it will live reload and convert the
+;; markdown documment
 (defun markdown-preview-file ()
   "run Marked on the current file and revert the buffer"
   (interactive)
@@ -498,17 +493,38 @@ A place is considered `tab-width' character columns."
   )
 (global-set-key "\C-cm" 'markdown-preview-file)
 
+(defun scroll-down-five ()
+  "Scrolls down five rows."
+  (interactive)
+  (scroll-down 5))
+
+(defun scroll-up-five ()
+  "Scrolls up five rows."
+  (interactive)
+  (scroll-up 5))
+
 ;; Simulate smooth scrolling
 (defun smooth-scroll (increment)
-  (scroll-up increment) (sit-for 0.05)
+  (scroll-up increment) (sit-for 0.02)
   (scroll-up increment) (sit-for 0.02)
   (scroll-up increment) (sit-for 0.01)
+  (scroll-up increment) (sit-for 0.01)
+  (scroll-up increment) (sit-for 0.01)
   (scroll-up increment) (sit-for 0.02)
-  (scroll-up increment) (sit-for 0.05)
-  (scroll-up increment) (sit-for 0.06)
+  (scroll-up increment) (sit-for 0.02)
   (scroll-up increment))
 ;; Map Command+Space to scroll down & Shift+Spacebar for scroll up
-(global-set-key (kbd "<A-SPC>") '(lambda () (interactive) (smooth-scroll 2)))
-(global-set-key (kbd "<S-SPC>") '(lambda () (interactive) (smooth-scroll -2)))
+(global-set-key (kbd "<A-SPC>") '(lambda () (interactive) (scroll-down-five)))
+(global-set-key (kbd "<S-SPC>") '(lambda () (interactive) (scroll-up-five)))
+
+(defun cleanup-buffer ()
+  "Perform a bunch of operations on the whitespace content of a buffer."
+  (interactive)
+  (indent-buffer)
+  (untabify-buffer)
+  (delete-trailing-whitespace))
+(global-set-key (kbd "C-c n") 'cleanup-buffer)
+
+(defun open-in-finder () "OpenInFinder." (interactive) (shell-command "open .")) (global-set-key (kbd "<f8>") 'open-in-finder)
 
 (provide 'defuns)

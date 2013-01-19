@@ -11,6 +11,9 @@
 ;; Set custom flags when running the ruby command in mode-compile
 (setq ruby-dbg-flags "-W0")
 
+;; Sane indenting
+(setq ruby-deep-indent-paren nil)
+
 ;; RVM
 (add-to-list 'load-path "~/.emacs.d/vendor/rvm.el")
 (require 'rvm)
@@ -34,6 +37,12 @@
             (add-to-list 'ac-sources 'ac-source-rsense-method)
             (add-to-list 'ac-sources 'ac-source-rsense-constant)))
 
+
+;; Ruby tools
+(add-to-list 'load-path "~/.emacs.d/vendor/ruby-tools")
+(require 'ruby-tools)
+
+
 ;;----------------------------------------------------------------------------
 ;; Ruby - Testing
 ;;----------------------------------------------------------------------------
@@ -55,14 +64,16 @@
 (add-to-list 'auto-mode-alist '("_spec.rb$" . rspec-mode))
 (require 'rspec-mode)
 
-;; Shoulda
-(vendor 'shoulda-mode)
-(add-to-list 'auto-mode-alist '("_test.rb$" . shoulda-mode))
-(require 'shoulda-mode)
-
 ;; Cucumber
 (add-to-list 'load-path "~/.emacs.d/vendor/cucumber")
 (require 'feature-mode)
+
+;; Minitest
+(vendor 'minitest-mode)
+(add-to-list 'auto-mode-alist '("_test.rb$" . minitest-mode))
+(require 'minitest-mode)
+(setq minitest-use-bundler-when-possible nil)
+(setq minitest-use-rake-flag nil)
 
 ;;----------------------------------------------------------------------------
 ;; Ruby - haml & sass
@@ -73,15 +84,6 @@
 (setq auto-mode-alist (cons '("\\.haml$" . haml-mode) auto-mode-alist))
 
 (vendor 'ruby-hacks)
-
-;;----------------------------------------------------------------------------
-;; Ruby Block Helpers
-;;----------------------------------------------------------------------------
-(vendor 'ruby-block)
-(require 'ruby-block)
-(ruby-block-mode t)
-
-(setq ruby-block-highlight-toggle t)
 
 ;;----------------------------------------------------------------------------
 ;; Automatically insert 'end' for blocks
@@ -106,7 +108,7 @@
 
 (add-hook 'ruby-mode-hook
           (function (lambda ()
-                      (flymake-mode)
+                      ;; (flymake-mode)
                       (add-hook 'local-write-file-hooks
                                 '(lambda()
                                    (save-excursion
@@ -117,6 +119,18 @@
 ;;----------------------------------------------------------------------------
 ;; Ruby related functions
 ;;----------------------------------------------------------------------------
+
+(defun rails-console ()
+  "Create a rails console process, if one doesn't exist. And switch to *rails-console* buffer."
+  (interactive)
+  (if (null (get-buffer "*rails-console*"))
+      (progn
+        (term "/bin/bash")
+        (term-send-string (get-buffer-process "*terminal*") "rails console\n")
+        (switch-to-buffer "*terminal*")
+        (rename-buffer "*rails-console*")
+        (term-line-mode))
+    (switch-to-buffer "*rails-console*")))
 
 (defun ruby-reindent-then-newline-and-indent ()
   "Reindents the current line then creates an indented newline."
@@ -151,5 +165,27 @@
     "ret=File.expand_path(x)"
     "if(File.exist?(x))};printf ret\" "
     module)))
+
+(defadvice ruby-indent-line (after line-up-args activate)
+  (let (indent prev-indent arg-indent)
+    (save-excursion
+      (back-to-indentation)
+      (when (zerop (car (syntax-ppss)))
+        (setq indent (current-column))
+        (skip-chars-backward " \t\n")
+        (when (eq ?, (char-before))
+          (ruby-backward-sexp)
+          (back-to-indentation)
+          (setq prev-indent (current-column))
+          (skip-syntax-forward "w_.")
+          (skip-chars-forward " ")
+          (setq arg-indent (current-column)))))
+    (when prev-indent
+      (let ((offset (- (current-column) indent)))
+        (cond ((< indent prev-indent)
+               (indent-line-to prev-indent))
+              ((= indent prev-indent)
+               (indent-line-to arg-indent)))
+        (when (> offset 0) (forward-char offset))))))
 
 (provide 'ruby)

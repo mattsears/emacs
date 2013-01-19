@@ -16,8 +16,14 @@
 (global-set-key (kbd "C-c k") 'mode-compile-kill)
 
 ;; Indicate syntax errors
-(add-to-list 'load-path "~/.emacs.d/vendor/flymake.el")
-(require 'flymake)
+(vendor 'flycheck)
+(require 'flycheck)
+;; Enable flymake for all files
+(add-hook 'find-file-hook 'flycheck-mode)
+;; (add-hook 'ruby-mode-hook 'flycheck-mode)
+;; (add-hook 'coffee-mode-hook 'flycheck-mode)
+;; (add-hook 'sass-mode-hook 'flycheck-mode)
+;; (add-hook 'haml-mode-hook 'flycheck-mode)
 
 ;; Midnight mode to clean up old buffers
 (require 'midnight)
@@ -53,11 +59,18 @@
 (vendor 'iedit)
 (require 'iedit)
 
-;; Pomodoro Timer
-(vendor 'tomatinho)
-(require 'tomatinho)
-(global-set-key (kbd "<f11>") 'tomatinho)
-
 ;; Nyan nyan nyan
 (vendor 'nyan-mode)
 (require 'nyan-mode)
+
+;; Handy way to expand regions (https://github.com/magnars/expand-region.el)
+(vendor 'expand-region)
+(require 'expand-region)
+(global-set-key (kbd "C-\"") 'er/expand-region)
+
+(vendor 'dash)
+(require 'dash)
+
+(vendor 'smartparens)
+(require 'smartparens)
+(smartparens-global-mode t)

@@ -10,3 +10,6 @@
             (set-face-background 'magit-item-highlight "#0C1021")
             (set-face-foreground 'magit-diff-add "#79b958")
             (set-face-foreground 'magit-diff-del "#d95c47")))
+
+;; Magit status.
+(global-set-key (kbd "C-x g") 'magit-status)

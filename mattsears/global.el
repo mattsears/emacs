@@ -38,7 +38,7 @@
 (setq standard-indent 2)
 (setq ns-pop-up-frames nil)
 
-;; fix broken backspace
+;; Fix broken backspace
 (global-set-key "\b" 'backward-delete-char)
 (setq vc-handled-backends nil)
 
@@ -115,7 +115,7 @@
 ;; Make sure we have font-lock to start with
 (require 'font-lock)
 
-;; keep searching throughout the file
+;; Keep searching throughout the file.  I think this ships with Aquamacs?
 (require 'find-recursive)
 
 ;; Yet another paste tool, this one for Gist (awesome)
@@ -209,35 +209,37 @@
 (setq compilation-scroll-output t)
 (setq compilation-window-height 18)
 
+;; This will help distinguish files with the same name
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
 (setq uniquify-separator "/")
 (setq uniquify-after-kill-buffer-p t) ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
 
-;; Bookmarks
+;; Bookmarks are good.  I need to use them more.
 (setq
  bookmark-default-file "~/.emacs.d/.bookmarks" ;; keep my ~/ clean
  bookmark-save-flag 1)                        ;; autosave each change)
 
-;; Smart pairing
-;;(require 'autopair)
-;;(autopair-global-mode) ;; to enable in all buffers
 
+;; Handy Textmate-like functions.
 (add-to-list 'load-path "~/.emacs.d/vendor/textmate.el")
 (require 'textmate)
 (textmate-mode)
 
+;; https://peepcode.com/products/peepopen
 (add-to-list 'load-path "~/.emacs.d/vendor/")
 (require 'peepopen)
-
-(add-to-list 'load-path "~/.emacs.d/vendor/nav")
-(require 'nav)
 
 ;; TAGS
 (setq tags-file-name ".TAGS")
 
-;; Speedbar options
+;; Speedbar (Like nav, but better)
+(add-to-list 'load-path "~/.emacs.d/vendor/sr-speedbar")
+(require 'sr-speedbar)
+(setq sr-speedbar-right-side nil)
+(setq sr-speedbar-auto-refresh nil)
+(setq sr-speedbar-width-x 40)
 (setq speedbar-show-unknown-files t)
 (setq speedbar-use-images nil)
 (setq speedbar-directory-button-trim-method 'trim)
@@ -245,12 +247,6 @@
 (setq speedbar-smart-directory-expand-flag nil)
 (setq speedbar-hide-button-brackets-flag t)
 (setq speedbar-indentation-width 2)
-
-(add-to-list 'load-path "~/.emacs.d/vendor/sr-speedbar")
-(require 'sr-speedbar)
-(setq sr-speedbar-right-side nil)
-(setq sr-speedbar-auto-refresh nil)
-(setq sr-speedbar-width-x 34)
 
 (add-hook 'speedbar-reconfigure-keymaps-hook
    '(lambda ()
@@ -270,26 +266,3 @@
 (setq desktop-dirname "~/.emacs.d/")
 (setq desktop-base-file-name ".emacs-desktop")
 (setq desktop-save t) ;; don't ask, just always save the session
-
-; Edit server for editing text area boxes in Chrome
-(add-to-list 'load-path "~/.emacs.d/vendor/edit-server.el")
-(require 'edit-server)
-
-;; Edit text in an existing frame
-(when (require 'edit-server nil t)
-  (setq edit-server-new-frame nil)
-  (edit-server-start))
-
-;; Edit text in markdown mode for any text area box on github
-(add-hook 'edit-server-start-hook
-          (lambda ()
-            (when (string-match "github.com" (buffer-name))
-      (markdown-mode))))
-
-;; Autocomplete mode
-(add-to-list 'load-path "~/.emacs.d/vendor/")
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/vendor/ac-dict")
-(ac-config-default)
-(setq ac-delay 0.5)
-(setq ac-show-menu-immediately-on-auto-complete nil)

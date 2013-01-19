@@ -25,6 +25,7 @@
 (setq dired-omit-size-limit nil)
 (setq dired-dwim-target t)
 (setq dired-recursive-deletes 'top)
+(setq dired-recursive-copies (quote always))
 
 (add-hook 'dired-mode-hook
           '(lambda()
