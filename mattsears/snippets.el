@@ -19,13 +19,10 @@
 
 (vendor 'yasnippet)
 (require 'yasnippet)
-
-;; (setq yas/trigger-key (kbd "C-c <kp-multiply>"))
-(yas/initialize)
+(yas-global-mode 1)
 (yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets")
 (yas/load-directory "~/.emacs.d/vendor/yasnippets")
 (yas/load-directory "~/.emacs.d/vendor/cucumber/snippets/feature-mode")
-;; (setq yas/trigger-key "TAB")
 
 (define-key ac-complete-mode-map "\r" 'ac-complete)
 (define-key ac-complete-mode-map "\t" 'ac-expand)
