@@ -2,7 +2,7 @@
 (require 'color-theme)
 (color-theme-initialize)
 (setq color-theme-is-global t)
-(load-file "~/.emacs.d/vendor/color-theme-neptune.el")
+(load-file "~/.emacs.d/mattsears/color-theme.el")
 (color-theme-neptune)
 
 ;; Set the default font-size to 16pt
