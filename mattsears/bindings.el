@@ -140,6 +140,9 @@
 ;; Shortcut for ehell
 (global-set-key "\C-x\C-z" 'eshell)
 
+;; Remap set-mark since ctrl-space is overwritten by mac-os
+(define-key  global-map  "\C-xm"  'cua-set-mark)
+
 ;; IEdit
 (define-key osx-key-mode-map (kbd "C-;") 'iedit-mode)
 (define-key global-map (kbd "C-;") 'iedit-mode)
@@ -154,5 +157,9 @@
 ;; Search github
 ;; (key-chord-define-global "gh" 'search-github)
 ;;(key-chord-define-global "rr" 'iedit-mode)
+
+(global-set-key (kbd "M-j") (lambda ()
+                  (interactive)
+                  (join-line -1)))
 
 (provide 'bindings)
