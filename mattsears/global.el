@@ -260,6 +260,11 @@
     )
 )
 
+;; Paredit all the things
+(autoload 'paredit-mode "paredit"
+  "Minor mode for pseudo-structurally editing Lisp code." t)
+;; (add-hook 'emacs-lisp-mode-hook       (lambda () (paredit-mode +1)))
+
 ;; Save the open buffers so they reopen when restarting emacs
 (desktop-save-mode 1)
 (setq desktop-path '("~/.emacs.d/"))
