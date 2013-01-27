@@ -12,6 +12,10 @@
               (seq "coverage" eol)          ;; code coverage files
               )))
 
+(require 'dired-details)
+(setq-default dired-details-hidden-string "--- ")
+(dired-details-install)
+
 (setq dired-omit-extensions
       (append dired-latex-unclean-extensions
               dired-bibtex-unclean-extensions

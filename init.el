@@ -2,7 +2,7 @@
 
 ;; Set up package system
 (defvar my-packages
-  '(clojure-mode clojure-test-mode nrepl paredit parenface)
+  '(clojure-mode clojure-test-mode nrepl paredit parenface dired-details)
   "A list of packages to ensure are installed at launch.")
 
 (require 'package)
