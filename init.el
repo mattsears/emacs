@@ -2,7 +2,7 @@
 
 ;; Set up package system
 (defvar my-packages
-  '(clojure-mode clojure-test-mode nrepl paredit parenface dired-details)
+  '(clojure-mode clojure-test-mode nrepl paredit parenface dired-details flycheck)
   "A list of packages to ensure are installed at launch.")
 
 (require 'package)
@@ -23,14 +23,13 @@
 (load "mattsears/global")
 (load "mattsears/bindings")
 (load "mattsears/defuns")
+(load "mattsears/snippets")
 (load "mattsears/modes")
 (load "mattsears/theme")
 (load "mattsears/local")
-(load "mattsears/snippets")
 
 (vendor 'treetop)
 (vendor 'css)
 (vendor 'full-ack)
 (vendor 'open-file-in-github)
 (smex-initialize)
-
