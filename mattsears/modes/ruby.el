@@ -1,4 +1,5 @@
 (require 'ruby-mode)
+(require 'inf-ruby)
 
 (eval-after-load 'ruby-mode
   '(progn
@@ -37,11 +38,15 @@
             (add-to-list 'ac-sources 'ac-source-rsense-method)
             (add-to-list 'ac-sources 'ac-source-rsense-constant)))
 
-
 ;; Ruby tools
 (add-to-list 'load-path "~/.emacs.d/vendor/ruby-tools")
 (require 'ruby-tools)
 
+
+;; Zossima
+(add-to-list 'load-path "~/.emacs.d/vendor/zossima")
+(autoload 'zossima-mode "zossima" "" t)
+(add-hook 'ruby-mode-hook 'zossima-mode)
 
 ;;----------------------------------------------------------------------------
 ;; Ruby - Testing
