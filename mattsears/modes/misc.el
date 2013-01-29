@@ -16,11 +16,8 @@
 (global-set-key (kbd "C-c k") 'mode-compile-kill)
 
 ;; Indicate syntax errors
-(vendor 'flycheck)
 (require 'flycheck)
-;; Enable flymake for all files
-(add-hook 'find-file-hook 'flycheck-mode)
-;; (add-hook 'ruby-mode-hook 'flycheck-mode)
+(add-hook 'ruby-mode-hook 'flycheck-mode)
 ;; (add-hook 'coffee-mode-hook 'flycheck-mode)
 ;; (add-hook 'sass-mode-hook 'flycheck-mode)
 ;; (add-hook 'haml-mode-hook 'flycheck-mode)
@@ -73,4 +70,15 @@
 
 (vendor 'smartparens)
 (require 'smartparens)
+
+;; Diminish modeline clutter
+(require 'diminish)
+(diminish 'textmate-mode)
+(diminish 'auto-complete-mode)
+(diminish 'yas-minor-mode)
+(diminish 'smartparens-mode)
+;;(diminish 'flycheck-mode)
+(diminish 'ruby-end-mode)
+(diminish 'truncate-lines)
+
 (smartparens-global-mode t)
