@@ -55,9 +55,6 @@
 [submodule "vendor/ruby-tools"]
 	path = vendor/ruby-tools
 	url = git://github.com/rejeep/ruby-tools.git
-[submodule "vendor/flycheck"]
-	path = vendor/flycheck
-	url = git://github.com/lunaryorn/flycheck.git
 [submodule "vendor/dash"]
 	path = vendor/dash
 	url = git://github.com/magnars/dash.el.git
