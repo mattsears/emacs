@@ -1,15 +1,3 @@
 [submodule "vendor/open-file-in-github"]
 	path = vendor/open-file-in-github
 	url = git://gist.github.com/170861.git
-[submodule "vendor/iedit"]
-	path = vendor/iedit
-	url = git://github.com/eproxus/emacs-iedit.git
-[submodule "vendor/nyan-mode"]
-	path = vendor/nyan-mode
-	url = git://github.com/TeMPOraL/nyan-mode.git
-[submodule "vendor/full-ack"]
-	path = vendor/full-ack
-	url = https://github.com/nschum/full-ack.git
-[submodule "vendor/expand-region"]
-	path = vendor/expand-region
-	url = git://github.com/magnars/expand-region.el.git

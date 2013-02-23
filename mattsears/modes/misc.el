@@ -26,7 +26,7 @@
 (require 'midnight)
 
 ;; Ack
-(vendor 'full-ack)
+(require 'full-ack)
 (autoload 'ack-same "full-ack" nil t)
 (autoload 'ack "full-ack" nil t)
 (autoload 'ack-find-same-file "full-ack" nil t)
@@ -62,17 +62,14 @@
 (add-hook 'text-mode-hook 'fci-mode)
 
 ;; Iedit mode
-(vendor 'iedit)
-(require 'iedit)
+;;(require 'iedit)
 
 ;; Nyan nyan nyan
-(vendor 'nyan-mode)
 (require 'nyan-mode)
 
 ;; Handy way to expand regions (https://github.com/magnars/expand-region.el)
-(vendor 'expand-region)
-(require 'expand-region)
-(global-set-key (kbd "C-\"") 'er/expand-region)
+;;(require 'expand-region)
+;;(global-set-key (kbd "C-\"") 'er/expand-region)
 
 (require 'dash)
 
@@ -82,7 +79,6 @@
 ;; Diminish modeline clutter
 (require 'diminish)
 (diminish 'textmate-mode)
-(diminish 'auto-complete-mode)
 (diminish 'yas-minor-mode)
 (diminish 'smartparens-mode)
 (diminish 'flycheck-mode)
