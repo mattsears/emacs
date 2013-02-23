@@ -8,7 +8,7 @@
                  coffee-mode rvm smex auto-complete haml-mode
                  dash rspec-mode sass-mode simplenote
                  diminish markdown-mode ruby-tools ruby-end
-                 ruby-compilation ruby-block)
+                 ruby-compilation ruby-block feature-mode)
   "A list of packages to ensure are installed at launch.")
 
 (require 'package)

@@ -61,7 +61,6 @@
 ;; (add-hook 'ruby-mode-hook 'coding-hook)
 
 ;; Cucumber
-(add-to-list 'load-path "~/.emacs.d/vendor/cucumber")
 (require 'feature-mode)
 
 ;; Minitest
