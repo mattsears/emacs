@@ -1,7 +1,6 @@
 ;;----------------------------------------------------------------------------
 ;; Css mode
 ;;----------------------------------------------------------------------------
-(add-to-list 'load-path "~/.emacs.d/vendor/css-mode.el")
 (require 'css-mode)
 (add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
 (add-to-list 'auto-mode-alist '("\\.less$" . css-mode))

@@ -150,7 +150,6 @@
 (define-key isearch-mode-map (kbd "C-;") 'iedit-mode)
 
 ;; Key-chord bindings
-(add-to-list 'load-path "~/.emacs.d/vendor/key-chord.el")
 (require 'key-chord)
 (key-chord-mode 1)
 

@@ -42,7 +42,6 @@
 (setq ack-context 1)
 
 
-(add-to-list 'load-path "~/.emacs.d/vendor/mustache-mode.el")
 (require 'mustache-mode)
 
 ;; Simplenotes

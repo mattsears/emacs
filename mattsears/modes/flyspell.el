@@ -1,6 +1,5 @@
 ;; Flyspell.el Spell checker
 
-(add-to-list 'load-path "~/.emacs.d/vendor/flyspell.el")
 (require 'flyspell)
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
 (add-to-list 'flyspell-prog-text-faces 'nxml-text-face)
