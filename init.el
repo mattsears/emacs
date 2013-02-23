@@ -11,7 +11,7 @@
                  ruby-compilation ruby-block feature-mode
                  full-ack nyan-mode fill-column-indicator
                  sr-speedbar textmate popup mustache-mode
-                 key-chord)
+                 key-chord fuzzy)
   "A list of packages to ensure are installed at launch.")
 
 (require 'package)
