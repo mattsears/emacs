@@ -63,13 +63,6 @@
 ;; Cucumber
 (require 'feature-mode)
 
-;; Minitest
-(vendor 'minitest-mode)
-(add-to-list 'auto-mode-alist '("_test.rb$" . minitest-mode))
-(require 'minitest-mode)
-(setq minitest-use-bundler-when-possible nil)
-(setq minitest-use-rake-flag nil)
-
 ;;----------------------------------------------------------------------------
 ;; Ruby - haml & sass
 ;;----------------------------------------------------------------------------
