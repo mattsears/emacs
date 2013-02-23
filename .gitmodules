@@ -1,36 +1,9 @@
-[submodule "vendor/smex"]
-	path = vendor/smex
-	url = git://github.com/nonsequitur/smex.git
-[submodule "vendor/magit"]
-	path = vendor/magit
-	url = git://github.com/jwiegley/magit.git
 [submodule "vendor/cucumber"]
 	path = vendor/cucumber
 	url = git://github.com/michaelklishin/cucumber.el.git
-[submodule "vendor/rvm.el"]
-	path = vendor/rvm.el
-	url = git://github.com/senny/rvm.el.git
 [submodule "vendor/open-file-in-github"]
 	path = vendor/open-file-in-github
 	url = git://gist.github.com/170861.git
-[submodule "vendor/simplenote"]
-	path = vendor/simplenote
-	url = http://github.com/cefstat/simplenote.el.git
-[submodule "vendor/smart-tab"]
-	path = vendor/smart-tab
-	url = https://github.com/genehack/smart-tab.git
-[submodule "vendor/yasnippets"]
-	path = vendor/yasnippets
-	url = git://github.com/rejeep/yasnippets.git
-[submodule "vendor/coffee-mode"]
-	path = vendor/coffee-mode
-	url = git://github.com/defunkt/coffee-mode.git
-[submodule "vendor/ruby-end"]
-	path = vendor/ruby-end
-	url = git://github.com/rejeep/ruby-end.git
-[submodule "vendor/markdown-mode"]
-	path = vendor/markdown-mode
-	url = git://github.com/defunkt/markdown-mode.git
 [submodule "vendor/iedit"]
 	path = vendor/iedit
 	url = git://github.com/eproxus/emacs-iedit.git
@@ -40,24 +13,6 @@
 [submodule "vendor/full-ack"]
 	path = vendor/full-ack
 	url = https://github.com/nschum/full-ack.git
-[submodule "vendor/sass-mode"]
-	path = vendor/sass-mode
-	url = https://github.com/nex3/sass-mode.git
-[submodule "vendor/yasnippet"]
-	path = vendor/yasnippet
-	url = git://github.com/capitaomorte/yasnippet.git
 [submodule "vendor/expand-region"]
 	path = vendor/expand-region
 	url = git://github.com/magnars/expand-region.el.git
-[submodule "vendor/rspec-mode"]
-	path = vendor/rspec-mode
-	url = git://github.com/pezra/rspec-mode.git
-[submodule "vendor/ruby-tools"]
-	path = vendor/ruby-tools
-	url = git://github.com/rejeep/ruby-tools.git
-[submodule "vendor/dash"]
-	path = vendor/dash
-	url = git://github.com/magnars/dash.el.git
-[submodule "vendor/smartparens"]
-	path = vendor/smartparens
-	url = git://github.com/Fuco1/smartparens.git

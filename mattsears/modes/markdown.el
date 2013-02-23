@@ -2,7 +2,6 @@
 ;; Markdown mode options
 ;;----------------------------------------------------------------------------
 
-(vendor 'markdown-mode)
 (require 'markdown-mode)
 
 (setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
@@ -15,4 +14,3 @@
 (add-hook 'markdown-mode-hook
           '(lambda ()
              (define-key markdown-mode-map (kbd "<tab>") 'defunkt-indent)))
-

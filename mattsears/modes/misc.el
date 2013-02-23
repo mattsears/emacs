@@ -32,11 +32,20 @@
 (autoload 'ack-find-same-file "full-ack" nil t)
 (autoload 'ack-find-file "full-ack" nil t)
 
+;; No show results buffer if there are 0 results!
+(setq ack-display-buffer 'after)
+
+;; Dont user regular expressions by default
+(setq ack-search-regexp nil)
+
+;; Just use one line above and one line below  in results
+(setq ack-context 1)
+
+
 (add-to-list 'load-path "~/.emacs.d/vendor/mustache-mode.el")
 (require 'mustache-mode)
 
 ;; Simplenotes
-(vendor 'simplenote)
 (require 'simplenote)
 
 ;; Graphically indicates the fill column
@@ -65,11 +74,10 @@
 (require 'expand-region)
 (global-set-key (kbd "C-\"") 'er/expand-region)
 
-(vendor 'dash)
 (require 'dash)
 
-(vendor 'smartparens)
 (require 'smartparens)
+(smartparens-global-mode t)
 
 ;; Diminish modeline clutter
 (require 'diminish)
@@ -77,8 +85,6 @@
 (diminish 'auto-complete-mode)
 (diminish 'yas-minor-mode)
 (diminish 'smartparens-mode)
-;;(diminish 'flycheck-mode)
+(diminish 'flycheck-mode)
 (diminish 'ruby-end-mode)
 (diminish 'truncate-lines)
-
-(smartparens-global-mode t)

@@ -2,7 +2,13 @@
 
 ;; Set up package system
 (defvar my-packages
-  '(clojure-mode clojure-test-mode nrepl paredit parenface dired-details flycheck)
+  '(clojure-mode clojure-test-mode nrepl paredit parenface
+                 dired-details flycheck gist magit smartparens
+                 exec-path-from-shell multi-term yasnippet
+                 coffee-mode rvm smex auto-complete haml-mode
+                 dash rspec-mode sass-mode simplenote
+                 diminish markdown-mode ruby-tools ruby-end
+                 ruby-compilation ruby-block)
   "A list of packages to ensure are installed at launch.")
 
 (require 'package)

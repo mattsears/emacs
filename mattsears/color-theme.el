@@ -140,7 +140,7 @@
 
 	   ;; Spelling mistakes
      (flyspell-duplicate-face ((t (:underline t))))
-     (flyspell-incorrect-face ((t (:underline "red" :foreground "#eeeeee"))))
+     (flyspell-incorrect-face ((t (:inherit neptune-red))))
      (fringe ((t (:inherit neptune-bg))))
 
      (isearch ((t (:inherit neptune-highlight))))
@@ -231,7 +231,7 @@
      (erb-comment-face ((t (:italic t :inherit neptune-grey))))
 
      ;; Do not highlight snippets
-     (yas/field-highlight-face ((t (nil))))
+     ;; (yas/field-highlight-face ((t (nil))))
 
      ;; ERC
      (erc-default-face ((t (:inherit neptune-blue))))

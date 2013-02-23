@@ -13,6 +13,7 @@
               )))
 
 (require 'dired-details)
+
 (setq-default dired-details-hidden-string "--- ")
 (dired-details-install)
 
@@ -40,7 +41,8 @@
              (define-key dired-mode-map "n" 'dired-touch-now)
              (local-set-key "\C-m" 'matts-dired-find-file)
              (local-set-key "^" 'matts-dired-up-directory)
-             (define-key dired-mode-map [return] 'matts-dired-find-file)))
+             ;; (define-key dired-mode-map [return] 'matts-dired-find-file)
+             ))
 
 ;;----------------------------------------------------------------------------
 ;; Dired related functions
@@ -83,4 +85,3 @@ reuse the current one."
         (find-alternate-file filename)
       (dired-find-file)
       (kill-buffer orig))))
-

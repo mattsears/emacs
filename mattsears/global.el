@@ -5,6 +5,19 @@
 ;; Set text mode to be the default major mode
 (setq default-major-mode 'text-mode)
 
+
+;; Fonts
+(set-face-attribute 'default nil :font "Monoco" :height 180 :weight 'normal)
+(set-face-attribute 'mode-line nil :inherit 'unspecified) ; show modeline in Monaco
+(set-face-attribute 'echo-area nil :family 'unspecified)  ; show echo area in Monaco
+(setq default-frame-alist
+      '((font . "-apple-Monaco-medium-normal-normal-*-9-*-*-*-m-0-iso10646-1")
+        (width  . 180)
+        (height . 180))
+      )
+
+(setq mac-allow-anti-aliasing t)
+
 (defvar project-root)
 (setq project-root (concat (expand-file-name "~") "/emacs"))
 
@@ -103,7 +116,7 @@
 ;; Turn off tool bar, scroll bar, and menu bar
 (tool-bar-mode -1)
 (menu-bar-mode -1)
-(scroll-bar-mode nil)
+(scroll-bar-mode -1)
 (toggle-scroll-bar -1)
 
 ;; Will somebody answer the phone!
@@ -131,7 +144,6 @@
 (require 'sudo)
 
 ;; Enhanced M-x
-(add-to-list 'load-path "~/.emacs.d/vendor/smex")
 (setq smex-save-file "~/.emacs.bak/smex.save")
 (require 'smex)
 (smex-initialize)
@@ -272,10 +284,18 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
+(setq mac-allow-anti-aliasing t)
 
 ;; Save the open buffers so they reopen when restarting emacs
-(desktop-save-mode 1)
-(setq desktop-path '("~/.emacs.d/"))
-(setq desktop-dirname "~/.emacs.d/")
-(setq desktop-base-file-name ".emacs-desktop")
-(setq desktop-save t) ;; don't ask, just always save the session
+;; Automatically save and restore sessions
+
+;; Desktop
+(require 'desktop)
+;; (desktop-save-mode 1)
+
+;; (defun my-desktop-save ()
+;;   (interactive)
+;;   ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
+;;   (if (eq (desktop-owner) (emacs-pid))
+;;       (desktop-save desktop-dirname)))
+;; (add-hook 'auto-save-hook 'my-desktop-save)

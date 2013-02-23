@@ -16,7 +16,6 @@
 (setq ruby-deep-indent-paren nil)
 
 ;; RVM
-(add-to-list 'load-path "~/.emacs.d/vendor/rvm.el")
 (require 'rvm)
 
 (add-hook 'ruby-mode-hook
@@ -39,12 +38,9 @@
             (add-to-list 'ac-sources 'ac-source-rsense-constant)))
 
 ;; Ruby tools
-(add-to-list 'load-path "~/.emacs.d/vendor/ruby-tools")
 (require 'ruby-tools)
 
-
 ;; Zossima
-(add-to-list 'load-path "~/.emacs.d/vendor/zossima")
 (autoload 'zossima-mode "zossima" "" t)
 (add-hook 'ruby-mode-hook 'zossima-mode)
 
@@ -64,11 +60,6 @@
 
 ;; (add-hook 'ruby-mode-hook 'coding-hook)
 
-;; RSpec
-(vendor 'rspec-mode)
-(add-to-list 'auto-mode-alist '("_spec.rb$" . rspec-mode))
-(require 'rspec-mode)
-
 ;; Cucumber
 (add-to-list 'load-path "~/.emacs.d/vendor/cucumber")
 (require 'feature-mode)
@@ -83,7 +74,7 @@
 ;;----------------------------------------------------------------------------
 ;; Ruby - haml & sass
 ;;----------------------------------------------------------------------------
-(vendor 'sass-mode)
+
 (require 'sass-mode)
 (require 'haml-mode)
 (setq auto-mode-alist (cons '("\\.haml$" . haml-mode) auto-mode-alist))
@@ -94,8 +85,10 @@
 ;; Automatically insert 'end' for blocks
 ;;----------------------------------------------------------------------------
 
-(vendor 'ruby-end)
 (require 'ruby-end)
+
+(require 'railgun)
+
 
 ;;----------------------------------------------------------------------------
 ;; Ruby related file types
@@ -121,6 +114,8 @@
                                      (delete-trailing-whitespace))))
                       )))
 
+
+
 ;;----------------------------------------------------------------------------
 ;; Ruby related functions
 ;;----------------------------------------------------------------------------
@@ -130,11 +125,12 @@
   (interactive)
   (if (null (get-buffer "*rails-console*"))
       (progn
-        (term "/bin/bash")
-        (term-send-string (get-buffer-process "*terminal*") "rails console\n")
-        (switch-to-buffer "*terminal*")
-        (rename-buffer "*rails-console*")
-        (term-line-mode))
+        (eshell "/bin/bash")
+        ;; (term-send-string (get-buffer-process "*terminal*") "rails console\n")
+        ;; (switch-to-buffer "*terminal*")
+        ;; (rename-buffer "*rails-console*")
+        ;; (term-line-mode)
+        )
     (switch-to-buffer "*rails-console*")))
 
 (defun ruby-reindent-then-newline-and-indent ()
