@@ -1,7 +1,9 @@
+
 ;; Pretty colors
 (require 'color-theme)
 (color-theme-initialize)
 (setq color-theme-is-global t)
+
 (load-file "~/.emacs.d/mattsears/color-theme.el")
 (color-theme-neptune)
 
@@ -10,12 +12,29 @@
 
 (setq transparency-level 100)
 
-;; turn off 3d modeline
-(set-face-attribute 'mode-line nil :box nil)
+(set-face-attribute 'mode-line nil
+                    :foreground "#d2e0f6"
+                    :background "#1a1d2f"
+                    :box nil)
+(set-face-attribute 'mode-line-inactive nil
+                    :foreground "#d2e0f6"
+                    :background "#1a1d2f"
+                    :box nil)
+
+;; ;; turn off 3d modeline
+;; (set-face-attribute 'mode-line nil :box nil)
+
 
 ;;----------------------------------------------------------------------------
 ;; Ruby specific color hacks
 ;;----------------------------------------------------------------------------
+
+
+(font-lock-add-keywords 'ruby-mode
+                        '(("(\\(lambda\\)\\>" (0 (prog1 ()
+                                                   (compose-region (match-beginning 1)
+                                                                   (match-end 1)
+                                                                   ?λ))))))
 
 (add-hook 'ruby-hook
   (lambda ()
