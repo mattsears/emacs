@@ -120,7 +120,6 @@
 ;; (define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
 
 ;; Find file in project
-;; (global-set-key (kbd "<A-t>") 'peepopen-goto-file-gui)
 (define-key global-map (kbd "s-t") 'find-file-in-project)
 
 ;; Kill the current frame, but not the window
