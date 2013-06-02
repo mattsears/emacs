@@ -12,3 +12,6 @@ bookmarks
 .emacs-desktop
 .emacs.desktop.lock
 anything-c-adaptive-history
+.emacs.desktop
+.mc-lists.el
+tramp
