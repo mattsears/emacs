@@ -4,13 +4,9 @@
 (eval-after-load 'ruby-mode
   '(progn
      (require 'ruby-compilation)
-     (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+     (define-key ruby-mode-map (kbd "RET") 'ruby-reindent-then-newline-and-indent)
      (define-key ruby-mode-map (kbd "C-M-h") 'backward-kill-word)
-     (define-key ruby-mode-map (kbd "C-r") 'ruby-compilation-this-buffer)
-     (define-key ruby-mode-map (kbd "C-c l") "lambda")))
-
-;; Set custom flags when running the ruby command in mode-compile
-(setq ruby-dbg-flags "-W0")
+     (define-key ruby-mode-map (kbd "C-r") 'ruby-compilation-this-buffer)))
 
 ;; Sane indenting
 (setq ruby-deep-indent-paren nil)
@@ -18,31 +14,19 @@
 ;; RVM
 (require 'rvm)
 
-(add-hook 'ruby-mode-hook
-          (lambda () (rvm-activate-corresponding-ruby)))
+(require 'rbenv)
+(global-rbenv-mode)
+
 
 ;; A few formatting options
 (setq ruby-deep-indent-paren-style nil)
 (setq ruby-deep-arglist nil)
+
+;; Set custom flags when running the ruby command in mode-compile
 (setq ruby-dbg-flags "-W0")
 
-;; RSense
-(setq rsense-home "/usr/local/lib/rsense-0.3")
-(add-to-list 'load-path (concat rsense-home "/etc"))
-(require 'rsense)
-
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c .") 'ac-complete-rsense)
-            (add-to-list 'ac-sources 'ac-source-rsense-method)
-            (add-to-list 'ac-sources 'ac-source-rsense-constant)))
-
 ;; Ruby tools
-(require 'ruby-tools)
-
-;; Zossima
-(autoload 'zossima-mode "zossima" "" t)
-(add-hook 'ruby-mode-hook 'zossima-mode)
+;;(require 'ruby-tools)
 
 ;;----------------------------------------------------------------------------
 ;; Ruby - Testing
@@ -58,8 +42,6 @@
              (delete-region (point-min) (point-max))))))
      (ad-activate 'ruby-do-run-w/compilation)))
 
-;; (add-hook 'ruby-mode-hook 'coding-hook)
-
 ;; Cucumber
 (require 'feature-mode)
 
@@ -70,17 +52,22 @@
 (require 'sass-mode)
 (require 'haml-mode)
 (setq auto-mode-alist (cons '("\\.haml$" . haml-mode) auto-mode-alist))
+(setq haml-backspace-backdents-nesting nil)
 
-(vendor 'ruby-hacks)
+(add-hook 'sass-mode-hook    'my-sass-comment-fix)
+
+(defun my-sass-comment-fix ()
+  "Change the default commenting sequence for sass"
+  (set 'comment-start "//")
+  )
+
+;;(vendor 'ruby-hacks)
 
 ;;----------------------------------------------------------------------------
 ;; Automatically insert 'end' for blocks
 ;;----------------------------------------------------------------------------
 
-(require 'ruby-end)
-
-(require 'railgun)
-
+;;(require 'ruby-end)
 
 ;;----------------------------------------------------------------------------
 ;; Ruby related file types
@@ -106,8 +93,6 @@
                                      (delete-trailing-whitespace))))
                       )))
 
-
-
 ;;----------------------------------------------------------------------------
 ;; Ruby related functions
 ;;----------------------------------------------------------------------------
@@ -117,13 +102,12 @@
   (interactive)
   (if (null (get-buffer "*rails-console*"))
       (progn
-        (eshell "/bin/bash")
-        ;; (term-send-string (get-buffer-process "*terminal*") "rails console\n")
-        ;; (switch-to-buffer "*terminal*")
-        ;; (rename-buffer "*rails-console*")
-        ;; (term-line-mode)
-        )
-    (switch-to-buffer "*rails-console*")))
+        (term "/bin/bash")
+        (term-send-string (get-buffer-process "*terminal*") "rails console\n")
+        (switch-to-buffer "*terminal*")
+        (rename-buffer "rails-console")
+        (term-line-mode))
+    (switch-to-buffer "rails-console")))
 
 (defun ruby-reindent-then-newline-and-indent ()
   "Reindents the current line then creates an indented newline."
@@ -180,5 +164,29 @@
               ((= indent prev-indent)
                (indent-line-to arg-indent)))
         (when (> offset 0) (forward-char offset))))))
+
+
+(defun is-rails-project ()
+  (when (textmate-project-root)
+    (file-exists-p (expand-file-name "config/environment.rb" (textmate-project-root)))))
+
+(defun run-rails-test-or-ruby-buffer ()
+  (interactive)
+  (if (is-rails-project)
+      (let* ((path (buffer-file-name))
+             (filename (file-name-nondirectory path))
+             (test-path (expand-file-name "test" (textmate-project-root)))
+             (command (list ruby-compilation-executable "-I" test-path path)))
+        (pop-to-buffer (ruby-compilation-do filename command)))
+    (ruby-compilation-this-buffer)))
+
+(define-key global-map (kbd "s-r") 'run-rails-test-or-ruby-buffer)
+
+;; Pry integration
+(add-to-list 'load-path "~/.emacs.d/vendor/emacs-pry")
+(require 'pry)
+;; optional suggestions
+(global-set-key [S-f9] 'pry-intercept)
+(global-set-key [f9] 'pry-intercept-rerun)
 
 (provide 'ruby)

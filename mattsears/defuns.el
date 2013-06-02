@@ -14,13 +14,6 @@
   (interactive)
   (mapcar (lambda (x) (kill-buffer x)) (buffer-list)) (delete-other-windows))
 
-(defun insert-blank-line-after-current ()
-  "Textmate style command+space"
-  (interactive)
-  (next-line)
-  (beginning-of-line)
-  (insert "\n"))
-
 (defun insert-blank-line-before-current ()
   "Insert a line above the current line and indent accordingly"
   (interactive)
@@ -116,16 +109,6 @@ Otherwise point moves to beginning of line."
       (funcall mode-fn))))
 (add-hook 'find-file-hook 'shebang-to-mode)
 
-(defun duplicate-line ()
-  "Duplicate the current line"
-  (interactive)
-  (beginning-of-line)
-  (copy-region-as-kill (point) (progn (end-of-line) (point)))
-  (matts-next-line)
-  (yank)
-  (beginning-of-line)
-  (indent-according-to-mode))
-
 (defun matts-next-line ()
   (interactive)
   (end-of-line)
@@ -139,20 +122,11 @@ Otherwise point moves to beginning of line."
         (column (current-column)))
     (copy-region-as-kill beg end)))
 
-(defun reset-window-position ()
-  "Reset windows and frames"
-  (interactive)
-  (delete-other-windows)
-  (set-frame-position (selected-frame) 325 60)
-  )
-
-(one-buffer-one-frame-mode 0)
 (defun my-close-current-window-asktosave ()
   "Kill the buffer, but not the window"
   (interactive)
   (kill-buffer (current-buffer)))
 
-(one-buffer-one-frame-mode 0)
 (defun matts-close-and-delete-window ()
   "Kill the current frame and the window"
   (interactive)
@@ -164,17 +138,6 @@ Otherwise point moves to beginning of line."
 (defun matts-first-window ()
   (interactive)
   (select-window (frame-first-window)))
-
-(defun matts-split-window-three-ways ()
-  "Reset windows and frames with room"
-  (interactive)
-  (delete-other-windows)
-  (set-frame-position (selected-frame) 50 70)
-  (split-window-horizontally)
-  ;;(other-window 1)
-  (split-window-vertically)
-  (other-window 1)
-  )
 
 (defun matts-delete-whole-line ()
   "Deletes the whole line with copying the text to the kill-ring"
@@ -298,16 +261,12 @@ Otherwise point moves to beginning of line."
 ;; keybindings
 (global-set-key [pause] 'toggle-window-dedicated)
 
-(defun word-count nil "Count words in buffer" (interactive)
-  (shell-command-on-region (point-min) (point-max) "wc -w"))
-
 ;; Automatically indent region when code is pasted
 (defadvice yank (after indent-region activate)
   (if (member major-mode '(emacs-lisp-mode lisp-mode ruby-mode objc-mode nxml-mode
                                            javascript-mode latex-mode plain-tex-mode))
       (let ((mark-even-if-inactive t))
         (indent-region (region-beginning) (region-end) nil))))
-
 
 (defun sudo-edit (&optional arg)
   (interactive "p")
@@ -346,57 +305,6 @@ Otherwise point moves to beginning of line."
            (position (cdr (assoc selected-symbol name-and-pos))))
       (goto-char position))))
 
-;; Move line or region (if none selected) up or down
-(defun move-text-internal (arg)
-  (cond
-   ((and mark-active transient-mark-mode)
-    (if (> (point) (mark))
-        (exchange-point-and-mark))
-    (let ((column (current-column))
-          (text (delete-and-extract-region (point) (mark))))
-      (forward-line arg)
-      (move-to-column column t)
-      (set-mark (point))
-      (insert text)
-      (exchange-point-and-mark)
-      (setq deactivate-mark nil)))
-   (t
-    (beginning-of-line)
-    (when (or (> arg 0) (not (bobp)))
-      (forward-line)
-      (when (or (< arg 0) (not (eobp)))
-        (transpose-lines arg))
-      (forward-line -1)))))
-
-(defun move-text-down (arg)
-  "Move region (transient-mark-mode active) or current line
-  arg lines down."
-  (interactive "*p")
-  (move-text-internal arg))
-
-(defun move-text-up (arg)
-  "Move region (transient-mark-mode active) or current line
-  arg lines up."
-  (interactive "*p")
-  (move-text-internal (- arg)))
-
-
-;; Borrowed from defunkt's textmate.el http://github.com/defunkt/textmate.el/blob/master/textmate.el
-(defun textmate-shift-right (&optional arg)
-  "Shift the line or region to the ARG places to the right.
-A place is considered `tab-width' character columns."
-  (interactive)
-  (let ((deactivate-mark nil)
-        (beg (or (and mark-active (region-beginning))
-                 (line-beginning-position)))
-        (end (or (and mark-active (region-end)) (line-end-position))))
-    (indent-rigidly beg end (* (or arg 1) tab-width))))
-
-(defun textmate-shift-left (&optional arg)
-  "Shift the line or region to the ARG places to the left."
-  (interactive)
-  (textmate-shift-right (* -1 (or arg 1))))
-
 (defun delete-this-buffer-and-file ()
   "Removes file connected to current buffer and kills buffer."
   (interactive)
@@ -425,12 +333,6 @@ A place is considered `tab-width' character columns."
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
-
-(defun refresh-file ()
-  "Refresh the buffer from the disk (prompt if modified)"
-  (interactive)
-  (revert-buffer t (not (buffer-modified-p)) t))
-(global-set-key [f5] 'refresh-file)
 
 ;; Borrowed from http://atomized.org/2011/01/toggle-between-root-non-root-in-emacs-with-tramp/
 (defun find-file-as-root ()
@@ -493,30 +395,6 @@ A place is considered `tab-width' character columns."
   )
 (global-set-key "\C-cm" 'markdown-preview-file)
 
-(defun scroll-down-five ()
-  "Scrolls down five rows."
-  (interactive)
-  (scroll-down 5))
-
-(defun scroll-up-five ()
-  "Scrolls up five rows."
-  (interactive)
-  (scroll-up 5))
-
-;; Simulate smooth scrolling
-(defun smooth-scroll (increment)
-  (scroll-up increment) (sit-for 0.02)
-  (scroll-up increment) (sit-for 0.02)
-  (scroll-up increment) (sit-for 0.01)
-  (scroll-up increment) (sit-for 0.01)
-  (scroll-up increment) (sit-for 0.01)
-  (scroll-up increment) (sit-for 0.02)
-  (scroll-up increment) (sit-for 0.02)
-  (scroll-up increment))
-;; Map Command+Space to scroll down & Shift+Spacebar for scroll up
-(global-set-key (kbd "<A-SPC>") '(lambda () (interactive) (scroll-down-five)))
-(global-set-key (kbd "<S-SPC>") '(lambda () (interactive) (scroll-up-five)))
-
 (defun cleanup-buffer ()
   "Perform a bunch of operations on the whitespace content of a buffer."
   (interactive)
@@ -525,6 +403,59 @@ A place is considered `tab-width' character columns."
   (delete-trailing-whitespace))
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 
+(defun move-line-up ()
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2))
+
+(defun move-line-down ()
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1))
+
 (defun open-in-finder () "OpenInFinder." (interactive) (shell-command "open .")) (global-set-key (kbd "<f8>") 'open-in-finder)
+
+(defun visit-term-buffer ()
+  "Create or visit a terminal buffer."
+  (interactive)
+  (if (not (get-buffer "*ansi-term*"))
+      (progn
+        (split-window-sensibly (selected-window))
+        (other-window 1)
+        (ansi-term (getenv "SHELL")))
+    (switch-to-buffer-other-window "*ansi-term*")))
+
+(require 'powerline)
+
+(defun powerline-clean-theme ()
+  "Setup a nano-like mode-line."
+  (interactive)
+  (setq-default mode-line-format
+                '("%e"
+                  (:eval
+                   (let* ((active (powerline-selected-window-active))
+                          (lhs (list
+                                (powerline-raw (concat
+                                                "L %l")
+                                               nil 'l)))
+                          (rhs (list
+                                (if (buffer-modified-p)
+                                    (powerline-raw "*" nil 'r))
+                                (powerline-raw (concat
+                                                "%p")        nil 'l))
+                                )
+                          (center (list
+                                   (powerline-raw "%b" nil))))
+
+                     (concat
+                      (powerline-render lhs)
+                      (powerline-fill-center nil (/ (powerline-width center)
+                                                    2.0))
+                      (powerline-render center)
+                      (powerline-fill nil (powerline-width rhs))
+                      (powerline-render rhs)))))))
+
+(powerline-clean-theme)
 
 (provide 'defuns)

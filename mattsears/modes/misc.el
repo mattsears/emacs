@@ -18,30 +18,40 @@
 ;; Indicate syntax errors
 (require 'flycheck)
 (add-hook 'ruby-mode-hook 'flycheck-mode)
-;; (add-hook 'coffee-mode-hook 'flycheck-mode)
-;; (add-hook 'sass-mode-hook 'flycheck-mode)
-;; (add-hook 'haml-mode-hook 'flycheck-mode)
+(add-hook 'coffee-mode-hook 'flycheck-mode)
+(add-hook 'sass-mode-hook 'flycheck-mode)
+(add-hook 'haml-mode-hook 'flycheck-mode)
 
 ;; Midnight mode to clean up old buffers
 (require 'midnight)
 
 ;; Ack
-(require 'full-ack)
-(autoload 'ack-same "full-ack" nil t)
-(autoload 'ack "full-ack" nil t)
-(autoload 'ack-find-same-file "full-ack" nil t)
-(autoload 'ack-find-file "full-ack" nil t)
+;; (require 'full-ack)
+;; (setq ack-executable "/usr/local/bin/ack")
+;; (autoload 'ack-same "full-ack" nil t)
+;; (autoload 'ack "full-ack" nil t)
+;; (autoload 'ack-find-same-file "full-ack" nil t)
+;; (autoload 'ack-find-file "full-ack" nil t)
+
+;; The Silver Searcher
+(require 'ag)
+(setq ag-highlight-search t)
+(set-face-attribute 'mode-line-inactive nil
+                    :foreground "#d2e0f6"
+                    :background "#1a1d2f"
+                    :box nil)
+
 
 ;; No show results buffer if there are 0 results!
-(setq ack-display-buffer 'after)
+;;(setq ack-display-buffer 'after)
 
 ;; Dont user regular expressions by default
-(setq ack-search-regexp nil)
+;;(setq ack-search-regexp nil)
 
 ;; Just use one line above and one line below  in results
-(setq ack-context 1)
+;;(setq ack-context 1)
 
-
+;; Mustach modes
 (require 'mustache-mode)
 
 ;; Simplenotes
@@ -60,26 +70,4 @@
 (add-hook 'espresso-mode-hook 'fci-mode)
 (add-hook 'text-mode-hook 'fci-mode)
 
-;; Iedit mode
-;;(require 'iedit)
-
-;; Nyan nyan nyan
-(require 'nyan-mode)
-
-;; Handy way to expand regions (https://github.com/magnars/expand-region.el)
-;;(require 'expand-region)
-;;(global-set-key (kbd "C-\"") 'er/expand-region)
-
 (require 'dash)
-
-(require 'smartparens)
-(smartparens-global-mode t)
-
-;; Diminish modeline clutter
-(require 'diminish)
-(diminish 'textmate-mode)
-(diminish 'yas-minor-mode)
-(diminish 'smartparens-mode)
-(diminish 'flycheck-mode)
-(diminish 'ruby-end-mode)
-(diminish 'truncate-lines)

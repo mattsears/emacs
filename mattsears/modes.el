@@ -17,5 +17,6 @@
 (load "~/.emacs.d/mattsears/modes/git")
 (load "~/.emacs.d/mattsears/modes/flyspell")
 (load "~/.emacs.d/mattsears/modes/misc")
+(load "~/.emacs.d/mattsears/modes/org")
 
 (provide 'modes)

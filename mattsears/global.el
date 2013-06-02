@@ -5,18 +5,24 @@
 ;; Set text mode to be the default major mode
 (setq default-major-mode 'text-mode)
 
+;; Control the font size
+(global-set-key (kbd "s-=") 'text-scale-increase)
+(global-set-key (kbd "s--") 'text-scale-decrease)
 
-;; Fonts
-(set-face-attribute 'default nil :font "Monoco" :height 180 :weight 'normal)
-(set-face-attribute 'mode-line nil :inherit 'unspecified) ; show modeline in Monaco
-(set-face-attribute 'echo-area nil :family 'unspecified)  ; show echo area in Monaco
 (setq default-frame-alist
-      '((font . "-apple-Monaco-medium-normal-normal-*-9-*-*-*-m-0-iso10646-1")
-        (width  . 180)
-        (height . 180))
-      )
+  (quote ((tool-bar-lines . 0)
+          (fringe)
+          (vertical-scroll-bars)
+          (menu-bar-lines . 0)
+          ;; (left-fringe . 0)
+          (right-fringe . 0)
+          )))
 
-(setq mac-allow-anti-aliasing t)
+;; Skinny cursor
+(setq-default cursor-type '(bar . 2))
+
+;; No blinking curstor
+(blink-cursor-mode -1)
 
 (defvar project-root)
 (setq project-root (concat (expand-file-name "~") "/emacs"))
@@ -40,6 +46,8 @@
 
 ;; Stops selection with a mouse being immediately injected to the kill ring
 (setq mouse-drag-copy-region nil)
+(setq x-select-enable-clipboard nil)
+(setq select-active-regions nil)
 
 ;; Set column with
 (setq fill-column 80)
@@ -59,7 +67,6 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
-(ansi-color-for-comint-mode-on)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
@@ -129,7 +136,7 @@
 (require 'font-lock)
 
 ;; Keep searching throughout the file.  I think this ships with Aquamacs?
-(require 'find-recursive)
+;; (require 'find-recursive)
 
 ;; Yet another paste tool, this one for Gist (awesome)
 (require 'gist)
@@ -213,10 +220,6 @@
 (setq completion-ignore-case t
       read-file-name-completion-ignore-case t)
 
-;;; Fix junk characters in shell mode
-(add-hook 'shell-mode-hook
-          'ansi-color-for-comint-mode-on)
-
 ;; Scroll with the compilation output
 (setq compilation-scroll-output t)
 (setq compilation-window-height 18)
@@ -233,14 +236,9 @@
  bookmark-default-file "~/.emacs.d/.bookmarks" ;; keep my ~/ clean
  bookmark-save-flag 1)                        ;; autosave each change)
 
-
 ;; Handy Textmate-like functions.
 (require 'textmate)
 (textmate-mode)
-
-;; https://peepcode.com/products/peepopen
-(add-to-list 'load-path "~/.emacs.d/vendor/")
-(require 'peepopen)
 
 ;; TAGS
 (setq tags-file-name ".TAGS")
@@ -274,7 +272,7 @@
 ;; Paredit all the things
 (autoload 'paredit-mode "paredit"
   "Minor mode for pseudo-structurally editing Lisp code." t)
-;; (add-hook 'emacs-lisp-mode-hook       (lambda () (paredit-mode +1)))
+  (add-hook 'emacs-lisp-mode-hook       (lambda () (paredit-mode +1)))
 
 ;; Auto refresh buffers
 (global-auto-revert-mode 1)
@@ -283,18 +281,47 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
-(setq mac-allow-anti-aliasing t)
-
 ;; Save the open buffers so they reopen when restarting emacs
 ;; Automatically save and restore sessions
 
 ;; Desktop
 (require 'desktop)
-;; (desktop-save-mode 1)
+(desktop-save-mode 1)
 
-;; (defun my-desktop-save ()
-;;   (interactive)
-;;   ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
-;;   (if (eq (desktop-owner) (emacs-pid))
-;;       (desktop-save desktop-dirname)))
-;; (add-hook 'auto-save-hook 'my-desktop-save)
+(defun my-desktop-save ()
+  (interactive)
+  ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
+  (if (eq (desktop-owner) (emacs-pid))
+      (desktop-save desktop-dirname)))
+(add-hook 'auto-save-hook 'my-desktop-save)
+
+(require 'rainbow-delimiters)
+(global-rainbow-delimiters-mode)
+
+(require 'duplicate-thing)
+
+;; Tags!!
+(setq tags-file-name "TAGS")
+
+;; Highlight matching paren
+(require 'paren)
+(setq show-paren-style 'parenthesis)
+(show-paren-mode +1)
+
+(require 'hackernews)
+(require 'httpcode)
+
+(require 'expand-region)
+(require 'multiple-cursors)
+
+(require 'string-tools)
+
+(setq global-hl-todo-mode 1)
+
+(require 'undo-tree)
+(global-undo-tree-mode 1)
+
+;; String tool all the things
+(add-to-list 'load-path "~/.emacs.d/vendor/string-tools.el")
+(require 'string-tools)
+(string-tools-mode 1)
