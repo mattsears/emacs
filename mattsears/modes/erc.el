@@ -11,6 +11,3 @@
                    (if (and (boundp 'erc-default-recipients) (erc-default-target))
                        (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
                      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t))))
-
-;;(setq erc-autojoin-channels-alist
-;;   '(("freenode.net" "#littlelines" )))
