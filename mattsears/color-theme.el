@@ -1,4 +1,4 @@
-;; Finks Theme for Emacs.
+;; My very own color theme for Emacs.
 ;;
 ;; Defines a colour scheme resembling that of the original Textmate Blackboard theme.
 ;; To use add the following to your .emacs file (requires the color-theme package):
@@ -25,7 +25,7 @@
      ((background-color . "#0C1021")
       (background-mode . dark)
       (border-color . "#dedede")
-      (cursor-color . "#CCCCCC")
+      (cursor-color . "#646c9c")
       (foreground-color . "#eaeaea")
       (mouse-color . "sienna1"))
      ((help-highlight-face . underline)
@@ -40,15 +40,15 @@
      (neptune-aqua ((t (:foreground "#70c0b1"))))
      (neptune-orange ((t (:foreground "#e78c45"))))
      (neptune-brown ((t (:foreground "#9b5c2e"))))
-     (neptune-purple ((t (:foreground "#a878ad"))))
-     (neptune-pink ((t (:foreground "#e65c8d"))))
+     (neptune-purple ((t (:foreground "#b18cce"))))
+     (neptune-pink ((t (:foreground "#ec527a"))))
      (neptune-turquoise ((t (:foreground "#87c4bf")))) ;
-     (neptune-green ((t (:foreground "#79b958"))))
+     (neptune-green ((t (:foreground "#acd15d"))))
      (neptune-light-green ((t (:foreground "#daefa3"))))
      (neptune-red ((t (:foreground "#FA8072"))))
      (neptune-grey ((t (:foreground "#42434c"))))
      (neptune-gold ((t (:foreground "#cdc098"))))
-     (neptune-yellow ((t (:foreground "#faeb8e"))))
+     (neptune-yellow ((t (:foreground "#f8de82"))))
      (neptune-peach ((t (:foreground "#e28964"))))
      (neptune-bg ((t (:background "#0C1021"))))
      (neptune-highlight ((t (:background "#646c9c" :foreground "#eeeeee"))))
@@ -61,13 +61,13 @@
      (buffers-tab ((t (:inherit neptune-blue))))
 
      (font-lock-builtin-face ((t (:inherit neptune-blue))))
+     (font-lock-keyword-face ((t (:inherit neptune-pink))))
      (font-lock-reference-face ((t (:inherit neptune-red))))
      (font-lock-comment-face ((t (:italic t :inherit neptune-grey))))
      (font-lock-comment-delimiter-face ((t (:inherit neptune-grey))))
-     (font-lock-constant-face ((t (:inherit neptune-blue))))
+     (font-lock-constant-face ((t (:inherit neptune-purple))))
      (font-lock-doc-string-face ((t (:inherit neptune-green))))
      (font-lock-doc-face ((t (:inherit neptune-green))))
-     (font-lock-keyword-face ((t (:inherit neptune-pink))))
      (font-lock-preprocessor-face ((t (:inherit neptune-green))))
      (font-lock-function-name-face ((t (:inherit neptune-yellow))))
      (font-lock-type-face ((t (:inherit neptune-purple))))
@@ -250,9 +250,9 @@
 	 ;; Fixme
 	 (font-lock-fixme-face ((t (:foreground "#ffffff" :background "#75879e"))))
 
-     (modeline ((t (:background "#373c4e" :foreground "#d2e0f6"))))
-     (mode-line-inactive ((t (:foreground "#d2e0f6" :background "#373c4e"))))
-     (modeline-buffer-id ((t (:bold nil))))
+     ;; (modeline ((t (:background "#373c4e" :foreground "#d2e0f6"))))
+     ;; (mode-line-inactive ((t (:foreground "#d2e0f6" :background "#373c4e"))))
+     ;; (modeline-buffer-id ((t (:bold nil))))
 
      (lazy-highlight-face ((t (:inherit neptune-current-line))))
      (hl-line ((t (:inherit neptune-current-line))))
