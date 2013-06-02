@@ -9,7 +9,7 @@
 (global-set-key [delete] 'delete-char)
 
 ;; Searching
-(define-key global-map (kbd "A-F") 'ack)
+(define-key global-map (kbd "s-F") 'ag-project-at-point)
 
 ;; Prefer backward-kill-word over Backspace
 (global-set-key "\C-w" 'backward-kill-word)
@@ -33,7 +33,6 @@
 ;; Buffers
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "<C-tab>") 'ibuffer)
-(define-key osx-key-mode-map (kbd "<C-tab>") 'ibuffer)
 (global-set-key "\C-x\C-b" 'buffer-menu)
 
 ;; General
@@ -62,11 +61,6 @@
 ;; Leave wrapping on for vertically split windows
 (setq truncate-partial-width-windows nil)
 
-;;Not interested in printing
-(when (boundp 'osx-key-mode-map)
- (define-key osx-key-mode-map (kbd "A-p")
-   '(lambda () (interactive) (message "noop"))))
-
 ;; Not interested in email
 (global-unset-key (kbd "C-x m"))
 (global-unset-key "\C-z")
@@ -75,26 +69,25 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;; Duplicated the current line
-(define-key osx-key-mode-map (kbd "A-d") 'duplicate-line)
-
-;; Comment or uncomment the entire line
-(define-key global-map (kbd "A-/") 'comment-or-uncomment-region-or-line)
+(define-key global-map (kbd "s-d") 'duplicate-thing)
 
 ;; Align
-(define-key global-map (kbd "A-M-]") 'align)
+(define-key global-map (kbd "s-M-]") 'align)
 
-(global-set-key (kbd "<A-M-up>") 'move-text-up)
-(global-set-key (kbd "<A-M-down>") 'move-text-down)
+(global-set-key (kbd "<s-M-up>") 'move-line-up)
+(global-set-key (kbd "<s-M-down>") 'move-line-down)
 
 ;; Indenting whole lines
-(define-key osx-key-mode-map (kbd "A-]")  'textmate-shift-right)
-(define-key osx-key-mode-map (kbd "A-[") 'textmate-shift-left)
+(define-key global-map (kbd "s-]") 'textmate-shift-right)
+
+;; (define-key osx-key-mode-map (kbd "A-[") 'textmate-shift-left)
+(define-key global-map (kbd "s-[") 'textmate-shift-left)
 
 ;; Delete entire line without copying to kill-ring
-(define-key osx-key-mode-map (kbd "<A-backspace>") 'matts-delete-whole-line)
+(define-key global-map (kbd "<s-backspace>") 'matts-delete-whole-line)
 
 ;; Insert blank line
-(define-key global-map [M-return] 'insert-blank-line-after-current)
+(define-key global-map (kbd "<s-return>") 'textmate-next-line)
 
 ;; Insert blank above current line
 (global-set-key (kbd "A-\\") 'insert-blank-line-before-current)
@@ -103,39 +96,38 @@
 (define-key global-map (kbd "C-S-l") 'copy-line)
 
 ;; Open a file with dired
-(define-key osx-key-mode-map (kbd "A-o") 'dired)
+(define-key global-map (kbd "s-o") 'dired)
 
 ;; Open a file with ido
-(define-key osx-key-mode-map (kbd "A-O") 'ido-find-file)
+(define-key global-map (kbd "s-O") 'ido-find-file)
 
 ;; Find a file from the list of most recently open files
-(define-key osx-key-mode-map (kbd "C-x r") 'matts-ido-choose-from-recentf)
+(define-key global-map (kbd "C-x r") 'matts-ido-choose-from-recentf)
 
 ;; Indent the buffer
-(define-key osx-key-mode-map (kbd "A-i") 'iwb)
+(define-key global-map (kbd "s-i") 'iwb)
 
 ;; Trigger the buffer list
-(define-key osx-key-mode-map (kbd "A-b") 'ibuffer)
+(define-key global-map (kbd "s-b") 'ibuffer)
 
 ;; Compile buffer in it's current mode
-(define-key osx-key-mode-map (kbd "A-r") 'mode-compile)
+;; (define-key osx-key-mode-map (kbd "A-r") 'mode-compile)
 
 ;; Custom set of commands in popup window
-(define-key osx-key-mode-map (kbd "A-m") 'matts-popup-commands)
+(define-key global-map (kbd "s-m") 'matts-popup-commands)
 
 ;; Popup a window for all the methods on the buffer
-(define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
+;; (define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
 
 ;; Find file in project
-;; (define-key osx-key-mode-map (kbd "A-t") 'find-file-in-project)
-(define-key osx-key-mode-map (kbd "A-t") 'peepopen-goto-file-gui)
-(global-set-key (kbd "<A-t>") 'peepopen-goto-file-gui)
+;; (global-set-key (kbd "<A-t>") 'peepopen-goto-file-gui)
+(define-key global-map (kbd "s-t") 'find-file-in-project)
 
 ;; Kill the current frame, but not the window
-(define-key osx-key-mode-map (kbd "A-w") 'my-close-current-window-asktosave)
+(define-key global-map (kbd "s-w") 'my-close-current-window-asktosave)
 
 ;; Kill the other buffer and window
-(define-key osx-key-mode-map (kbd "A-k") 'matts-close-and-delete-window)
+(define-key global-map (kbd "s-k") 'matts-close-and-delete-window)
 
 ;; Shortcut for ehell
 (global-set-key "\C-x\C-z" 'eshell)
@@ -144,21 +136,18 @@
 (define-key  global-map  "\C-xm"  'cua-set-mark)
 
 ;; IEdit
-(define-key osx-key-mode-map (kbd "C-;") 'iedit-mode)
+;; (define-key osx-key-mode-map (kbd "C-;") 'iedit-mode)
 (define-key global-map (kbd "C-;") 'iedit-mode)
 (global-set-key (kbd "C-;") 'iedit-mode)
 (define-key isearch-mode-map (kbd "C-;") 'iedit-mode)
 
-;; Key-chord bindings
-(require 'key-chord)
-(key-chord-mode 1)
-
-;; Search github
-;; (key-chord-define-global "gh" 'search-github)
-;;(key-chord-define-global "rr" 'iedit-mode)
-
 (global-set-key (kbd "M-j") (lambda ()
-                  (interactive)
-                  (join-line -1)))
+                              (interactive)
+                              (join-line -1)))
+
+;; Multiple cursors
+(global-set-key (kbd "s-'") 'er/expand-region)
+(global-set-key (kbd "s-;") 'mc/mark-next-word-like-this)
+(global-set-key (kbd "s-|") 'mc/edit-lines)
 
 (provide 'bindings)
