@@ -13,3 +13,16 @@
 
 ;; Magit status.
 (global-set-key (kbd "C-x g") 'magit-status)
+
+;; Git gutter all the things
+(global-git-gutter-mode t)
+
+(setq git-gutter:lighter " gg")
+(setq git-gutter:window-width 1)
+(setq git-gutter:modified-sign ".")
+(setq git-gutter:added-sign "+")
+(setq git-gutter:deleted-sign "-")
+
+(set-face-foreground 'git-gutter:added "#daefa3")
+(set-face-foreground 'git-gutter:deleted "#FA8072")
+(set-face-foreground 'git-gutter:modified "#b18cce")
