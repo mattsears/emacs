@@ -35,6 +35,7 @@
 ;;----------------------------------------------------------------------------
 ;; ibuffer options
 ;;----------------------------------------------------------------------------
+(add-to-list 'load-path "~/.emacs.d/vendor/ibuffer.el")
 (require 'ibuffer)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
@@ -77,7 +78,18 @@
                ("markdown" (mode . markdown-mode))
                ("yaml" (mode . yaml-mode))
                ("lisp" (mode . emacs-lisp-mode))
+               ("rails views" (or (filename . "/app/views/")
+                                  (name . "\\.erb$")
+                                  (name . "\\.rhtml$")
+                                  (name . "\\.haml$")
+                                  (mode . rhtml-mode)))
+               ("helpers" (filename . "/app/helpers/.*\\.rb$"))
+               ("tests" (name . "_test.rb$"))
+               ("models" (filename . "/app/models/.*\\rb$"))
+               ("controllers" (filename . "/app/controllers/.*\\.rb$"))
+
                ("ruby" (mode . ruby-mode))
+               ("console" (mode . term-mode))
                ))))
 
 ;; key bindings
@@ -88,6 +100,3 @@
              ;; hide any buffers with asterisks
              (ibuffer-switch-to-saved-filter-groups "default")
              (ibuffer-add-to-tmp-hide "^\\*")))
-
-
-
