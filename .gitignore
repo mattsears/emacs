@@ -3,8 +3,7 @@ url/*
 auto-save-list/*
 tramp-autosave/*
 .DS_Store
-mattsears/local.el
-vendor/freshbooks
+local.el
 *.elc
 smex.*
 bookmarks
@@ -15,3 +14,11 @@ anything-c-adaptive-history
 .emacs.desktop
 .mc-lists.el
 tramp
+var/*
+.ac-comphist.dat
+.cask/
+.edbi-ds-history
+.projectile
+.projectile-bookmarks.eld
+.projectile.cache
+.smex.save

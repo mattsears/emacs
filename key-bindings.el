@@ -3,13 +3,14 @@
 ;;----------------------------------------------------------------------------
 
 ;; Newline and then indent.
-(global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
+(global-set-key (kbd "RET") 'smart-newline)
 
 ;; Make the delete key delete
 (global-set-key [delete] 'delete-char)
 
 ;; Searching
-(define-key global-map (kbd "s-F") 'ag-project-at-point)
+(define-key global-map (kbd "s-F") 'ack)
+(define-key global-map (kbd "C-c F") 'ack)
 
 ;; Prefer backward-kill-word over Backspace
 (global-set-key "\C-w" 'backward-kill-word)
@@ -77,17 +78,11 @@
 (global-set-key (kbd "<s-M-up>") 'move-line-up)
 (global-set-key (kbd "<s-M-down>") 'move-line-down)
 
-;; Indenting whole lines
-(define-key global-map (kbd "s-]") 'textmate-shift-right)
-
-;; (define-key osx-key-mode-map (kbd "A-[") 'textmate-shift-left)
-(define-key global-map (kbd "s-[") 'textmate-shift-left)
-
 ;; Delete entire line without copying to kill-ring
 (define-key global-map (kbd "<s-backspace>") 'matts-delete-whole-line)
 
 ;; Insert blank line
-(define-key global-map (kbd "<s-return>") 'textmate-next-line)
+(define-key global-map (kbd "<s-return>") 'open-line-below)
 
 ;; Insert blank above current line
 (global-set-key (kbd "A-\\") 'insert-blank-line-before-current)
@@ -110,20 +105,21 @@
 ;; Trigger the buffer list
 (define-key global-map (kbd "s-b") 'ibuffer)
 
-;; Compile buffer in it's current mode
-;; (define-key osx-key-mode-map (kbd "A-r") 'mode-compile)
-
 ;; Custom set of commands in popup window
-(define-key global-map (kbd "s-m") 'matts-popup-commands)
+(define-key global-map (kbd "s-m") 'matts-quick-menu)
 
 ;; Popup a window for all the methods on the buffer
-;; (define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
+;;(define-key osx-key-mode-map (kbd "A-T") 'ido-goto-symbol)
 
 ;; Find file in project
-(define-key global-map (kbd "s-t") 'find-file-in-project)
+(global-set-key (kbd "s-t") 'fiplr-find-file)
+
+;; Find tag in project
+(define-key global-map (kbd "s-.") 'my-ido-find-tag)
 
 ;; Kill the current frame, but not the window
 (define-key global-map (kbd "s-w") 'my-close-current-window-asktosave)
+(define-key global-map (kbd "C-c w") 'my-close-current-window-asktosave)
 
 ;; Kill the other buffer and window
 (define-key global-map (kbd "s-k") 'matts-close-and-delete-window)
@@ -134,11 +130,10 @@
 ;; Remap set-mark since ctrl-space is overwritten by mac-os
 (define-key  global-map  "\C-xm"  'cua-set-mark)
 
-;; IEdit
-;; (define-key osx-key-mode-map (kbd "C-;") 'iedit-mode)
-(define-key global-map (kbd "C-;") 'iedit-mode)
-(global-set-key (kbd "C-;") 'iedit-mode)
-(define-key isearch-mode-map (kbd "C-;") 'iedit-mode)
+;; Multiple Cursors
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 (global-set-key (kbd "M-j") (lambda ()
                               (interactive)
@@ -148,5 +143,29 @@
 (global-set-key (kbd "s-'") 'er/expand-region)
 (global-set-key (kbd "s-;") 'mc/mark-next-word-like-this)
 (global-set-key (kbd "s-|") 'mc/edit-lines)
+
+;; Expand Regions
+(global-set-key (kbd "C-'") 'er/mark-inside-quotes)
+
+(global-set-key (kbd "C-c d") 'my-rails-database)
+(global-set-key (kbd "C-Z") 'redo)
+; (global-set-key (kbd "C-c e") 'project-explorer-open)
+
+;; Escape closes minibuffer
+(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+
+;; Find file in project
+(define-key global-map (kbd "s-p") 'matts-ido-find-project)
+(define-key global-map (kbd "C-c p") 'matts-ido-find-project)
+
+;; Use projectile's find file
+(define-key global-map [(super t)] 'projectile-find-file)
+
+;; Comment or comment lines
+(define-key global-map (kbd "s-/") 'comment-or-uncomment-line-or-region)
+
+;; Shifts text left or right
+(define-key global-map (kbd "s-]") 'text-shift-right)
+(define-key global-map (kbd "s-[") 'text-shift-left)
 
 (provide 'bindings)

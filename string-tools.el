@@ -93,7 +93,6 @@
             (setq end match-end))))
       (and beg end (list beg end)))))
 
-
 (defun string-tools-to-symbol ()
   "Turn string at point to symbol."
   (interactive)
@@ -151,6 +150,7 @@
       (delete-region (+ min 1) (- max 1)))))
 
 ;;;###autoload
+
 (define-globalized-minor-mode global-string-tools-mode
   string-tools-mode turn-on-string-tools-mode-if-desired)
 
@@ -165,13 +165,12 @@ This is used by `global-hl-todo-mode'."
   :type '(repeat function))
 
 ;;;###autoload
+
 (define-minor-mode string-tools-mode
   "Collection of handy functions for ruby-mode."
   :init-value nil
   :lighter " st"
   :keymap string-tools-mode-map)
-
-;; (add-hook 'text-mode-hook 'string-tools-mode)
 
 (provide 'string-tools)
 
