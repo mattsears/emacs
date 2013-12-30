@@ -210,7 +210,6 @@ Otherwise point moves to beginning of line."
            (position (cdr (assoc selected-symbol name-and-pos))))
       (goto-char position))))
 
-
 ;;----------------------------------------------------------------------------
 ;; File related helpers
 ;;----------------------------------------------------------------------------
@@ -451,16 +450,11 @@ reuse the current one."
   (let ((file (concat "~/Dropbox/Notes/projects.md")))
     (find-file file)))
 
-(defun business-notes()
+(defun business()
   (interactive)
-  (let ((file (concat "~/Dropbox/Notes/business-notes.md")))
+  (let ((file (concat "~/Dropbox/Notes/business.md")))
     (find-file file)
     ))
-
-(defun business-plan()
-  (interactive)
-  (let ((file (concat "~/Dropbox/Notes/business-plan.md")))
-    (find-file file)))
 
 (defun notebook ()
   "Quick finder for my note documents that I want to be handy at all times"
@@ -471,21 +465,15 @@ reuse the current one."
     (find-file note-file)
     ))
 
-(defun add-new-note ()
-  "TODO: Adds a new note"
-  (interactive)
-  )
-
 (defun matts-setup-special-key-map ()
   (interactive)
   (let ((map (make-sparse-keymap)))
     (let ((prefix-map (make-sparse-keymap)))
       (define-key prefix-map (kbd "t") 'todos)
       (define-key prefix-map (kbd "g") 'goals)
-      (define-key prefix-map (kbd "b") 'business-plan)
+      (define-key prefix-map (kbd "b") 'business)
       (define-key prefix-map (kbd "p") 'projects)
       (define-key prefix-map (kbd "n") 'notebook)
-      (define-key prefix-map (kbd "+") 'add-new-note)
       (define-key global-map (kbd "C-c m") prefix-map)
       map)))
 
