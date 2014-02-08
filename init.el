@@ -16,13 +16,14 @@
 
 (load "defuns")
 (load "settings")
-(load "local")
 (load "modes")
 (load "appearance")
 (load "key-bindings")
 (load "rails-edbi")
 
+;;------------------------------------------------------------------------------
 ;; Enhanced M-x
+;;------------------------------------------------------------------------------
 (use-package smex
   :init
   (progn
@@ -34,9 +35,9 @@
   :init
   (progn (smart-newline-mode 1) ))
 
-;;----------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
 ;; IDO options
-;;----------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
 
 ;; Do not auto complete when creating new directories!
 (defun ido-disable-line-trucation ()
@@ -46,6 +47,20 @@
 (use-package ido
   :init
   (progn
+    ;; Flx Fuzzy file finder integration with IDO
+    (use-package flx-ido
+      :init (flx-ido-mode 1))
+    (use-package ido-vertical-mode
+      :init (ido-vertical-mode 1)
+      :config
+      (progn
+        (setq ido-decorations (quote ("\n↪ "     "" "\n   " "\n   ..." "[" "]"
+                                      " [No match]" " [Matched]" " [Not readable]"
+                                      " [Too big]" " [Confirm]")))
+        (setq ido-ignore-buffers
+              '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*Ibuffer"
+                "^\*scratch*" "^\*TAGS" "^session\.*" "^\*"))
+        ))
     (ido-mode 1)
     (ido-disable-line-trucation))
   :config
@@ -71,18 +86,6 @@
     (setq ido-use-faces 1)
     (add-to-list 'ido-ignore-files "\\.DS_Store")))
 
-;; Flx Fuzzy file finder integration with IDO
-(use-package flx-ido
-  :init (flx-ido-mode 1))
-
-(use-package ido-vertical-mode
-  :init (ido-vertical-mode 1)
-  :config
-  (progn
-    (setq ido-decorations (quote ("\n↪ "     "" "\n   " "\n   ..." "[" "]"
-                                  " [No match]" " [Matched]" " [Not readable]"
-                                  " [Too big]" " [Confirm]")))))
-
 ;; Yet another paste tool, this one for Gist (awesome)
 (use-package gist)
 
@@ -101,19 +104,9 @@
     (global-rainbow-delimiters-mode)
     ))
 
-;; Duplicate things like lines and regions
-(use-package duplicate-thing)
-
-;; Read the latest hacker news in a buffer
-(use-package hackernews)
-
-;; Handy http code definition lookup
-(use-package httpcode)
-
-;; Easily create multiple cursords
-(use-package multiple-cursors)
-
+;;----------------------------------------------------------------------------
 ;; Project file search
+;;----------------------------------------------------------------------------
 (use-package full-ack
   :init
   (progn
@@ -124,17 +117,23 @@
     (setq ack-search-regexp nil)
     (setq ack-display-buffer t)))
 
+;;----------------------------------------------------------------------------
+;; Silver Searcher searching
+;;----------------------------------------------------------------------------
 (use-package ag
   :init
   (progn
-    (setq ag-highlight-search t)
-    ))
+    (setq ag-highlight-search t)))
 
+;;----------------------------------------------------------------------------
 ;; Nice calendar
+;;----------------------------------------------------------------------------
 (use-package calfw)
 (use-package calfw-ical)
 
+;;----------------------------------------------------------------------------
 ;; Helpful hints for key bindings
+;;----------------------------------------------------------------------------
 (use-package guide-key
   :init
   (progn
@@ -151,14 +150,18 @@
 (use-package popwin
   :config (setq display-buffer-function 'popwin:display-buffer))
 
+;;----------------------------------------------------------------------------
 ;; Snippets
+;;----------------------------------------------------------------------------
 (use-package yasnippet
   :init
   (progn
     (yas-global-mode 1)
     (setq-default yas/prompt-functions '(yas/ido-prompt))))
 
-;; Smartparens
+;;----------------------------------------------------------------------------
+;; Smarter parenthesis matching
+;;----------------------------------------------------------------------------
 (use-package smartparens
   :init
   (progn
@@ -168,8 +171,11 @@
       (sp-local-pair "*" "*" :bind "C-*")
       (sp-local-tag "2" "**" "**")
       (sp-local-tag "s" "```scheme" "```")
-    )))
+      )))
 
+;;----------------------------------------------------------------------------
+;; Projectile for project file navigation
+;;----------------------------------------------------------------------------
 (use-package projectile-rails)
 (use-package projectile
   :bind ("s-t" . projectile-find-file)
@@ -207,7 +213,9 @@
   (interactive)
   (flyspell-mode 1))
 
+;;----------------------------------------------------------------------------
 ;; Smooth scrolling
+;;----------------------------------------------------------------------------
 (use-package smooth-scrolling
   :init
   (setq redisplay-dont-pause t
@@ -219,11 +227,9 @@
 ;; Simplenotes
 (use-package simplenote)
 
-;; Handy/smart way of expanding a region
-(use-package expand-region
-  :bind ("C-." . er/expand-region))
-
+;;----------------------------------------------------------------------------
 ;; Graphically indicates the 80 column limit
+;;----------------------------------------------------------------------------
 (use-package fill-column-indicator
   :init
   (progn
@@ -238,7 +244,9 @@
     (add-hook 'text-mode-hook 'fci-mode)
     (setq fill-column 80)))
 
+;;----------------------------------------------------------------------------
 ;; Indicate syntax errors
+;;----------------------------------------------------------------------------
 (use-package flycheck
   :init
   (progn
@@ -250,31 +258,34 @@
     (add-hook 'elixir 'flycheck-mode)
     (add-hook 'sass 'flycheck-mode)
     (add-hook 'scss 'flycheck-mode)
-
     (set-face-attribute 'flycheck-fringe-info nil :foreground "#7aa6da")
     (set-face-attribute 'flycheck-info nil :underline '(:style wave :color "#e28964"))
     (set-face-attribute 'flycheck-error nil :foreground "#fad07a" :weight 'bold :background nil)
     (set-face-attribute 'flycheck-warning nil :weight 'bold :underline "#cdc098" :foreground nil :background nil)
     (set-face-attribute 'flycheck-error-list-highlight-at-point nil :background "grey15")))
 
+;;----------------------------------------------------------------------------
 ;; Autocomplete all the things
+;;----------------------------------------------------------------------------
 (use-package auto-complete
   :init
   (progn
     (require 'auto-complete-config)
+    (define-key ac-completing-map "RET" 'ac-complete)
+    (setq ac-set-trigger-key "RET")
+    ;; (setq ac-trigger-key "TAB")
     (ac-config-default)
     (add-to-list 'ac-dictionary-directories
                  (dot-emacs ".cask/24.3.1/elpa/auto-complete-20131128.233/dict"))
     (setq ac-comphist-file (expand-file-name ".ac-comphist.dat" user-emacs-directory))
     (setq ac-ignore-case nil)
     (setq ac-disable-inline t)
-    (setq ac-trigger-key "TAB")
-    (define-key ac-completing-map "\C-m" nil)
     (setq ac-use-menu-map t)
-    (define-key ac-menu-map "\C-m" 'ac-complete)
     (add-to-list 'ac-modes 'ruby-mode)
     (add-to-list 'ac-modes 'web-mode)
     ))
+
+
 
 (defun my-send-string-to-terminal (string)
   (unless (display-graphic-p) (send-string-to-terminal string)))
@@ -286,6 +297,9 @@
     (add-hook 'evil-insert-state-entry-hook (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=1\x7\e\\")))
     (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=0\x7\e\\")))))
 
+;;----------------------------------------------------------------------------
+;; Evil mode - uses Vim key commands
+;;----------------------------------------------------------------------------
 (use-package evil
   :init
   (progn
@@ -312,12 +326,37 @@
           "o"   'dired
           "g"   'magit-status
           "b"   'switch-to-buffer
+          ","   'switch-to-other-buffer
           "TAB" 'ibuffer
+          "/"   'projectile-ag
           "w"   'matts-close-and-delete-window
           "x"   'smex
           "k"   'ido-bookmarks
-          "cc"  'comment-or-uncomment-line-or-region
-          "r"   'matts-ido-choose-from-recentf
+          "y"   'ido-goto-symbol
+          "c"   'comment-or-uncomment-line-or-region
+          "rm"  'projectile-rails-find-model
+          "rc"  'projectile-rails-find-controller
+          "rv"  'projectile-rails-find-view
           "p"   'matts-ido-find-project)
         ))
     ))
+
+;;----------------------------------------------------------------------------
+;; Cool highlighting effect as you type
+;;----------------------------------------------------------------------------
+(use-package highlight-tail
+  :init
+  (progn
+    (highlight-tail-mode)
+    (setq highlight-tail-colors '(("black" . 0)
+                                  ("#ec527a" . 25)
+                                  ("black" . 66)))))
+
+;;----------------------------------------------------------------------------
+;; Keychord allows you to assign key commands with keys press simultanously.
+;;----------------------------------------------------------------------------
+(use-package key-chord
+  :init
+  (progn
+    (key-chord-mode 1)
+    (key-chord-define-global "jk" 'evil-normal-state)))

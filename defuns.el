@@ -6,6 +6,13 @@
   "Return the full path of a file in the user's emacs directory."
   (expand-file-name (concat user-emacs-directory relative-path)))
 
+(defun increment-number-at-point ()
+  (interactive)
+  (skip-chars-backward "0123456789")
+  (or (looking-at "[0123456789]+")
+      (error "No number at point"))
+  (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
+
 ;;----------------------------------------------------------------------------
 ;; Helpers for moving text around
 ;;----------------------------------------------------------------------------
@@ -62,7 +69,7 @@ A place is considered `tab-width' character columns."
     ))
 
 ;;----------------------------------------------------------------------------
-;; Buffer clean up
+;; Buffer Utils
 ;;----------------------------------------------------------------------------
 
 (defun iwb ()
@@ -112,6 +119,11 @@ Otherwise point moves to beginning of line."
   (interactive)
   (insert "   "))
 
+(defun switch-to-other-buffer ()
+  "Toggle previous buffers"
+  (interactive)
+  (switch-to-buffer (other-buffer)))
+
 ;;----------------------------------------------------------------------------
 ;; Window helpers
 ;;----------------------------------------------------------------------------
@@ -149,7 +161,7 @@ Otherwise point moves to beginning of line."
     (pop-to-buffer cur-buffer)))
 
 ;;----------------------------------------------------------------------------
-;; IDO related helpers
+;; IDO related functions
 ;;----------------------------------------------------------------------------
 
 (defun matts-ido-find-project ()
@@ -182,33 +194,6 @@ Otherwise point moves to beginning of line."
     (x-popup-menu
      `((500 200) ,(selected-frame))
      (list menu-title (cons menu-title (nreverse item-list))))))
-
-(defun ido-goto-symbol ()
-  "Will update the imenu index and then use ido to select a symbol to navigate to"
-  (interactive)
-  (imenu--make-index-alist)
-  (let ((name-and-pos '())
-        (symbol-names '()))
-    (flet ((addsymbols (symbol-list)
-                       (when (listp symbol-list)
-                         (dolist (symbol symbol-list)
-                           (let ((name nil) (position nil))
-                             (cond
-                              ((and (listp symbol) (imenu--subalist-p symbol))
-                               (addsymbols symbol))
-                              ((listp symbol)
-                               (setq name (car symbol))
-                               (setq position (cdr symbol)))
-                              ((stringp symbol)
-                               (setq name symbol)
-                               (setq position (get-text-property 1 'org-imenu-marker symbol))))
-                             (unless (or (null position) (null name))
-                               (add-to-list 'symbol-names name)
-                               (add-to-list 'name-and-pos (cons name position))))))))
-      (addsymbols imenu--index-alist))
-    (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
-           (position (cdr (assoc selected-symbol name-and-pos))))
-      (goto-char position))))
 
 ;;----------------------------------------------------------------------------
 ;; File related helpers
@@ -314,7 +299,7 @@ markdown documment"
                                 (if (buffer-modified-p)
                                     (powerline-raw "*" nil 'r))
                                 (powerline-raw (concat "")  nil 'r)
-                                (powerline-raw (concat "%p")  nil 'l)))
+                                (powerline-raw (concat "(%m) %p")  nil 'l)))
                           (center (list (powerline-raw "%b" nil) )))
                      (concat
                       (powerline-render lhs)
@@ -456,6 +441,12 @@ reuse the current one."
     (find-file file)
     ))
 
+(defun expenses()
+  (interactive)
+  (let ((file (concat "~/Dropbox/Notes/expenses.org")))
+    (find-file file)
+    ))
+
 (defun notebook ()
   "Quick finder for my note documents that I want to be handy at all times"
   (interactive)
@@ -474,6 +465,7 @@ reuse the current one."
       (define-key prefix-map (kbd "b") 'business)
       (define-key prefix-map (kbd "p") 'projects)
       (define-key prefix-map (kbd "n") 'notebook)
+      (define-key prefix-map (kbd "e") 'expenses)
       (define-key global-map (kbd "C-c m") prefix-map)
       map)))
 
