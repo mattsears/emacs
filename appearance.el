@@ -2,7 +2,6 @@
 ;; Colors and UI improvements
 ;;----------------------------------------------------------------------------
 
-;; Pretty colors
 (use-package color-theme
   :init
   (progn
@@ -94,7 +93,6 @@
 ;;----------------------------------------------------------------------------
 ;; Diff mode cosmetics
 ;;----------------------------------------------------------------------------
-
 (eval-after-load 'diff-mode
   '(progn
      (set-face-foreground 'diff-added "#9fab7d")

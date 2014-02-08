@@ -43,8 +43,7 @@
     (local-set-key "\C-m" 'matts-dired-find-file)
     (local-set-key "^" 'matts-dired-up-directory)
     (define-key dired-mode-map [return] 'matts-dired-find-file)
-    )
-  )
+    ))
 
 ;;----------------------------------------------------------------------------
 ;; Markdown mode options
@@ -149,8 +148,7 @@
     (setq yas/dont-activate t)
     (set-face-background 'magit-item-highlight "#0C1021")
     (set-face-foreground 'magit-diff-add "#79b958")
-    (set-face-foreground 'magit-diff-del "#d95c47")
-    )
+    (set-face-foreground 'magit-diff-del "#d95c47"))
   :config
   (progn
     (setq magit-default-tracking-name-function 'magit-default-tracking-name-branch-only)
@@ -239,8 +237,7 @@
          ("Rakefile$" . ruby-mode)
          ("Gemfile$" . ruby-mode)
          ("Capfile$" . ruby-mode)
-         ("Guardfile$" . ruby-mode))
-  )
+         ("Guardfile$" . ruby-mode)))
 
 ;;----------------------------------------------------------------------------
 ;; Css mode
@@ -298,6 +295,7 @@
     (add-hook 'org-mode-hook
               '(lambda ()
                  (define-key org-mode-map [(control tab)] nil)))
+    (setq org-log-done nil)
     (setq org-startup-indented nil)
     (setq org-todo-keywords
           '((sequence "TODO(t)" "IN-PROGRESS(p@/!)" "NEXT(n@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
@@ -344,11 +342,9 @@
     (define-key ibuffer-mode-map [delete] 'ignore)
     (define-key ibuffer-mode-map "j" 'evil-next-line)
     (define-key ibuffer-mode-map "k" 'evil-previous-line)
-    (add-hook 'ibuffer-mode-hooks
+    (add-hook 'ibuffer-mode-hook
               '(lambda ()
-                 ;; keep buffers up-to-date
                  (ibuffer-auto-mode 1)
-                 ;; hide any buffers with asterisks
                  (ibuffer-switch-to-saved-filter-groups "home")
                  (ibuffer-add-to-tmp-hide "^\\*")
                  (ibuffer-add-to-tmp-hide "^\\*Messages*")
@@ -403,8 +399,7 @@
                    ("ruby" (mode . ruby-mode))
                    ("console" (mode . term-mode))
                    ("terminals" (mode . term-mode))
-                   ))))
-    ))
+                   ))))))
 
 ;;----------------------------------------------------------------------------
 ;; Shell customizations
@@ -431,5 +426,8 @@
   (progn
     (setq multi-term-program "/usr/local/bin/bash")
     ))
+
+
+(use-package writeroom-mode)
 
 (provide 'modes)
