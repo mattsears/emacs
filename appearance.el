@@ -8,10 +8,11 @@
     (color-theme-initialize)
     (setq color-theme-is-global t)
     (load-file "~/.emacs.d/color-theme-neptune.el")
-    (color-theme-neptune)))
+    (color-theme-neptune)
+    ))
 
 ;; Set the default font-size to 16pt
-(set-face-attribute 'default nil :height 180)
+(set-face-attribute 'default nil :height 160)
 
 ;; No background transparency
 (setq transparency-level 100)

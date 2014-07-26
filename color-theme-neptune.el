@@ -214,9 +214,9 @@
      (erc-prompt-face ((t (:inherit neptune-white))))
 
      ;; Full Ack
-     (ack-match ((t (:inherit neptune-purple))))
-     (ack-file ((t (:inherit neptune-green))))
-     (ack-line ((t (:inherit neptune-blue))))
+     (ack-match ((t (:foreground "#ffffff" :background "#75879e"))))
+     (ack-file ((t (:foreground "#89ca54" :background "#75879e"))))
+     (ack-line ((t (:foreground "#ffffff" :background "#75879e"))))
 
      ;; Fixme
      (font-lock-fixme-face ((t (:foreground "#ffffff" :background "#75879e"))))
