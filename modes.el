@@ -87,6 +87,7 @@
          ("\\.as[cp]x\\'" . web-mode)
          ("\\.erb\\'" . web-mode)
          ("\\.mustache\\'" . web-mode)
+         ("\\.erb\\'" . web-mode)
          ("\\.html?\\'" . web-mode))
   :config
   (progn
@@ -215,7 +216,10 @@
     (use-package haml-mode
       :mode (("\\.haml$" . haml-mode))
       :config (setq haml-backspace-backdents-nesting nil))
-    (use-package minitest))
+    (use-package minitest)
+    (use-package slim-mode
+      :mode (("\\.slim$" . slim-mode)))
+    )
   :config
   (progn
     (add-hook 'ruby-mode-hook 'rspec-mode)
@@ -360,6 +364,7 @@
     (setq ibuffer-always-show-last-buffer nil)
     (setq ibuffer-sorting-mode 'recency)
     (setq ibuffer-use-header-line t)
+    (setq ibuffer-auto-mode 1)
     (setq ibuffer-show-empty-filter-groups nil)
     (setq ibuffer-formats
           '((mark modified read-only " "
@@ -426,7 +431,6 @@
   (progn
     (setq multi-term-program "/usr/local/bin/bash")
     ))
-
 
 (use-package writeroom-mode)
 
