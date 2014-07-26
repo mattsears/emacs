@@ -67,6 +67,8 @@
   (progn
     (setq ido-case-fold t)
     (setq ido-everywhere t)
+    (setq ido-use-virtual-buffers t)
+    (setq ido-ubiquitous-mode 1)
     (setq ido-enable-prefix nil)
     (setq ido-enable-flex-matching t)
     (setq ido-create-new-buffer 'always)
@@ -104,6 +106,18 @@
     (global-rainbow-delimiters-mode)
     ))
 
+;; Custom alignment rules
+(use-package align
+  :init
+  (progn
+    (add-to-list 'align-rules-list
+     '(text-column-whitespace
+        (regexp  . "\\(^\\|\\S-\\)\\([ \t]+\\)")
+        (group   . 2)
+        (modes   . align-text-modes)
+        (repeat  . t)))
+    ))
+
 ;;----------------------------------------------------------------------------
 ;; Project file search
 ;;----------------------------------------------------------------------------
@@ -114,6 +128,7 @@
     (autoload 'ack "full-ack" nil t)
     (autoload 'ack-find-same-file "full-ack" nil t)
     (autoload 'ack-find-file "full-ack" nil t)
+    (setq ack-heading nil)
     (setq ack-search-regexp nil)
     (setq ack-display-buffer t)))
 
@@ -162,16 +177,16 @@
 ;;----------------------------------------------------------------------------
 ;; Smarter parenthesis matching
 ;;----------------------------------------------------------------------------
-(use-package smartparens
-  :init
-  (progn
-    (smartparens-global-mode 1)
-    (sp-pair "'" nil :actions :rem)
-    (sp-with-modes '(markdown-mode gfm-mode rst-mode)
-      (sp-local-pair "*" "*" :bind "C-*")
-      (sp-local-tag "2" "**" "**")
-      (sp-local-tag "s" "```scheme" "```")
-      )))
+;; (use-package smartparens
+;;   :init
+;;   (progn
+;;     (smartparens-global-mode 1)
+;;     (sp-pair "'" nil :actions :rem)
+;;     (sp-with-modes '(markdown-mode gfm-mode rst-mode)
+;;       (sp-local-pair "*" "*" :bind "C-*")
+;;       (sp-local-tag "2" "**" "**")
+;;       (sp-local-tag "s" "```scheme" "```")
+;;       )))
 
 ;;----------------------------------------------------------------------------
 ;; Projectile for project file navigation
@@ -252,12 +267,10 @@
   (progn
     (add-hook 'ruby-mode-hook 'flycheck-mode)
     (add-hook 'coffee-mode-hook 'flycheck-mode)
-    (add-hook 'sass-mode-hook 'flycheck-mode)
-    (add-hook 'haml-mode-hook 'flycheck-mode)
+    ;; (add-hook 'sass-mode-hook 'flycheck-mode)
+    ;; (add-hook 'haml-mode-hook 'flycheck-mode)
     (add-hook 'emacs-lisp 'flycheck-mode)
     (add-hook 'elixir 'flycheck-mode)
-    (add-hook 'sass 'flycheck-mode)
-    (add-hook 'scss 'flycheck-mode)
     (set-face-attribute 'flycheck-fringe-info nil :foreground "#7aa6da")
     (set-face-attribute 'flycheck-info nil :underline '(:style wave :color "#e28964"))
     (set-face-attribute 'flycheck-error nil :foreground "#fad07a" :weight 'bold :background nil)
@@ -267,39 +280,19 @@
 ;;----------------------------------------------------------------------------
 ;; Autocomplete all the things
 ;;----------------------------------------------------------------------------
-(use-package auto-complete
+(use-package company
   :init
   (progn
-    (require 'auto-complete-config)
-    (define-key ac-completing-map "RET" 'ac-complete)
-    (setq ac-set-trigger-key "RET")
-    ;; (setq ac-trigger-key "TAB")
-    (ac-config-default)
-    (add-to-list 'ac-dictionary-directories
-                 (dot-emacs ".cask/24.3.1/elpa/auto-complete-20131128.233/dict"))
-    (setq ac-comphist-file (expand-file-name ".ac-comphist.dat" user-emacs-directory))
-    (setq ac-ignore-case nil)
-    (setq ac-disable-inline t)
-    (setq ac-use-menu-map t)
-    (add-to-list 'ac-modes 'ruby-mode)
-    (add-to-list 'ac-modes 'web-mode)
+    (add-hook 'after-init-hook 'global-company-mode)
     ))
-
-
-
-(defun my-send-string-to-terminal (string)
-  (unless (display-graphic-p) (send-string-to-terminal string)))
-(defun my-evil-terminal-cursor-change ()
-  (when (string= (getenv "TERM_PROGRAM") "iTerm.app")
-    (add-hook 'evil-insert-state-entry-hook (lambda () (my-send-string-to-terminal "\e]50;CursorShape=1\x7")))
-    (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\e]50;CursorShape=0\x7"))))
-  (when (and (getenv "TMUX") (string= (getenv "TERM_PROGRAM") "iTerm.app"))
-    (add-hook 'evil-insert-state-entry-hook (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=1\x7\e\\")))
-    (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=0\x7\e\\")))))
 
 ;;----------------------------------------------------------------------------
 ;; Evil mode - uses Vim key commands
 ;;----------------------------------------------------------------------------
+
+(defun my-send-string-to-terminal (string)
+  (unless (display-graphic-p) (send-string-to-terminal string)))
+
 (use-package evil
   :init
   (progn
@@ -308,14 +301,34 @@
     (define-key evil-normal-state-map [escape] 'keyboard-quit)
     (define-key evil-visual-state-map [escape] 'keyboard-quit)
     (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
-    (my-evil-terminal-cursor-change)
-    (add-hook 'after-make-frame-functions (lambda (frame) (my-evil-terminal-cursor-change)))
+    (setq evil-want-fine-undo t)
+
+    (defun set-mode-to-default-emacs (mode)
+      (evil-set-initial-state mode 'emacs))
+
+    (mapcar 'set-mode-to-default-emacs
+            '(dired
+              magit-branch-manager-mode
+              comint-mode
+              magit-log-mode
+              eshell-mode
+              diff-mode
+              project-explorer-mode))
+
+    ;; To get the cursor to change in insert mode in iTerm
+    (use-package evil-terminal-cursor-changer
+      :init
+      (progn
+        (require 'evil-terminal-cursor-changer)
+        ))
+
     (use-package evil-matchit
       :init
       (global-evil-matchit-mode 1))
     (use-package surround
       :init
       (global-surround-mode 1 ))
+    (use-package evil-nerd-commenter)
     (use-package evil-leader
       :init
       (progn
@@ -326,31 +339,28 @@
           "o"   'dired
           "g"   'magit-status
           "b"   'switch-to-buffer
-          ","   'switch-to-other-buffer
-          "TAB" 'ibuffer
+          ","   'switch-to-previous-buffer
+          "."   'projectile-find-tag
+          "TAB" 'matts-ibuffer
           "/"   'projectile-ag
           "w"   'matts-close-and-delete-window
           "x"   'smex
           "k"   'ido-bookmarks
-          "y"   'ido-goto-symbol
-          "c"   'comment-or-uncomment-line-or-region
+          "y"   'matts-ido-goto-symbol
+          "c"   'evilnc-comment-or-uncomment-lines
+          "R"   'matts-ido-choose-from-recentf
           "rm"  'projectile-rails-find-model
           "rc"  'projectile-rails-find-controller
           "rv"  'projectile-rails-find-view
-          "p"   'matts-ido-find-project)
+          "rh"  'projectile-rails-goto-schema
+          "rr"  'projectile-rails-goto-routes
+          "rg"  'projectile-rails-find-migration
+          "rs"  'projectile-rails-find-stylesheet
+          "r.m" 'projectile-rails-find-current-model
+          "p"   'matts-ido-find-project
+          "e"   'project-explorer-open)
         ))
     ))
-
-;;----------------------------------------------------------------------------
-;; Cool highlighting effect as you type
-;;----------------------------------------------------------------------------
-(use-package highlight-tail
-  :init
-  (progn
-    (highlight-tail-mode)
-    (setq highlight-tail-colors '(("black" . 0)
-                                  ("#ec527a" . 25)
-                                  ("black" . 66)))))
 
 ;;----------------------------------------------------------------------------
 ;; Keychord allows you to assign key commands with keys press simultanously.
@@ -359,4 +369,19 @@
   :init
   (progn
     (key-chord-mode 1)
+    (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+    (key-chord-define-global "hj" 'evil-normal-state)
     (key-chord-define-global "jk" 'evil-normal-state)))
+
+(use-package ace-jump-mode
+  :init
+  (progn
+    (define-key evil-normal-state-map (kbd "SPC") 'ace-jump-char-mode)
+    (define-key evil-visual-state-map (kbd "SPC") 'ace-jump-char-mode)
+    ))
+
+(use-package project-explorer)
+(use-package ggtags
+  :init
+  (progn
+    (ggtags-mode 1)))

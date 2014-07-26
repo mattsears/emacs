@@ -124,6 +124,23 @@ Otherwise point moves to beginning of line."
   (interactive)
   (switch-to-buffer (other-buffer)))
 
+(defun buffer-exists (bufname) (not (eq nil (get-buffer bufname))))
+
+(defun switch-to-previous-buffer ()
+  "Switch to previously open buffer.
+Repeated invocations toggle between the two most recently open buffers."
+  (interactive)
+  ;; Don't switch back to the ibuffer!!!
+  (if (buffer-exists "*Ibuffer*")  (kill-buffer "*Ibuffer*"))
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+(defun matts-ibuffer ()
+  "Open ibuffer with cursour pointed to most recent buffer name"
+  (interactive)
+  (let ((recent-buffer-name (buffer-name)))
+    (ibuffer)
+    (ibuffer-jump-to-buffer recent-buffer-name)))
+
 ;;----------------------------------------------------------------------------
 ;; Window helpers
 ;;----------------------------------------------------------------------------
@@ -160,6 +177,19 @@ Otherwise point moves to beginning of line."
     (switch-to-buffer bottom-buffer)
     (pop-to-buffer cur-buffer)))
 
+(defun switch-to-scratch ()
+  "switch to scratch, grab the region if it's active"
+  (interactive)
+  (let ((contents
+         (and (region-active-p)
+              (buffer-substring (region-beginning)
+                                (region-end)))))
+    (switch-to-buffer "*scratch*")
+    (if contents
+        (progn
+          (goto-char (buffer-end 1))
+          (insert contents)))))
+
 ;;----------------------------------------------------------------------------
 ;; IDO related functions
 ;;----------------------------------------------------------------------------
@@ -168,7 +198,9 @@ Otherwise point moves to beginning of line."
   (interactive)
   (let ((project-root (concat "~/Workspace/"  (ido-completing-read "Project: "
                                                                    (directory-files "~/Workspace/" nil "^[^.]")))))
-    (find-file project-root)))
+    ;; (nuke-all-buffers)
+    (projectile-switch-project-by-name project-root)))
+
 
 (defun matts-ido-choose-from-recentf ()
   "Use ido to select a recently opened file from the `recentf-list'"
@@ -180,6 +212,54 @@ Otherwise point moves to beginning of line."
                                     (replace-regexp-in-string home "~" path))
                                   recentf-list)
                           nil t))))
+
+(defun matts-ido-goto-symbol (&optional symbol-list)
+  "Refresh imenu and jump to a place in the buffer using Ido."
+  (interactive)
+  (unless (featurep 'imenu)
+    (require 'imenu nil t))
+  (cond
+   ((not symbol-list)
+    (let ((ido-mode ido-mode)
+          (ido-enable-flex-matching
+           (if (boundp 'ido-enable-flex-matching)
+               ido-enable-flex-matching t))
+          name-and-pos symbol-names position)
+      (unless ido-mode
+        (ido-mode 1)
+        (setq ido-enable-flex-matching t))
+      (while (progn
+               (imenu--cleanup)
+               (setq imenu--index-alist nil)
+               (matts-ido-goto-symbol (imenu--make-index-alist))
+               (setq selected-symbol
+                     (ido-completing-read "Symbol? " symbol-names))
+               (string= (car imenu--rescan-item) selected-symbol)))
+      (unless (and (boundp 'mark-active) mark-active)
+        (push-mark nil t nil))
+      (setq position (cdr (assoc selected-symbol name-and-pos)))
+      (cond
+       ((overlayp position)
+        (goto-char (overlay-start position)))
+       (t
+        (goto-char position)))))
+   ((listp symbol-list)
+    (dolist (symbol symbol-list)
+      (let (name position)
+        (cond
+         ((and (listp symbol) (imenu--subalist-p symbol))
+          (matts-ido-goto-symbol symbol))
+         ((listp symbol)
+          (setq name (car symbol))
+          (setq position (cdr symbol)))
+         ((stringp symbol)
+          (setq name symbol)
+          (setq position
+                (get-text-property 1 'org-imenu-marker symbol))))
+        (unless (or (null position) (null name)
+                    (string= (car imenu--rescan-item) name))
+          (add-to-list 'symbol-names name)
+          (add-to-list 'name-and-pos (cons name position))))))))
 
 (defun choose-from-menu (menu-title menu-items)
   "Choose from a list of choices from a popup menu."
@@ -315,6 +395,32 @@ markdown documment"
   (load-file "~/.emacs.d/mattsears/color-theme-neptune.el")
   (color-theme-neptune))
 
+(defun pretty-print-xml-region (begin end)
+  "Pretty format XML markup in region."
+  (interactive "r")
+  (save-excursion
+    ;; split <foo><bar> or </foo><bar>, but not <foo></foo>
+    (goto-char begin)
+    (while (search-forward-regexp ">[ \t]*<[^/]" end t)
+      (backward-char 2) (insert "\n") (incf end))
+    ;; split <foo/></foo> and </foo></foo>
+    (goto-char begin)
+    (while (search-forward-regexp "<.*?/.*?>[ \t]*<" end t)
+      (backward-char) (insert "\n") (incf end))
+    ;; put xml namespace decls on newline
+    (goto-char begin)
+    (while (search-forward-regexp "\\(<\\([a-zA-Z][-:A-Za-z0-9]*\\)\\|['\"]\\) \\(xmlns[=:]\\)" end t)
+      (goto-char (match-end 0))
+      (backward-char 6) (insert "\n") (incf end))
+    (indent-region begin end nil)))
+
+(defun beautify-js ()
+  (interactive)
+  (let ((b (if mark-active (min (point) (mark)) (point-min)))
+        (e (if mark-active (max (point) (mark)) (point-max))))
+    (shell-command-on-region b e
+                             "js-beautify -q -w 80 --no-preserve-newlines -f -" (current-buffer) t)))
+
 ;;----------------------------------------------------------------------------
 ;; Ruby related functions
 ;;----------------------------------------------------------------------------
@@ -353,6 +459,69 @@ switch to *rails-console* buffer."
     (ruby-compilation-this-buffer)))
 
 (define-key global-map (kbd "s-r") 'run-rails-test-or-ruby-buffer)
+
+(defun operate-on-point-or-region (fn)
+  "Get the current unspaced string at point, or the current
+region, if selected, and replace it with the return value of fn -
+an ordinary defun."
+  (let (pos1 pos2 meat)
+    (if (and transient-mark-mode mark-active)
+        (setq pos1 (region-beginning)
+              pos2 (region-end))
+      (setq pos1 (car (bounds-of-thing-at-point 'symbol))
+            pos2 (cdr (bounds-of-thing-at-point 'symbol))))
+    (setq meat (funcall fn (buffer-substring-no-properties pos1 pos2)))
+    (delete-region pos1 pos2)
+    (insert  meat)))
+
+;; Change a string to a ruby symbol, note: naive operation
+(defun ruby-make-symbol-at-point ()
+  "Dirt simple, just prefix current word with a colon"
+  (interactive)
+  (operate-on-point-or-region 'ruby-prepend-colon))
+
+(defun ruby-prepend-colon (s) ""
+  (format ":%s" s))
+
+(eval-after-load 'ruby-mode
+  '(define-key ruby-mode-map (kbd "C-c :") 'ruby-make-symbol-at-point))
+
+(defun erb-to-haml ()
+  "run html2haml on current buffer"
+  (interactive)
+  (save-excursion
+    (save-buffer)
+    (shell-command (concat "html2haml --erb " (buffer-file-name) " 2> /dev/null")
+                   (current-buffer)
+                   )))
+
+(defun erb-region-to-haml ()
+  "Convert selected region to haml"
+  (interactive)
+
+  (let ((deactivate-mark nil)
+
+        (beg (or (and mark-active (region-beginning))
+                 (line-beginning-position)))
+        (end (or (and mark-active (region-end)) (line-end-position))))
+
+    (shell-command-on-region beg end "html2haml --erb -s" (buffer-name) t)
+    ))
+
+(defun erb-to-haml-and-change-file-extension ()
+  "run html2haml on current buffer"
+  (interactive)
+  (save-excursion
+    (save-buffer)
+    (shell-command (concat "html2haml --erb " (buffer-file-name) " 2> /dev/null")
+                   (current-buffer)
+                   )
+    (let ((new-name (replace-regexp-in-string "erb" "haml" (buffer-file-name))))
+      (rename-file (buffer-file-name) new-name)
+      (rename-buffer new-name)
+      (set-visited-file-name new-name)
+      (set-buffer-modified-p nil)
+      )))
 
 ;;----------------------------------------------------------------------------
 ;; Dired related functions
@@ -395,6 +564,80 @@ reuse the current one."
       (dired-find-file)
       (kill-buffer orig))))
 
+
+;;----------------------------------------------------------------------------
+;; Tags
+;;----------------------------------------------------------------------------
+
+(defvar ctags-options "" "Options for tags generation")
+(setq tags-revert-without-query 1)
+
+(defun my-ido-find-tag ()
+  "Find a tag using ido"
+  (interactive)
+  (tags-completion-table)
+  (let (tag-names)
+    (mapc (lambda (x)
+            (unless (integerp x)
+              (push (prin1-to-string x t) tag-names)))
+          tags-completion-table)
+    (find-tag (ido-completing-read "Tag: " tag-names))))
+
+(defun build-ctags()
+  (interactive)
+  (let ((root (project-root)))
+    (let ((my-tags-file (concat root "TAGS")))
+      (message "Regenerating TAGS file: %s" my-tags-file)
+      (if (file-exists-p my-tags-file)
+          (delete-file my-tags-file))
+      (shell-command
+       (format "ctags -e -R --exclude=db --exclude=.git --exclude=tmp --exclude=test --exclude=.#* %s -f %s %s"
+               ctags-options my-tags-file root))
+      (if (get-file-buffer my-tags-file)
+          (kill-buffer (get-file-buffer my-tags-file)))
+      (visit-tags-table my-tags-file))))
+
+;;----------------------------------------------------------------------------
+;; Project Roots
+;;----------------------------------------------------------------------------
+
+(defvar *project-roots*
+  '(".git" ".hg" "Rakefile" "Makefile" "README" "build.xml" ".emacs-project" "Gemfile")
+  "The presence of any file/directory in this list indicates a project root.")
+(defvar *project-root* nil
+  "Used internally to cache the project root.")
+
+(defun root-match(root names)
+  (member (car names) (directory-files root)))
+
+(defun root-matches(root names)
+  (if (root-match root names)
+      (root-match root names)
+    (if (eq (length (cdr names)) 0)
+'nil
+      (root-matches root (cdr names))
+      )))
+
+(defun project-root ()
+  "Returns the current project root."
+  (when (or
+         (null *project-root*)
+         (not (string-match *project-root* default-directory)))
+    (let ((root (find-project-root)))
+      (if root
+          (setq *project-root* (expand-file-name (concat root "/")))
+        (setq *project-root* nil))))
+  *project-root*)
+
+(defun find-project-root (&optional root)
+  "Determines the current project root by recursively searching for an indicator."
+  (when (null root) (setq root default-directory))
+  (cond
+   ((root-matches root *project-roots*)
+    (expand-file-name root))
+   ((equal (expand-file-name root) "/") nil)
+   (t (find-project-root (concat (file-name-as-directory root) "..")))))
+
 ;;----------------------------------------------------------------------------
 ;; Personal Productivity helpers
 ;;----------------------------------------------------------------------------
@@ -411,7 +654,7 @@ reuse the current one."
                         (cons "Calendar" "(call-interactively 'cfw:open-calendar-buffer)")
                         (cons "Bookmarks" "(call-interactively 'list-bookmarks)")
                         (cons "Bookmark This File" "(call-interactively 'bookmark-set)")
-                        (cons "Toggle line numbers " "(call-interactively 'linum-mode)")
+                        (cons "Open Notebook " "(call-interactively 'notebook)")
                         (cons "-" "")
                         (cons "Open Shell " "(call-interactively 'visit-term-buffer)")
                         (cons "Lookup HTTP code " "(call-interactively 'hc)")
