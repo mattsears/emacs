@@ -152,7 +152,7 @@
  bookmark-save-flag 1)
 
 ;; TAGS
-(setq tags-file-name ".TAGS")
+(setq tags-file-name "GTAGS")
 
 ;; Auto refresh buffers
 (global-auto-revert-mode 1)
