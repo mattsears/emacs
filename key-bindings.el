@@ -152,7 +152,10 @@
 ; (global-set-key (kbd "C-c e") 'project-explorer-open)
 
 ;; Escape closes minibuffer
-(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+;; (global-set-key [escape] 'keyboard-quit)
+;; (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+(global-set-key [escape] 'evil-exit-emacs-state)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Find file in project
 (define-key global-map (kbd "s-p") 'matts-ido-find-project)

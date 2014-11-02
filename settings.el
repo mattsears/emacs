@@ -1,6 +1,7 @@
 ;;----------------------------------------------------------------------------
 ;; Global settings for all modes
 ;;----------------------------------------------------------------------------
+
 (setq ns-use-native-fullscreen nil)
 
 ;; Set text mode to be the default major mode
@@ -125,7 +126,6 @@
 (setq tooltip-mode nil)
 (setq version-control t)
 (setq mark-even-if-inactive t) ;; don't kill the mark
-;; (setq blink-matching-paren-on-screen t)
 
 ;; No funky input for normal editing;
 (set-input-method nil)
@@ -233,5 +233,19 @@
 
 ;; inserting text while the mark is active causes the selected text to be deleted first.
 (delete-selection-mode t)
+
+;; Enable mouse support
+(unless window-system
+  (require 'mouse)
+  (xterm-mouse-mode t)
+  (global-set-key [mouse-4] '(lambda ()
+                              (interactive)
+                              (scroll-down 1)))
+  (global-set-key [mouse-5] '(lambda ()
+                              (interactive)
+                              (scroll-up 1)))
+  (defun track-mouse (e))
+  (setq mouse-sel-mode t)
+)
 
 (provide 'global)

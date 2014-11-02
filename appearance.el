@@ -2,14 +2,10 @@
 ;; Colors and UI improvements
 ;;----------------------------------------------------------------------------
 
-(use-package color-theme
-  :init
-  (progn
-    (color-theme-initialize)
-    (setq color-theme-is-global t)
-    (load-file "~/.emacs.d/color-theme-neptune.el")
-    (color-theme-neptune)
-    ))
+ (color-theme-initialize)
+ (setq color-theme-is-global t)
+ (load-file "~/.emacs.d/color-theme-neptune.el")
+ (color-theme-neptune)
 
 ;; Set the default font-size to 16pt
 (set-face-attribute 'default nil :height 160)
@@ -44,7 +40,8 @@
               )))
 
 ;; Skinny cursor
-(setq-default cursor-type '(bar . 2))
+(setq-default cursor-type '(hollow . 2))
+(set-cursor-color "#ff005f")
 
 ;; No blinking curstor
 (blink-cursor-mode -1)

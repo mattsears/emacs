@@ -13,6 +13,52 @@
       (error "No number at point"))
   (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
 
+(setq evil-emacs-state-cursor '("red" box))
+(setq evil-normal-state-cursor '("green" box))
+(setq evil-visual-state-cursor '("orange" box))
+(setq evil-insert-state-cursor '("red" bar))
+(setq evil-replace-state-cursor '("red" bar))
+(setq evil-operator-state-cursor '("red" hollow))
+
+(defun my-send-string-to-terminal (string)
+  (unless (display-graphic-p) (send-string-to-terminal string)))
+
+(defun my-evil-terminal-cursor-change ()
+  (interactive)
+  (when (string= (getenv "TERM_PROGRAM") "iTerm.app")
+    (add-hook 'evil-insert-state-entry-hook (lambda () (my-send-string-to-terminal "\e]50;CursorShape=1\x7")))
+    (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\e]50;CursorShape=0\x7"))))
+  (when (and (getenv "TMUX") (string= (getenv "TERM_PROGRAM") "iTerm.app"))
+    (add-hook 'evil-insert-state-entry-hook (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=1\x7\e\\")))
+    (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=0\x7\e\\")))))
+
+(add-hook 'after-make-frame-functions (lambda (frame) (my-evil-terminal-cursor-change)))
+(my-evil-terminal-cursor-change)
+
+;;To get the cursor to change in insert mode in iTerm
+(defun my-evil-modeline-change (default-color)
+  "changes the modeline color when the evil mode changes"
+  (let ((color (cond ((evil-insert-state-p) '("#8700ff" . "#ffffff"))
+                     ((evil-visual-state-p) '("#646c9c" . "#ffffff"))
+                     ((evil-normal-state-p) default-color)
+                     (t '("#440000" . "#ffffff")))))
+    (set-face-background 'mode-line (car color))
+    (set-face-foreground 'mode-line (cdr color))))
+
+;; esc quits
+(defun minibuffer-keyboard-quit ()
+  "Abort recursive edit.
+In Delete Selection mode, if the mark is active, just deactivate it;
+then it takes a second \\[keyboard-quit] to abort the minibuffer."
+  (interactive)
+  (if (and delete-selection-mode transient-mark-mode mark-active)
+      (setq deactivate-mark  t)
+    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+    (abort-recursive-edit)))
+
+(define-key minibuffer-local-map [escape] 'keyboard-escepe-quit)
+(define-key minibuffer-local-map (kbd "ESC") 'keyboard-escape-quit)
+
 ;;----------------------------------------------------------------------------
 ;; Helpers for moving text around
 ;;----------------------------------------------------------------------------
@@ -392,7 +438,7 @@ markdown documment"
 (defun reload-color-theme ()
   "Reloads the color themes. Handy when experimenting with various colors"
   (interactive)
-  (load-file "~/.emacs.d/mattsears/color-theme-neptune.el")
+  (load-file "~/.emacs.d/color-theme-neptune.el")
   (color-theme-neptune))
 
 (defun pretty-print-xml-region (begin end)

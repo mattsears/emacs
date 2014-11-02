@@ -35,14 +35,14 @@
     (setq dired-recursive-deletes 'top)
     (setq dired-recursive-copies (quote always))
     (define-key dired-mode-map [delete] 'dired-do-delete)
-    (define-key dired-mode-map [backspace] 'matts-dired-up-directory)
+    (define-key dired-mode-map (kbd "DEL") 'matts-dired-up-directory)
     (define-key dired-mode-map [C-return] 'dired-find-file-other-window)
     (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
     (define-key dired-mode-map "n" 'dired-touch-now)
     (define-key dired-mode-map "o" 'matts-dired-open-mac)
     (local-set-key "\C-m" 'matts-dired-find-file)
     (local-set-key "^" 'matts-dired-up-directory)
-    (define-key dired-mode-map [return] 'matts-dired-find-file)
+    (define-key dired-mode-map [return] 'dired-find-alternate-file)
     ))
 
 ;;----------------------------------------------------------------------------
@@ -159,6 +159,11 @@
     (setq magit-unstage-all-confirm nil))
   :bind ("C-x g" . magit-status))
 
+(use-package magit-gh-pulls
+  :config
+  (progn
+    (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)))
+
 ;;----------------------------------------------------------------------------
 ;; Git Gutter
 ;;----------------------------------------------------------------------------
@@ -224,12 +229,17 @@
   (progn
     (add-hook 'ruby-mode-hook 'rspec-mode)
     (add-hook 'ruby-mode-hook 'rvm-activate-corresponding-ruby)
+    (add-hook 'ruby-mode-hook 'robe-mode)
+    (add-hook 'ruby-mode-hook
+          (lambda () (modify-syntax-entry ?_ "w")))
     (setq ruby-deep-indent-paren nil)
     (setq rspec-use-bundler-when-possible nil)
     (setq rspec-use-rake-when-possible nil)
     (setq ruby-deep-indent-paren-style nil)
     (setq ruby-deep-arglist nil)
     (setq ruby-dbg-flags "-W0")
+    (setenv "PATH" (concat (getenv "HOME") "/.rbenv/shims:" (getenv "HOME") "/.rbenv/bin:" (getenv "PATH")))
+    (setq exec-path (cons (concat (getenv "HOME") "/.rbenv/shims") (cons (concat (getenv "HOME") "/.rbenv/bin") exec-path)))
     )
   :bind (("C-{" . ruby-toggle-hash-syntax)
          ("C-M-h" . backward-kill-word)
@@ -353,6 +363,7 @@
                  (ibuffer-add-to-tmp-hide "^\\*")
                  (ibuffer-add-to-tmp-hide "^\\*Messages*")
                  (ibuffer-add-to-tmp-hide "^\\*Ibuffer*")
+                 (ibuffer-add-to-tmp-hide "^\\*TAGS*")
                  (ibuffer-add-to-tmp-hide "^\\*scratch*")
                  (ibuffer-add-to-tmp-hide "^\\*Compile-Log*")
                  ))
@@ -418,10 +429,11 @@
     (add-hook 'term-exec-hook 'my-term-use-utf8)
     (add-hook 'term-mode-hook (lambda()
                                 (setq yas-dont-activate t)))
-    (use-package ansi-term
-      :init
-      (progn
-        (ad-activate 'ansi-term)))
+    ;; (use-package ansi-term
+    ;;   :init
+    ;;   (progn
+    ;;     (ad-activate 'ansi-term)))
+
     (use-package bash-completion
       :init
       (progn

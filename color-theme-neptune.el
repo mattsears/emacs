@@ -27,7 +27,7 @@
       (background-color . "#151515")
       (background-mode . dark)
       (border-color . "#dedede")
-      (cursor-color . "#b18cce")
+      (cursor-color . "#ff005f")
       (foreground-color . "#ffffff")
       )
 
@@ -36,7 +36,7 @@
      (neptune-black-2 ((t (:background "#151515"))))
 
      (neptune-white ((t (:foreground "#eaeaea"))))
-     (neptune-blue ((t (:foreground "#7aa6da"))))
+     (neptune-blue ((t (:foreground "#005fd7"))))
      (neptune-blue-1 ((t (:foreground "#7aa6da"))))
      (neptune-light-blue ((t (:foreground "#e1f3f8"))))
      (neptune-aqua ((t (:foreground "#70c0b1"))))
@@ -48,7 +48,7 @@
      (neptune-green ((t (:foreground "#89ca54"))))
      (neptune-light-green ((t (:foreground "#daefa3"))))
      (neptune-red ((t (:foreground "#CF6A4C"))))
-     (neptune-red-1 ((t (:foreground "#cc6666"))))
+     (neptune-red-1 ((t (:foreground "#ff5f5f"))))
      (neptune-grey ((t (:foreground "#969896"))))
      (neptune-grey-1 ((t (:foreground "#7f7f7f"))))
      (neptune-gold ((t (:foreground "#cdc098"))))
@@ -220,6 +220,16 @@
 
      ;; Fixme
      (font-lock-fixme-face ((t (:foreground "#ffffff" :background "#75879e"))))
+
+     ;; Company mode
+
+     ;; (company-preview-common ((t (:foreground nil :background ""))))
+     (company-scrollbar-bg ((t (:background "#151515"))))
+     (company-scrollbar-fg ((t (:background "#151515"))))
+     (company-tooltip ((t (:foreground "#ffffff" :background "#1c1c1c"))))
+     (company-tooltip-common ((t (:foreground "#cc6666" :background "#151515"))))
+     (company-tooltip-common-selection ((t (:foreground "#c397d8" :background "#1a1d2f"))))
+     (company-tooltip-selection ((t (:background "#363636"))))
 
      (semantic-dirty-token-face ((t (:inherit neptune-bg))))
      (semantic-unmatched-syntax-face ((t (nil))))
