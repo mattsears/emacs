@@ -15,6 +15,7 @@
 
 (load "defuns")
 (load "rails-edbi")
+(load "colors")
 
 ;;----------------------------------------------------------------------------
 ;; Global settings for all modes
@@ -50,7 +51,7 @@
 (setq backup-inhibited t)
 
 ;; Misc settings
-(setq global-hl-line-mode t)
+;; (setq global-hl-line-mode t)
 (setq indicate-buffer-boundaries nil)
 
 ;; This will help distinguish files with the same name
@@ -89,27 +90,6 @@
   (setq mouse-sel-mode t)
 )
 
-;;----------------------------------------------------------------------------
-;; Colors and UI improvements
-;;----------------------------------------------------------------------------
-
-(load-file "~/.emacs.d/color-theme-neptune.el")
-(color-theme-neptune)
-
-;; Set the default font-size to 16pt
-(set-face-attribute 'default nil :height 160)
-
-;; Modeline colors
-(set-face-attribute 'mode-line nil
-                    :foreground "#eeeeee"
-                    :background "#222222"
-                    :box nil)
-
-(set-face-attribute 'mode-line-inactive nil
-                    :foreground "#7f7f7f"
-                    :background "#222222"
-                    :box nil)
-
 ;; Set column with
 (setq fill-column 80)
 (setq-default fill-column 80)
@@ -128,19 +108,6 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (toggle-scroll-bar -1)
-
-;;----------------------------------------------------------------------------
-;; Diff mode cosmetics
-;;----------------------------------------------------------------------------
-(eval-after-load 'diff-mode
-  '(progn
-     (set-face-foreground 'diff-added "#9fab7d")
-     (set-face-foreground 'diff-removed "#CF6A4C")))
-
-(eval-after-load 'magit
-  '(progn
-     (set-face-foreground 'magit-diff-add "#9fab7d")
-     (set-face-foreground 'magit-diff-del "#CF6A4C")))
 
 ;;----------------------------------------------------------------------------
 ;; Change the default colors for matching parens

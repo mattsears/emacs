@@ -1,22 +1,38 @@
+;;----------------------------------------------------------------------------
+;; Colors and UI improvements
+;;----------------------------------------------------------------------------
+
+;; Set the default font-size to 16pt
+(set-face-attribute 'default nil :height 160)
+
+;; Modeline colors
+(set-face-attribute 'mode-line nil
+                    :foreground "#eeeeee"
+                    :background "#222222"
+                    :box nil)
+
+(set-face-attribute 'mode-line-inactive nil
+                    :foreground "#7f7f7f"
+                    :background "#222222"
+                    :box nil)
+
+;;----------------------------------------------------------------------------
+;; Diff mode cosmetics
+;;----------------------------------------------------------------------------
+(eval-after-load 'diff-mode
+  '(progn
+     (set-face-foreground 'diff-added "#9fab7d")
+     (set-face-foreground 'diff-removed "#CF6A4C")))
+
+(eval-after-load 'magit
+  '(progn
+     (set-face-foreground 'magit-diff-add "#9fab7d")
+     (set-face-foreground 'magit-diff-del "#CF6A4C")))
+
+;;----------------------------------------------------------------------------
 ;; My very own color theme for Emacs.
-;;
-;; Defines a colour scheme resembling that of the original Textmate Blackboard theme.
-;; To use add the following to your .emacs file (requires the color-theme package):
-;;
-;; (require 'color-theme)
-;; (color-theme-initialize)
-;; (load-file "~/.emacs.d/color-theme/color-theme-neptune.el")
-;;
-;; And then (color-theme-neptune) to activate it.
-;;
-;; Several areas still require improvement such as recognition of code that ruby-mode doesn't
-;; yet pick up (eg. parent classes), Rails/Merb keywords, or non Ruby code related areas
-;; (eg. dired, HTML, etc). Please feel free to customize further and send in any improvements,
-;; patches most welcome.
-;;
-;; MIT License Copyright (c) 2008 Matt Sears <matt@mattsears.com>
-;; Credits due to the excellent TextMate Blackboard theme
-;;
+;;----------------------------------------------------------------------------
+
 (defun color-theme-neptune()
   "Emacs color theme by Matt Sears created 2008-08-18"
   (interactive)
@@ -233,4 +249,7 @@
 
      (semantic-dirty-token-face ((t (:inherit neptune-bg))))
      (semantic-unmatched-syntax-face ((t (nil))))
-     (zmacs-region ((t (:inherit neptune-blue)))))))
+     (zmacs-region ((t (:inherit neptune-blue))))))
+)
+
+(color-theme-neptune)
