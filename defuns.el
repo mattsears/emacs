@@ -111,7 +111,7 @@ A place is considered `tab-width' character columns."
   (delete-trailing-whitespace))
 
 ;; Delete trailing whitespace before save
-;; (add-hook 'before-save-hook 'cleanup-buffer)
+(add-hook 'before-save-hook 'cleanup-buffer)
 
 (defun back-to-indentation-or-beginning-of-line ()
   "Moves point back to indentation if there is any
@@ -148,6 +148,11 @@ Repeated invocations toggle between the two most recently open buffers."
   (let ((recent-buffer-name (buffer-name)))
     (ibuffer)
     (ibuffer-jump-to-buffer recent-buffer-name)))
+
+(defun turn-on-flyspell ()
+  "Force flyspell-mode on using a positive arg.  For use in hooks."
+  (interactive)
+  (flyspell-mode 1))
 
 ;;----------------------------------------------------------------------------
 ;; Window helpers

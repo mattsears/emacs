@@ -152,7 +152,7 @@
 (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 
 ;;------------------------------------------------------------------------------
-;; Enhanced M-x
+;; Smex - Enhanced M-x
 ;;------------------------------------------------------------------------------
 (use-package smex
   :bind (("M-x" . smex)
@@ -188,6 +188,12 @@
 
     (ido-mode 1)
     (ido-disable-line-trucation))
+    (setq ido-decorations (quote ("\n↪ "     "" "\n   " "\n   ..." "[" "]"
+                                  " [No match]" " [Matched]" " [Not readable]"
+                                  " [Too big]" " [Confirm]")))
+    (setq ido-ignore-buffers
+          '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*Ibuffer"
+            "^\*scratch*" "^\*TAGS" "^session\.*" "^\*"))
   :config
   (progn
     (setq ido-case-fold t)
@@ -218,17 +224,7 @@
   :init (flx-ido-mode 1))
 
 (use-package ido-vertical-mode
-  :init (ido-vertical-mode 1)
-  :config
-  (progn
-    (setq ido-decorations (quote ("\n↪ "     "" "\n   " "\n   ..." "[" "]"
-                                  " [No match]" " [Matched]" " [Not readable]"
-                                  " [Too big]" " [Confirm]")))
-    (setq ido-ignore-buffers
-          '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*Ibuffer"
-            "^\*scratch*" "^\*TAGS" "^session\.*" "^\*"))
-    ))
-
+  :init (ido-vertical-mode 1))
 
 ;; Yet another paste tool, this one for Gist (awesome)
 (use-package gist)
@@ -240,18 +236,6 @@
     (recentf-mode 1)
     (setq recentf-max-saved-items 500)
     (setq recentf-max-menu-items 60)))
-
-;; Custom alignment rules
-(use-package align
-  :init
-  (progn
-    (add-to-list 'align-rules-list
-                 '(text-column-whitespace
-                   (regexp  . "\\(^\\|\\S-\\)\\([ \t]+\\)")
-                   (group   . 2)
-                   (modes   . align-text-modes)
-                   (repeat  . t)))
-    ))
 
 ;;----------------------------------------------------------------------------
 ;; Silver Searcher searching
@@ -273,18 +257,8 @@
     ))
 
 ;;----------------------------------------------------------------------------
-;; Snippets
-;;----------------------------------------------------------------------------
-;; (use-package yasnippet
-;;   :init
-;;   (progn
-;;     (yas-global-mode 1)
-;;     (setq-default yas/prompt-functions '(yas/ido-prompt))))
-
-;;----------------------------------------------------------------------------
 ;; Projectile for project file navigation
 ;;----------------------------------------------------------------------------
-(use-package projectile-rails)
 
 (use-package projectile
   :bind ("s-t" . projectile-find-file)
@@ -297,6 +271,8 @@
     (setq projectile-known-projects-file (expand-file-name ".projectile-bookmarks.eld" user-emacs-directory))
     (add-to-list 'projectile-globally-ignored-files ".DS_Store")))
 
+(use-package projectile-rails)
+
 ;; Yaml
 (use-package yaml-mode
   :mode ("\\.yml$" . yaml-mode))
@@ -306,11 +282,6 @@
   :init
   (progn
     (add-hook 'markdown-mode-hook 'turn-on-flyspell)))
-
-;; (defun turn-on-flyspell ()
-;;   "Force flyspell-mode on using a positive arg.  For use in hooks."
-;;   (interactive)
-;;   (flyspell-mode 1))
 
 ;;----------------------------------------------------------------------------
 ;; Smooth scrolling
@@ -343,9 +314,6 @@
 ;; Autocomplete all the things
 ;;----------------------------------------------------------------------------
 
-(defvar-local company-col-offset 0 "Horisontal tooltip offset.")
-(defvar-local company-row-offset 0 "Vertical tooltip offset.")
-
 (use-package company
   :init
   (progn
@@ -356,6 +324,9 @@
     (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
     (setq company-dabbrev-downcase nil)                  ; Do not convert to lowercase
     (setq company-selection-wrap-around t)               ; continue from top when reaching bottom
+    (defvar-local company-col-offset 0 "Horisontal tooltip offset.")
+    (defvar-local company-row-offset 0 "Vertical tooltip offset.")
+
     ;; Hack to trigger candidate list on first TAB, then cycle through candiates with TAB
     (defvar tip-showing nil)
     (eval-after-load 'company
@@ -378,11 +349,6 @@
   :init
   (progn
     (evil-mode 1)
-    ;; Disable evil for certain major-modes
-    (define-key evil-normal-state-map [escape] 'keyboard-quit)
-    (define-key evil-visual-state-map [escape] 'keyboard-quit)
-    (define-key evil-normal-state-map [escape] 'keyboard-quit)
-    (define-key evil-visual-state-map [escape] 'keyboard-quit)
     (define-key evil-normal-state-map (kbd "TAB") 'indent-for-tab-command)
     (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
     (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
@@ -413,8 +379,7 @@
     ))
 
 
-;; Make a visual selection with v or V, and then hit * to search that
-;; selection forward, or # to search that selection backward.
+;; Make a visual selection with v or V, and then hit * to search forward
 (use-package evil-visualstar)
 
 (use-package evil-matchit
@@ -706,23 +671,18 @@
     )
   :config
   (progn
-    (add-hook 'ruby-mode-hook 'rspec-mode)
     (add-hook 'ruby-mode-hook 'rvm-activate-corresponding-ruby)
     (add-hook 'ruby-mode-hook 'robe-mode)
     (add-hook 'ruby-mode-hook
               (lambda () (modify-syntax-entry ?_ "w")))
     (setq ruby-deep-indent-paren nil)
-    (setq rspec-use-bundler-when-possible nil)
-    (setq rspec-use-rake-when-possible nil)
     (setq ruby-deep-indent-paren-style nil)
     (setq ruby-deep-arglist nil)
     (setq ruby-dbg-flags "-W0")
     (setenv "PATH" (concat (getenv "HOME") "/.rbenv/shims:" (getenv "HOME") "/.rbenv/bin:" (getenv "PATH")))
     (setq exec-path (cons (concat (getenv "HOME") "/.rbenv/shims") (cons (concat (getenv "HOME") "/.rbenv/bin") exec-path)))
     )
-  :bind (("C-{" . ruby-toggle-hash-syntax)
-         ("C-M-h" . backward-kill-word)
-         ("C-r" . ruby-compilation-this-buffer))
+  :bind (("C-{" . ruby-toggle-hash-syntax))
   :mode (("\\.rake$" . ruby-mode)
          ("\\.gemspec$" . ruby-mode)
          ("\\.ru$" . ruby-mode)
