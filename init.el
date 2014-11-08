@@ -196,27 +196,7 @@
             "^\*scratch*" "^\*TAGS" "^session\.*" "^\*"))
   :config
   (progn
-    (setq ido-case-fold t)
     (setq ido-everywhere t)
-    (setq ido-use-virtual-buffers t)
-    (setq ido-ubiquitous-mode 1)
-    (setq ido-enable-prefix nil)
-    (setq ido-enable-flex-matching t)
-    (setq ido-create-new-buffer 'always)
-    (setq ido-file-extensions-order '(".rb" ".el" ".coffee" ".js"))
-    (setq ido-save-directory-list-file nil)
-    (setq ido-enable-flex-matching 1) ; fuzzy matching is a must have
-    (setq ido-default-buffer-method (quote selected-window))
-    (setq ido-default-file-method (quote selected-window))
-    (setq ido-enable-tramp-completion t)
-    (setq ido-use-filename-at-point t)
-    (setq ido-use-url-at-point nil)
-    (setq ido-max-prospects 10)
-    (setq ido-confirm-unique-completion t)
-    (setq ido-show-dot-for-dired t)
-    (setq ido-work-directory-list '("~/" "~/Desktop" "~/Documents"))
-    (setq ido-auto-merge-work-directories-length -1)
-    (setq ido-use-faces 1)
     (add-to-list 'ido-ignore-files "\\.DS_Store")))
 
 ;; Flx Fuzzy file finder integration with IDO
@@ -386,9 +366,9 @@
   :init
   (global-evil-matchit-mode 1))
 
-;; (use-package surround
-;;   :init
-;;   (global-surround-mode 1 ))
+(use-package evil-surround
+  :init
+  (global-evil-surround-mode 1))
 
 (use-package evil-nerd-commenter)
 
@@ -493,8 +473,6 @@
     (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
     (define-key dired-mode-map "n" 'dired-touch-now)
     (define-key dired-mode-map "o" 'matts-dired-open-mac)
-    (local-set-key "\C-m" 'matts-dired-find-file)
-    (local-set-key "^" 'matts-dired-up-directory)
     (define-key dired-mode-map [return] 'dired-find-alternate-file)
     ))
 
@@ -612,10 +590,6 @@
     (setq magit-unstage-all-confirm nil))
   :bind ("C-x g" . magit-status))
 
-(use-package magit-gh-pulls
-  :config
-  (progn
-    (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)))
 
 ;;----------------------------------------------------------------------------
 ;; Git Gutter
@@ -655,20 +629,6 @@
 ;; Ruby and related  modes
 ;;----------------------------------------------------------------------------
 (use-package ruby-mode
-  :init
-  (progn
-    (use-package inf-ruby
-      :init
-      (progn
-        (inf-ruby-minor-mode)))
-    (use-package rvm)
-    (use-package rbenv
-      :init
-      (progn (global-rbenv-mode)))
-    (use-package robe)
-    (use-package ruby-hash-syntax)
-    (use-package minitest)
-    )
   :config
   (progn
     (add-hook 'ruby-mode-hook 'rvm-activate-corresponding-ruby)
@@ -691,6 +651,25 @@
          ("Gemfile$" . ruby-mode)
          ("Capfile$" . ruby-mode)
          ("Guardfile$" . ruby-mode)))
+
+(use-package inf-ruby
+  :init
+  (progn
+    (inf-ruby-minor-mode)))
+
+;; Auto detects the ruby verion for projects using RVM
+(use-package rvm)
+
+;; Auto detects the ruby verion for projects using Rbenv
+(use-package rbenv
+  :init
+  (progn (global-rbenv-mode)))
+
+;; Provides helpers for converting hashes to the newer syntax (eg {key: value})
+(use-package ruby-hash-syntax)
+
+;; Helpers for Ruby minitests
+(use-package minitest)
 
 ;;----------------------------------------------------------------------------
 ;; Css/Sass/Haml modes
@@ -767,7 +746,6 @@
                    ("haml" (mode . haml-mode))
                    ("sass" (mode . sass-mode))
                    ("coffee" (mode . coffee-mode))
-                   ("cucumber" (mode . feature-mode))
                    ("javascript" (mode . js-mode))
                    ("markdown" (mode . markdown-mode))
                    ("yaml" (mode . yaml-mode))

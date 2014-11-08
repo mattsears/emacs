@@ -55,7 +55,7 @@
 (depends-on "evil-leader")
 (depends-on "evil-terminal-cursor-changer")
 (depends-on "evil-visualstar")
-(depends-on "surround")
+(depends-on "evil-surround")
 (depends-on "evil-matchit")
 (depends-on "smart-newline")
 (depends-on "smartparens")
