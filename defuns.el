@@ -6,22 +6,12 @@
   "Return the full path of a file in the user's emacs directory."
   (expand-file-name (concat user-emacs-directory relative-path)))
 
-(defun increment-number-at-point ()
-  (interactive)
-  (skip-chars-backward "0123456789")
-  (or (looking-at "[0123456789]+")
-      (error "No number at point"))
-  (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
-
-(setq evil-emacs-state-cursor '("red" box))
-(setq evil-normal-state-cursor '("green" box))
-(setq evil-visual-state-cursor '("orange" box))
-(setq evil-insert-state-cursor '("red" bar))
-(setq evil-replace-state-cursor '("red" bar))
-(setq evil-operator-state-cursor '("red" hollow))
-
 (defun my-send-string-to-terminal (string)
   (unless (display-graphic-p) (send-string-to-terminal string)))
+
+;;----------------------------------------------------------------------------
+;; Evil mode helpers
+;;----------------------------------------------------------------------------
 
 (defun my-evil-terminal-cursor-change ()
   (interactive)
@@ -56,9 +46,6 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
     (abort-recursive-edit)))
 
-(define-key minibuffer-local-map [escape] 'keyboard-escepe-quit)
-(define-key minibuffer-local-map (kbd "ESC") 'keyboard-escape-quit)
-
 ;;----------------------------------------------------------------------------
 ;; Helpers for moving text around
 ;;----------------------------------------------------------------------------
@@ -88,31 +75,6 @@ A place is considered `tab-width' character columns."
   "Shift the line or region to the ARG places to the left."
   (interactive)
   (text-shift-right (* -1 (or arg 1))))
-
-(defun copy-line()
-  "Copy the current line"
-  (interactive)
-  (let ((beg (line-beginning-position))
-        (end (line-end-position))
-        (column (current-column)))
-    (copy-region-as-kill beg end)))
-
-(defun matts-delete-whole-line ()
-  "Deletes the whole line with copying the text to the kill-ring"
-  (interactive)
-  (beginning-of-line)
-  (setq matts-begin-point (point))
-  (forward-line 1)
-  (setq matts-end-point (point))
-  (delete-region matts-begin-point matts-end-point))
-
-(defun comment-or-uncomment-line-or-region ()
-  "Comments or uncomments the current line or region."
-  (interactive)
-  (if (region-active-p)
-      (comment-or-uncomment-region (region-beginning) (region-end))
-    (comment-or-uncomment-region (line-beginning-position) (line-end-position))
-    ))
 
 ;;----------------------------------------------------------------------------
 ;; Buffer Utils
@@ -149,7 +111,7 @@ A place is considered `tab-width' character columns."
   (delete-trailing-whitespace))
 
 ;; Delete trailing whitespace before save
-(add-hook 'before-save-hook 'cleanup-buffer)
+;; (add-hook 'before-save-hook 'cleanup-buffer)
 
 (defun back-to-indentation-or-beginning-of-line ()
   "Moves point back to indentation if there is any
@@ -240,14 +202,6 @@ Repeated invocations toggle between the two most recently open buffers."
 ;; IDO related functions
 ;;----------------------------------------------------------------------------
 
-(defun matts-ido-find-project ()
-  (interactive)
-  (let ((project-root (concat "~/Workspace/"  (ido-completing-read "Project: "
-                                                                   (directory-files "~/Workspace/" nil "^[^.]")))))
-    ;; (nuke-all-buffers)
-    (projectile-switch-project-by-name project-root)))
-
-
 (defun matts-ido-choose-from-recentf ()
   "Use ido to select a recently opened file from the `recentf-list'"
   (interactive)
@@ -258,54 +212,6 @@ Repeated invocations toggle between the two most recently open buffers."
                                     (replace-regexp-in-string home "~" path))
                                   recentf-list)
                           nil t))))
-
-(defun matts-ido-goto-symbol (&optional symbol-list)
-  "Refresh imenu and jump to a place in the buffer using Ido."
-  (interactive)
-  (unless (featurep 'imenu)
-    (require 'imenu nil t))
-  (cond
-   ((not symbol-list)
-    (let ((ido-mode ido-mode)
-          (ido-enable-flex-matching
-           (if (boundp 'ido-enable-flex-matching)
-               ido-enable-flex-matching t))
-          name-and-pos symbol-names position)
-      (unless ido-mode
-        (ido-mode 1)
-        (setq ido-enable-flex-matching t))
-      (while (progn
-               (imenu--cleanup)
-               (setq imenu--index-alist nil)
-               (matts-ido-goto-symbol (imenu--make-index-alist))
-               (setq selected-symbol
-                     (ido-completing-read "Symbol? " symbol-names))
-               (string= (car imenu--rescan-item) selected-symbol)))
-      (unless (and (boundp 'mark-active) mark-active)
-        (push-mark nil t nil))
-      (setq position (cdr (assoc selected-symbol name-and-pos)))
-      (cond
-       ((overlayp position)
-        (goto-char (overlay-start position)))
-       (t
-        (goto-char position)))))
-   ((listp symbol-list)
-    (dolist (symbol symbol-list)
-      (let (name position)
-        (cond
-         ((and (listp symbol) (imenu--subalist-p symbol))
-          (matts-ido-goto-symbol symbol))
-         ((listp symbol)
-          (setq name (car symbol))
-          (setq position (cdr symbol)))
-         ((stringp symbol)
-          (setq name symbol)
-          (setq position
-                (get-text-property 1 'org-imenu-marker symbol))))
-        (unless (or (null position) (null name)
-                    (string= (car imenu--rescan-item) name))
-          (add-to-list 'symbol-names name)
-          (add-to-list 'name-and-pos (cons name position))))))))
 
 (defun choose-from-menu (menu-title menu-items)
   "Choose from a list of choices from a popup menu."
@@ -354,50 +260,6 @@ Repeated invocations toggle between the two most recently open buffers."
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
 
-(defun sudo-edit (&optional arg)
-  (interactive "p")
-  (if (or arg (not buffer-file-name))
-      (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
-(defun find-file-as-root ()
-  "Find a file as root."
-  (interactive)
-  (let* ((parsed (when (tramp-tramp-file-p default-directory)
-                   (coerce (tramp-dissect-file-name default-directory)
-                           'list)))
-         (default-directory
-           (if parsed
-               (apply 'tramp-make-tramp-file-name
-                      (append '("sudo" "root") (cddr parsed)))
-             (tramp-make-tramp-file-name "sudo" "root" "localhost"
-                                         default-directory))))
-    (call-interactively 'find-file)))
-
-(defun toggle-alternate-file-as-root (&optional filename)
-  "Toggle between the current file as the default user and as root."
-  (interactive)
-  (let* ((filename (or filename (buffer-file-name)))
-         (parsed (when (tramp-tramp-file-p filename)
-                   (coerce (tramp-dissect-file-name filename)
-                           'list))))
-    (unless filename
-      (error "No file in this buffer."))
-    (find-alternate-file
-     (if (equal '("sudo" "root") (butlast parsed 2))
-         ;; As non-root
-         (if (or
-              (string= "localhost" (nth 2 parsed))
-              (string= (system-name) (nth 2 parsed)))
-             (nth -1 parsed)
-           (apply 'tramp-make-tramp-file-name
-                  (append (list tramp-default-method nil) (cddr parsed))))
-       ;; As root
-       (if parsed
-           (apply 'tramp-make-tramp-file-name
-                  (append '("sudo" "root") (cddr parsed)))
-         (tramp-make-tramp-file-name "sudo" "root" "localhost" filename))))))
-
 (defun markdown-preview-file ()
   "This function will open Marked.app and monitor the current markdown document
 for anything changes.  In other words, it will live reload and convert the
@@ -411,6 +273,28 @@ markdown documment"
 ;;----------------------------------------------------------------------------
 ;; UI-related helpers
 ;;----------------------------------------------------------------------------
+
+;; Highlights HTML/CSS color specifications
+(defvar hexcolour-keywords
+  '(("#[abcdef[:digit:]]\\{3,6\\}"
+     (0 (let ((colour (match-string-no-properties 0)))
+          (if (or (= (length colour) 4)
+                  (= (length colour) 7))
+              (put-text-property
+               (match-beginning 0)
+               (match-end 0)
+               'face (list :background (match-string-no-properties 0)
+                           :foreground (if (>= (apply '+ (x-color-values
+                                                          (match-string-no-properties 0)))
+                                               (* (apply '+ (x-color-values "white")) .6))
+                                           "black" ;; light bg, dark text
+                                         "white" ;; dark bg, light text
+                                         )))))
+        append))))
+
+(defun hexcolour-add-to-font-lock ()
+  (interactive)
+  (font-lock-add-keywords nil hexcolour-keywords t))
 
 (require 'powerline)
 (defun powerline-clean-theme ()
@@ -460,12 +344,27 @@ markdown documment"
       (backward-char 6) (insert "\n") (incf end))
     (indent-region begin end nil)))
 
-(defun beautify-js ()
-  (interactive)
-  (let ((b (if mark-active (min (point) (mark)) (point-min)))
-        (e (if mark-active (max (point) (mark)) (point-max))))
-    (shell-command-on-region b e
-                             "js-beautify -q -w 80 --no-preserve-newlines -f -" (current-buffer) t)))
+
+;;----------------------------------------------------------------------------
+;; Company mode related functions
+;;----------------------------------------------------------------------------
+
+(defun company-pseudo-tooltip-on-explicit-action (command)
+  "`company-pseudo-tooltip-frontend', but only on an explicit action."
+  (when (company-explicit-action-p)
+    (setq tip-showing t)
+    (company-pseudo-tooltip-frontend command)))
+
+(defun company-echo-metadata-on-explicit-action-frontend (command)
+  "`company-mode' front-end showing the documentation in the echo area."
+  (pcase command
+    (`post-command (when (company-explicit-action-p)
+                     (company-echo-show-when-idle 'company-fetch-metadata)))
+    (`hide
+     (company-echo-hide)
+     (setq tip-showing nil)
+     )))
+
 
 ;;----------------------------------------------------------------------------
 ;; Ruby related functions
@@ -475,99 +374,6 @@ markdown documment"
   "Change the default commenting sequence for sass"
   (set 'comment-start "//")
   )
-
-(defun rails-console ()
-  "Create a rails console process, if one doesn't exist. And
-switch to *rails-console* buffer."
-  (interactive)
-  (if (null (get-buffer "*rails-console*"))
-      (progn
-        (multi-term)
-        (term "/bin/bash")
-        (term-send-string (get-buffer-process "*terminal*") "rails console\n")
-        (switch-to-buffer "*terminal*")
-        (rename-buffer "rails-console")
-        (term-line-mode))
-    (switch-to-buffer "rails-console")))
-
-(defun is-rails-project ()
-  (when (project-root)
-    (file-exists-p (expand-file-name "config/environment.rb" (project-root)))))
-
-(defun run-rails-test-or-ruby-buffer ()
-  (interactive)
-  (if (is-rails-project)
-      (let* ((path (buffer-file-name))
-             (filename (file-name-nondirectory path))
-             (test-path (expand-file-name "test" (project-root)))
-             (command (list ruby-compilation-executable "-I" test-path path)))
-        (pop-to-buffer (ruby-compilation-do filename command)))
-    (ruby-compilation-this-buffer)))
-
-(define-key global-map (kbd "s-r") 'run-rails-test-or-ruby-buffer)
-
-(defun operate-on-point-or-region (fn)
-  "Get the current unspaced string at point, or the current
-region, if selected, and replace it with the return value of fn -
-an ordinary defun."
-  (let (pos1 pos2 meat)
-    (if (and transient-mark-mode mark-active)
-        (setq pos1 (region-beginning)
-              pos2 (region-end))
-      (setq pos1 (car (bounds-of-thing-at-point 'symbol))
-            pos2 (cdr (bounds-of-thing-at-point 'symbol))))
-    (setq meat (funcall fn (buffer-substring-no-properties pos1 pos2)))
-    (delete-region pos1 pos2)
-    (insert  meat)))
-
-;; Change a string to a ruby symbol, note: naive operation
-(defun ruby-make-symbol-at-point ()
-  "Dirt simple, just prefix current word with a colon"
-  (interactive)
-  (operate-on-point-or-region 'ruby-prepend-colon))
-
-(defun ruby-prepend-colon (s) ""
-  (format ":%s" s))
-
-(eval-after-load 'ruby-mode
-  '(define-key ruby-mode-map (kbd "C-c :") 'ruby-make-symbol-at-point))
-
-(defun erb-to-haml ()
-  "run html2haml on current buffer"
-  (interactive)
-  (save-excursion
-    (save-buffer)
-    (shell-command (concat "html2haml --erb " (buffer-file-name) " 2> /dev/null")
-                   (current-buffer)
-                   )))
-
-(defun erb-region-to-haml ()
-  "Convert selected region to haml"
-  (interactive)
-
-  (let ((deactivate-mark nil)
-
-        (beg (or (and mark-active (region-beginning))
-                 (line-beginning-position)))
-        (end (or (and mark-active (region-end)) (line-end-position))))
-
-    (shell-command-on-region beg end "html2haml --erb -s" (buffer-name) t)
-    ))
-
-(defun erb-to-haml-and-change-file-extension ()
-  "run html2haml on current buffer"
-  (interactive)
-  (save-excursion
-    (save-buffer)
-    (shell-command (concat "html2haml --erb " (buffer-file-name) " 2> /dev/null")
-                   (current-buffer)
-                   )
-    (let ((new-name (replace-regexp-in-string "erb" "haml" (buffer-file-name))))
-      (rename-file (buffer-file-name) new-name)
-      (rename-buffer new-name)
-      (set-visited-file-name new-name)
-      (set-buffer-modified-p nil)
-      )))
 
 ;;----------------------------------------------------------------------------
 ;; Dired related functions
@@ -600,49 +406,6 @@ reuse the current one."
   (revert-buffer)
   (dired-goto-file (concat (dired-current-directory) touch-file)))
 
-(defun matts-dired-find-file ()
-  "Open the file or directory without opening a new buffer"
-  (interactive)
-  (let ((filename (dired-get-filename))
-        (orig (current-buffer)))
-    (if (file-directory-p filename)
-        (find-alternate-file filename)
-      (dired-find-file)
-      (kill-buffer orig))))
-
-
-;;----------------------------------------------------------------------------
-;; Tags
-;;----------------------------------------------------------------------------
-
-(defvar ctags-options "" "Options for tags generation")
-(setq tags-revert-without-query 1)
-
-(defun my-ido-find-tag ()
-  "Find a tag using ido"
-  (interactive)
-  (tags-completion-table)
-  (let (tag-names)
-    (mapc (lambda (x)
-            (unless (integerp x)
-              (push (prin1-to-string x t) tag-names)))
-          tags-completion-table)
-    (find-tag (ido-completing-read "Tag: " tag-names))))
-
-(defun build-ctags()
-  (interactive)
-  (let ((root (project-root)))
-    (let ((my-tags-file (concat root "TAGS")))
-      (message "Regenerating TAGS file: %s" my-tags-file)
-      (if (file-exists-p my-tags-file)
-          (delete-file my-tags-file))
-      (shell-command
-       (format "ctags -e -R --exclude=db --exclude=.git --exclude=tmp --exclude=test --exclude=.#* %s -f %s %s"
-               ctags-options my-tags-file root))
-      (if (get-file-buffer my-tags-file)
-          (kill-buffer (get-file-buffer my-tags-file)))
-      (visit-tags-table my-tags-file))))
-
 ;;----------------------------------------------------------------------------
 ;; Project Roots
 ;;----------------------------------------------------------------------------
@@ -660,7 +423,7 @@ reuse the current one."
   (if (root-match root names)
       (root-match root names)
     (if (eq (length (cdr names)) 0)
-'nil
+        'nil
       (root-matches root (cdr names))
       )))
 
@@ -683,81 +446,5 @@ reuse the current one."
     (expand-file-name root))
    ((equal (expand-file-name root) "/") nil)
    (t (find-project-root (concat (file-name-as-directory root) "..")))))
-
-;;----------------------------------------------------------------------------
-;; Personal Productivity helpers
-;;----------------------------------------------------------------------------
-
-(defun matts-quick-menu ()
-  "Show a popup menu of commands."
-  (interactive)
-  (eval-expression
-   (car
-    (read-from-string
-     (choose-from-menu "Quick Menu"
-                       (list
-                        ;;(cons "Project Explorer" "(call-interactively 'project-explorer-open)")
-                        (cons "Calendar" "(call-interactively 'cfw:open-calendar-buffer)")
-                        (cons "Bookmarks" "(call-interactively 'list-bookmarks)")
-                        (cons "Bookmark This File" "(call-interactively 'bookmark-set)")
-                        (cons "Open Notebook " "(call-interactively 'notebook)")
-                        (cons "-" "")
-                        (cons "Open Shell " "(call-interactively 'visit-term-buffer)")
-                        (cons "Lookup HTTP code " "(call-interactively 'hc)")
-                        ))))))
-
-(defun todos ()
-  "Quick open of my todos"
-  (interactive)
-  (let ((todo-file (concat "~/Dropbox/Notes/todos.org")))
-    (find-file todo-file)
-    ))
-
-(defun goals ()
-  (interactive)
-  (let ((file (concat "~/Dropbox/Notes/goals.md")))
-    (find-file file)
-    ))
-
-(defun projects()
-  (interactive)
-  (let ((file (concat "~/Dropbox/Notes/projects.md")))
-    (find-file file)))
-
-(defun business()
-  (interactive)
-  (let ((file (concat "~/Dropbox/Notes/business.md")))
-    (find-file file)
-    ))
-
-(defun expenses()
-  (interactive)
-  (let ((file (concat "~/Dropbox/Notes/expenses.org")))
-    (find-file file)
-    ))
-
-(defun notebook ()
-  "Quick finder for my note documents that I want to be handy at all times"
-  (interactive)
-  (let ((note-file (concat "~/Dropbox/Notes/"
-                           (ido-completing-read "Notes: "
-                                                (directory-files "~/Dropbox/Notes" nil "^[^.]")))))
-    (find-file note-file)
-    ))
-
-(defun matts-setup-special-key-map ()
-  (interactive)
-  (let ((map (make-sparse-keymap)))
-    (let ((prefix-map (make-sparse-keymap)))
-      (define-key prefix-map (kbd "t") 'todos)
-      (define-key prefix-map (kbd "g") 'goals)
-      (define-key prefix-map (kbd "b") 'business)
-      (define-key prefix-map (kbd "p") 'projects)
-      (define-key prefix-map (kbd "n") 'notebook)
-      (define-key prefix-map (kbd "e") 'expenses)
-      (define-key global-map (kbd "C-c m") prefix-map)
-      map)))
-
-(matts-setup-special-key-map)
 
 (provide 'defuns)

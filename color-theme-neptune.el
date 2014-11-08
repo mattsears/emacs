@@ -24,7 +24,7 @@
 
    '(color-theme-neptune
      (
-      (background-color . "#151515")
+      (background-color . "#000000")
       (background-mode . dark)
       (border-color . "#dedede")
       (cursor-color . "#ff005f")
@@ -57,7 +57,7 @@
 
      (neptune-bg ((t (:background "#000000"))))
      (neptune-highlight ((t (:background "#646c9c" :foreground "#eeeeee"))))
-     (neptune-current-line ((t (:background "#1a1d2f"))))
+     (neptune-current-line ((t (:background "#080808"))))
 
      ;; Global colors
      (font-lock-builtin-face ((t (:inherit neptune-blue))))
@@ -94,7 +94,7 @@
      (region ((t (:inherit neptune-highlight))))
 
      ;; Paren
-     (show-paren-match-face ((t (:background "#373c4e"))))
+     (show-paren-match-face ((t (:background "#5f005f"))))
      (show-paren-mismatch-face ((t (:inherit neptune-red))))
 
      (italic ((t (nil))))
