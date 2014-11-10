@@ -22,9 +22,6 @@
     (add-hook 'evil-insert-state-entry-hook (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=1\x7\e\\")))
     (add-hook 'evil-insert-state-exit-hook  (lambda () (my-send-string-to-terminal "\ePtmux;\e\e]50;CursorShape=0\x7\e\\")))))
 
-(add-hook 'after-make-frame-functions (lambda (frame) (my-evil-terminal-cursor-change)))
-(my-evil-terminal-cursor-change)
-
 ;;To get the cursor to change in insert mode in iTerm
 (defun my-evil-modeline-change (default-color)
   "changes the modeline color when the evil mode changes"
@@ -232,6 +229,58 @@ Repeated invocations toggle between the two most recently open buffers."
      `((500 200) ,(selected-frame))
      (list menu-title (cons menu-title (nreverse item-list))))))
 
+(defun matts-find-symbol ()
+  "Update the imenu index and then use ido to select a symbol to navigate to.
+Symbols matching the text at point are put first in the completion list."
+  (interactive)
+  (imenu--make-index-alist)
+  (let ((name-and-pos '())
+        (symbol-names '()))
+    (flet ((addsymbols
+            (symbol-list)
+            (when (listp symbol-list)
+              (dolist (symbol symbol-list)
+                (let ((name nil) (position nil))
+                  (cond
+                   ((and (listp symbol) (imenu--subalist-p symbol))
+                    (addsymbols symbol))
+
+                   ((listp symbol)
+                    (setq name (car symbol))
+                    (setq position (cdr symbol)))
+
+                   ((stringp symbol)
+                    (setq name symbol)
+                    (setq position
+                          (get-text-property 1 'org-imenu-marker symbol))))
+
+                  (unless (or (null position) (null name))
+                    (add-to-list 'symbol-names name)
+                    (add-to-list 'name-and-pos (cons name position))))))))
+      (addsymbols imenu--index-alist))
+    ;; If there are matching symbols at point, put them at the beginning
+    ;; of `symbol-names'.
+    (let ((symbol-at-point (thing-at-point 'symbol)))
+      (when symbol-at-point
+        (let* ((regexp (concat (regexp-quote symbol-at-point) "$"))
+               (matching-symbols
+                (delq nil (mapcar
+                           (lambda (symbol)
+                             (if (string-match regexp symbol) symbol))
+                           symbol-names))))
+          (when matching-symbols
+            (sort matching-symbols (lambda (a b) (> (length a) (length b))))
+            (mapc
+             (lambda (symbol)
+               (setq symbol-names (cons symbol (delete symbol symbol-names))))
+             matching-symbols)))))
+    (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
+           (position (cdr (assoc selected-symbol name-and-pos))))
+      (push-mark)
+      (if (overlayp position)
+          (goto-char (overlay-start position))
+        (goto-char position)))))
+
 ;;----------------------------------------------------------------------------
 ;; File related helpers
 ;;----------------------------------------------------------------------------
@@ -327,7 +376,7 @@ markdown documment"
 (defun reload-color-theme ()
   "Reloads the color themes. Handy when experimenting with various colors"
   (interactive)
-  (load-file "~/.emacs.d/color-theme-neptune.el")
+  (load-file "~/.emacs.d/colors.el")
   (color-theme-neptune))
 
 (defun pretty-print-xml-region (begin end)
