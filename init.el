@@ -81,14 +81,14 @@
   (require 'mouse)
   (xterm-mouse-mode t)
   (global-set-key [mouse-4] '(lambda ()
-                              (interactive)
-                              (scroll-down 1)))
+                               (interactive)
+                               (scroll-down 1)))
   (global-set-key [mouse-5] '(lambda ()
-                              (interactive)
-                              (scroll-up 1)))
+                               (interactive)
+                               (scroll-up 1)))
   (defun track-mouse (e))
   (setq mouse-sel-mode t)
-)
+  )
 
 ;; Set column with
 (setq fill-column 80)
@@ -131,6 +131,7 @@
 
 ;; A little smarter when hitting RET
 (use-package smart-newline
+  :bind (("RET" . smart-newline))
   :init
   (progn (smart-newline-mode 1) ))
 
@@ -155,12 +156,12 @@
 
     (ido-mode 1)
     (ido-disable-line-trucation))
-    (setq ido-decorations (quote ("\n↪ "     "" "\n   " "\n   ..." "[" "]"
-                                  " [No match]" " [Matched]" " [Not readable]"
-                                  " [Too big]" " [Confirm]")))
-    (setq ido-ignore-buffers
-          '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*Ibuffer"
-            "^\*scratch*" "^\*TAGS" "^session\.*" "^\*"))
+  (setq ido-decorations (quote ("\n↪ "     "" "\n   " "\n   ..." "[" "]"
+                                " [No match]" " [Matched]" " [Not readable]"
+                                " [Too big]" " [Confirm]")))
+  (setq ido-ignore-buffers
+        '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*Ibuffer"
+          "^\*scratch*" "^\*TAGS" "^session\.*" "^\*"))
   :config
   (progn
     (setq ido-everywhere t)
@@ -311,6 +312,8 @@
                                         (local-unset-key "h")
                                         (local-unset-key "k")))
 
+    (add-hook 'after-make-frame-functions (lambda (frame) (my-evil-terminal-cursor-change)))
+
     (mapcar 'set-mode-to-default-emacs
             '(dired
               magit-branch-manager-mode
@@ -357,7 +360,7 @@
       "w"   'matts-close-and-delete-window
       "x"   'smex
       "k"   'matts-close-and-delete-window
-      "y"   'matts-ido-goto-symbol
+      "s"   'matts-find-symbol
       "c"   'evilnc-comment-or-uncomment-lines
       "R"   'matts-ido-choose-from-recentf
 
@@ -760,3 +763,27 @@
     ))
 
 (use-package writeroom-mode)
+
+(use-package mmm-mode
+  :init
+  (progn
+    (mmm-add-classes
+     '((markdown-ruby
+        :submode ruby-mode
+        :face mmm-declaration-submode-face
+        :front "^~~~ruby[\n\r]+"
+        :back "^~~~$")))
+
+    (mmm-add-classes
+     '((markdown-elixir
+        :submode elixir-mode
+        :face mmm-declaration-submode-face
+        :front "^~~~elixir[\n\r]+"
+        :back "^~~~$")))
+
+    (setq mmm-global-mode 't)
+    (setq mmm-submode-decoration-level 0)
+
+    (add-to-list 'mmm-mode-ext-classes-alist '(markdown-mode nil markdown-ruby))
+    (add-to-list 'mmm-mode-ext-classes-alist '(markdown-mode nil markdown-elixir))
+    ))

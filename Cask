@@ -69,3 +69,4 @@
 (depends-on "ggtags")
 (depends-on "company")
 (depends-on "pbcopy")
+(depends-on "mmm-mode")
