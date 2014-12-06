@@ -73,7 +73,7 @@
 
      (neptune-bg ((t (:background "#000000"))))
      (neptune-highlight ((t (:background "#646c9c" :foreground "#eeeeee"))))
-     (neptune-current-line ((t (:background "#080808"))))
+     (neptune-current-line ((t (:background "#121212"))))
 
      ;; Global colors
      (font-lock-builtin-face ((t (:inherit neptune-blue))))
@@ -152,32 +152,6 @@
      (markdown-blockquote-face ((t (:inherit neptune-gray))))
      (markdown-link-face ((t (:inherit neptune-green))))
 
-     ;; The Shell
-     (eshell-prompt-face ((t (:inherit neptune-green))))
-     (eshell-prompt ((t (:inherit neptune-green))))
-     (eshell-ls-archive-face ((t (:inherit neptune-blue))))
-     (eshell-ls-archive ((t (:inherit neptune-blue))))
-     (eshell-ls-backup-face ((t (:inherit neptune-light-blue))))
-     (eshell-ls-backup ((t (:inherit neptune-light-blue))))
-     (eshell-ls-clutter-face ((t (:inherit neptune-white))))
-     (eshell-ls-clutter ((t (:inherit neptune-white))))
-     (eshell-ls-directory-face ((t (:inherit neptune-blue))))
-     (eshell-ls-directory ((t (:inherit neptune-blue))))
-     (eshell-ls-executable-face ((t (:inherit neptune-white))))
-     (eshell-ls-executable ((t (:inherit neptune-white))))
-     (eshell-ls-missing-face ((t (:inherit neptune-green))))
-     (eshell-ls-missing ((t (:inherit neptune-white))))
-     (eshell-ls-product-face ((t (:inherit neptune-green))))
-     (eshell-ls-product ((t (:inherit neptune-green))))
-     (eshell-ls-readonly-face ((t (:inherit neptune-red))))
-     (eshell-ls-readonly ((t (:inherit neptune-red))))
-     (eshell-ls-special-face ((t (:inherit neptune-orange))))
-     (eshell-ls-special ((t (:inherit neptune-orange))))
-     (eshell-ls-symlink-face ((t (:inherit neptune-blue))))
-     (eshell-ls-symlink ((t (:inherit neptune-blue))))
-     (eshell-ls-unreadable-face ((t (:inherit neptune-red))))
-     (eshell-ls-unreadable ((t (:inherit neptune-red))))
-
      ;; Spelling mistakes
      (flyspell-duplicate-face ((t (:underline t))))
      (flyspell-incorrect-face ((t (:inherit neptune-red))))
@@ -185,7 +159,6 @@
      ;; Flycheck warning and error colors
      (flycheck-warning-face ((t ( :underline "#ffb964" :background nil :weight bold :underline t
 ))))
-
 
      ;; The left and right fringes
      (fringe ((t (:inherit neptune-black-1 ))))
@@ -238,8 +211,6 @@
      (font-lock-fixme-face ((t (:foreground "#ffffff" :background "#75879e"))))
 
      ;; Company mode
-
-     ;; (company-preview-common ((t (:foreground nil :background ""))))
      (company-scrollbar-bg ((t (:background "#151515"))))
      (company-scrollbar-fg ((t (:background "#151515"))))
      (company-tooltip ((t (:foreground "#ffffff" :background "#1c1c1c"))))

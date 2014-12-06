@@ -1,8 +1,10 @@
 elpa/*
 url/*
+.cask/*
 auto-save-list/*
 tramp-autosave/*
 .DS_Store
+.saveplace
 local.el
 *.elc
 smex.*

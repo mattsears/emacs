@@ -41,6 +41,11 @@
 (setq auto-save-list-file-prefix
       "~/.emacs.d/.cache/auto-save-list/.saves-")
 
+;; Scroll to where you last left off
+(require 'saveplace)
+(setq save-place-file "~/.emacs.d/.saveplace")
+(setq-default save-place t)
+
 ;; Make yes/no options y/n
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -51,7 +56,7 @@
 (setq backup-inhibited t)
 
 ;; Misc settings
-;; (setq global-hl-line-mode t)
+(setq global-hl-line-mode t)
 (setq indicate-buffer-boundaries nil)
 
 ;; This will help distinguish files with the same name
@@ -108,6 +113,8 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (toggle-scroll-bar -1)
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;;----------------------------------------------------------------------------
 ;; Change the default colors for matching parens
@@ -185,6 +192,21 @@
     (setq recentf-max-saved-items 500)
     (setq recentf-max-menu-items 60)))
 
+;; Nice project explorer tree view
+(use-package neotree
+  :init
+  (progn
+    (setq projectile-switch-project-action 'neotree-projectile-action)
+    (setq neo-window-width 35)
+    (setq neo-show-header nil)
+    (add-hook 'neotree-mode-hook
+              (lambda ()
+                (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+                (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-enter)
+                (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+                (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)))
+    ))
+
 ;;----------------------------------------------------------------------------
 ;; Silver Searcher searching
 ;;----------------------------------------------------------------------------
@@ -207,7 +229,6 @@
 ;;----------------------------------------------------------------------------
 ;; Projectile for project file navigation
 ;;----------------------------------------------------------------------------
-
 (use-package projectile
   :bind ("s-t" . projectile-find-file)
   :init
@@ -217,8 +238,10 @@
     (add-hook 'projectile-mode-hook 'projectile-rails-on)
     (setq projectile-cache-file (expand-file-name ".projectile.cache" user-emacs-directory))
     (setq projectile-known-projects-file (expand-file-name ".projectile-bookmarks.eld" user-emacs-directory))
+    (setq projectile-sort-order (quote recently-active))
     (add-to-list 'projectile-globally-ignored-files ".DS_Store")))
 
+;; Adds projectile helpers functions for Rails projects
 (use-package projectile-rails)
 
 ;; Yaml
@@ -265,7 +288,7 @@
 (use-package company
   :init
   (progn
-    (global-company-mode t)
+    ;; (global-company-mode t)
     (setq company-tooltip-limit 12)                      ; bigger popup window
     (setq company-idle-delay .1)                         ; decrease delay before autocompletion popup shows
     (setq company-echo-delay 0)                          ; remove annoying blinking
@@ -274,6 +297,9 @@
     (setq company-selection-wrap-around t)               ; continue from top when reaching bottom
     (defvar-local company-col-offset 0 "Horisontal tooltip offset.")
     (defvar-local company-row-offset 0 "Vertical tooltip offset.")
+
+    (push 'company-robe company-backends)
+    (add-hook 'ruby-mode-hook 'global-company-mode)
 
     ;; Hack to trigger candidate list on first TAB, then cycle through candiates with TAB
     (defvar tip-showing nil)
@@ -291,7 +317,7 @@
     ))
 
 ;;----------------------------------------------------------------------------
-;; Evil mode - uses Vim key commands
+;; Evil mode - uses modal editing key commands
 ;;----------------------------------------------------------------------------
 (use-package evil
   :init
@@ -302,7 +328,19 @@
     (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
     (define-key evil-visual-state-map (kbd "C-]") 'text-shift-right)
     (define-key evil-visual-state-map (kbd "C-[") 'text-shift-left)
+
+    ;; Make a escape actually quit
+    (define-key evil-normal-state-map [escape] 'keyboard-quit)
+    (define-key evil-visual-state-map [escape] 'keyboard-quit)
+    (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+    (global-set-key [escape] 'keyboard-quit)
+
     (setq evil-want-fine-undo t)
+
 
     (defun set-mode-to-default-emacs (mode)
       (evil-set-initial-state mode 'emacs))
@@ -320,8 +358,7 @@
               comint-mode
               magit-log-mode
               eshell-mode
-              diff-mode
-              project-explorer-mode))
+              diff-mode))
 
     (lexical-let ((default-color (cons (face-background 'mode-line)
                                        (face-foreground 'mode-line))))
@@ -359,6 +396,7 @@
       "/"   'projectile-ag
       "w"   'matts-close-and-delete-window
       "x"   'smex
+      "X"   'smex-major-mode-commands
       "k"   'matts-close-and-delete-window
       "s"   'matts-find-symbol
       "c"   'evilnc-comment-or-uncomment-lines
@@ -382,8 +420,9 @@
 
       "m"   'list-bookmarks
       "p"   'matts-ido-find-project
-      "e"   'project-explorer-open)
-    ))
+      "nn"  'neotree-toggle
+      "nf"  'neotree-find
+      )))
 
 ;;----------------------------------------------------------------------------
 ;; Keychord allows you to assign key commands with keys press simultanously.
@@ -394,8 +433,8 @@
     (key-chord-mode 1)
     (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
     (key-chord-define-global "hj" 'evil-normal-state)
-    (key-chord-define-global "jk" 'evil-normal-state)))
-
+    (key-chord-define-global "jk" 'my-save-if-bufferfilename)
+    ))
 ;;----------------------------------------------------------------------------
 ;; Make copy and paste actually work
 ;;----------------------------------------------------------------------------
@@ -616,7 +655,6 @@
   :mode (("\\.rake$" . ruby-mode)
          ("\\.gemspec$" . ruby-mode)
          ("\\.ru$" . ruby-mode)
-         ("\\.rabl$" . ruby-mode)
          ("Rakefile$" . ruby-mode)
          ("Gemfile$" . ruby-mode)
          ("Capfile$" . ruby-mode)
@@ -726,11 +764,10 @@
                                       (name . "\\.haml$")
                                       (mode . rhtml-mode)))
                    ("helpers" (filename . "/app/helpers/.*\\.rb$"))
-                   ("tests" (name . "_test.rb$"))
                    ("specs" (name . "_spec.rb$"))
                    ("models" (filename . "/app/models/.*\\rb$"))
                    ("controllers" (filename . "/app/controllers/.*\\.rb$"))
-                   ("routes" (or (filename . "/config/routes/")
+                   ("routes" (or (filename . "/configuroutes/")
                                  (name . "routes.rb$")
                                  (mode . rhtml-mode)))
 
@@ -764,6 +801,14 @@
 
 (use-package writeroom-mode)
 
+(use-package rainbow-delimiters
+  :init
+  (progn
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+    ))
+
+
+;; Use Multiple Major Mode to highligh code snippets in Markdown files.
 (use-package mmm-mode
   :init
   (progn
@@ -775,6 +820,20 @@
         :back "^~~~$")))
 
     (mmm-add-classes
+     '((markdown2-ruby
+        :submode ruby-mode
+        :face mmm-declaration-submode-face
+        :front "^```ruby[\n\r]+"
+        :back "^```$")))
+
+    (mmm-add-classes
+     '((markdown-haml
+        :submode haml-mode
+        :face mmm-declaration-submode-face
+        :front "^```haml[\n\r]+"
+        :back "^```$")))
+
+    (mmm-add-classes
      '((markdown-elixir
         :submode elixir-mode
         :face mmm-declaration-submode-face
@@ -784,6 +843,13 @@
     (setq mmm-global-mode 't)
     (setq mmm-submode-decoration-level 0)
 
+    (add-to-list 'mmm-mode-ext-classes-alist '(markdown-mode nil markdown-haml))
     (add-to-list 'mmm-mode-ext-classes-alist '(markdown-mode nil markdown-ruby))
+    (add-to-list 'mmm-mode-ext-classes-alist '(markdown-mode nil markdown2-ruby))
     (add-to-list 'mmm-mode-ext-classes-alist '(markdown-mode nil markdown-elixir))
     ))
+
+(use-package yasnippet
+  :init
+  (progn
+    (yas/global-mode t)))

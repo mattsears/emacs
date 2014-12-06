@@ -43,6 +43,16 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
     (abort-recursive-edit)))
 
+(defun my-save-if-bufferfilename ()
+  (interactive)
+  (if (buffer-file-name)
+      (progn
+        (evil-normal-state)
+        (save-buffer))
+    (message "no file is associated to this buffer: do nothing")
+    )
+  )
+
 ;;----------------------------------------------------------------------------
 ;; Helpers for moving text around
 ;;----------------------------------------------------------------------------
@@ -136,7 +146,7 @@ Otherwise point moves to beginning of line."
 Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   ;; Don't switch back to the ibuffer!!!
-  (if (buffer-exists "*Ibuffer*")  (kill-buffer "*Ibuffer*"))
+  (if (buffer-exists "*Buffers*")  (kill-buffer "*Ibuffer*"))
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 (defun matts-ibuffer ()
@@ -379,26 +389,6 @@ markdown documment"
   (load-file "~/.emacs.d/colors.el")
   (color-theme-neptune))
 
-(defun pretty-print-xml-region (begin end)
-  "Pretty format XML markup in region."
-  (interactive "r")
-  (save-excursion
-    ;; split <foo><bar> or </foo><bar>, but not <foo></foo>
-    (goto-char begin)
-    (while (search-forward-regexp ">[ \t]*<[^/]" end t)
-      (backward-char 2) (insert "\n") (incf end))
-    ;; split <foo/></foo> and </foo></foo>
-    (goto-char begin)
-    (while (search-forward-regexp "<.*?/.*?>[ \t]*<" end t)
-      (backward-char) (insert "\n") (incf end))
-    ;; put xml namespace decls on newline
-    (goto-char begin)
-    (while (search-forward-regexp "\\(<\\([a-zA-Z][-:A-Za-z0-9]*\\)\\|['\"]\\) \\(xmlns[=:]\\)" end t)
-      (goto-char (match-end 0))
-      (backward-char 6) (insert "\n") (incf end))
-    (indent-region begin end nil)))
-
-
 ;;----------------------------------------------------------------------------
 ;; Company mode related functions
 ;;----------------------------------------------------------------------------
@@ -441,6 +431,7 @@ markdown documment"
         (call-process "/usr/bin/open" nil 0 nil file-name))))
 
 (put 'dired-find-alternate-file 'disabled nil)
+
 (defun matts-dired-up-directory ()
   "Go up one directory and don't create a new dired buffer but
 reuse the current one."
@@ -459,46 +450,5 @@ reuse the current one."
   (sit-for 0.1)
   (revert-buffer)
   (dired-goto-file (concat (dired-current-directory) touch-file)))
-
-;;----------------------------------------------------------------------------
-;; Project Roots
-;;----------------------------------------------------------------------------
-
-(defvar *project-roots*
-  '(".git" ".hg" "Rakefile" "Makefile" "README" "build.xml" ".emacs-project" "Gemfile")
-  "The presence of any file/directory in this list indicates a project root.")
-(defvar *project-root* nil
-  "Used internally to cache the project root.")
-
-(defun root-match(root names)
-  (member (car names) (directory-files root)))
-
-(defun root-matches(root names)
-  (if (root-match root names)
-      (root-match root names)
-    (if (eq (length (cdr names)) 0)
-        'nil
-      (root-matches root (cdr names))
-      )))
-
-(defun project-root ()
-  "Returns the current project root."
-  (when (or
-         (null *project-root*)
-         (not (string-match *project-root* default-directory)))
-    (let ((root (find-project-root)))
-      (if root
-          (setq *project-root* (expand-file-name (concat root "/")))
-        (setq *project-root* nil))))
-  *project-root*)
-
-(defun find-project-root (&optional root)
-  "Determines the current project root by recursively searching for an indicator."
-  (when (null root) (setq root default-directory))
-  (cond
-   ((root-matches root *project-roots*)
-    (expand-file-name root))
-   ((equal (expand-file-name root) "/") nil)
-   (t (find-project-root (concat (file-name-as-directory root) "..")))))
 
 (provide 'defuns)
