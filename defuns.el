@@ -1,6 +1,6 @@
-;;----------------------------------------------------------------------------
+                                        ;----------------------------------------------------------------------------
 ;; Custom functions
-;;----------------------------------------------------------------------------
+                                        ;----------------------------------------------------------------------------
 
 (defun dot-emacs (relative-path)
   "Return the full path of a file in the user's emacs directory."
@@ -8,6 +8,22 @@
 
 (defun my-send-string-to-terminal (string)
   (unless (display-graphic-p) (send-string-to-terminal string)))
+
+(defun single-lines-only ()
+  "replace multiple blank lines with a single one"
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "\\(^\\s-*$\\)\n" nil t)
+    (replace-match "\n")
+    (forward-char 1)))
+
+(defun set-exec-path-from-shell-PATH ()
+  "Set up Emacs' `exec-path' and PATH environment variable to match that used by the user's shell.
+This is particularly useful under Mac OSX, where GUI apps are not started from a shell."
+  (interactive)
+  (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
 
 ;;----------------------------------------------------------------------------
 ;; Evil mode helpers
@@ -28,11 +44,11 @@
   (let ((color (cond ((evil-insert-state-p) '("#8700ff" . "#ffffff"))
                      ((evil-visual-state-p) '("#646c9c" . "#ffffff"))
                      ((evil-normal-state-p) default-color)
-                     (t '("#440000" . "#ffffff")))))
+                     (t '("#1d1f21" . "#ffffff")))))
     (set-face-background 'mode-line (car color))
     (set-face-foreground 'mode-line (cdr color))))
 
-;; esc quits
+                                        ; esc quits
 (defun minibuffer-keyboard-quit ()
   "Abort recursive edit.
 In Delete Selection mode, if the mark is active, just deactivate it;
@@ -50,8 +66,8 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
         (evil-normal-state)
         (save-buffer))
     (message "no file is associated to this buffer: do nothing")
-    )
-  )
+    ))
+
 
 ;;----------------------------------------------------------------------------
 ;; Helpers for moving text around
@@ -86,6 +102,17 @@ A place is considered `tab-width' character columns."
 ;;----------------------------------------------------------------------------
 ;; Buffer Utils
 ;;----------------------------------------------------------------------------
+
+(defun matt/toggle-wrap ()
+  "Toggle the wrap guide and soft wrapping on and off."
+  (interactive)
+  (setq fci-rule-width 1)
+  (setq fci-rule-color "darkgrey")
+  (if (and (boundp 'fci-mode) fci-mode)
+      (progn (fci-mode        0)
+             (visual-line-mode 0))
+    (fci-mode       1)
+    (visual-line-mode 1)))
 
 (defun iwb ()
   "indent whole buffer"
@@ -161,9 +188,9 @@ Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (flyspell-mode 1))
 
-;;----------------------------------------------------------------------------
-;; Window helpers
-;;----------------------------------------------------------------------------
+                                        ;----------------------------------------------------------------------------
+                                        ; Window helpers
+                                        ;----------------------------------------------------------------------------
 
 (defun my-close-current-window-asktosave ()
   "Kill the buffer, but not the window"
@@ -355,12 +382,11 @@ markdown documment"
                                          "white" ;; dark bg, light text
                                          )))))
         append))))
-
+                                        ;
 (defun hexcolour-add-to-font-lock ()
   (interactive)
   (font-lock-add-keywords nil hexcolour-keywords t))
 
-(require 'powerline)
 (defun powerline-clean-theme ()
   "Customize the modeline with help from the powerline package"
   (interactive)
@@ -386,8 +412,10 @@ markdown documment"
 (defun reload-color-theme ()
   "Reloads the color themes. Handy when experimenting with various colors"
   (interactive)
-  (load-file "~/.emacs.d/colors.el")
-  (color-theme-neptune))
+  (load-file "~/.emacs.d/neptune-theme.el")
+  (add-to-list 'custom-theme-load-path "~/.emacs.d")
+  (load-theme 'neptune)
+  )
 
 ;;----------------------------------------------------------------------------
 ;; Company mode related functions
@@ -450,5 +478,6 @@ reuse the current one."
   (sit-for 0.1)
   (revert-buffer)
   (dired-goto-file (concat (dired-current-directory) touch-file)))
+
 
 (provide 'defuns)
