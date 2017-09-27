@@ -11,9 +11,7 @@
 
 (require 'use-package)
 
-
 (load "defuns")
-(load "rufo")
 (load "neptune-theme")
 
 ;;----------------------------------------------------------------------------
@@ -90,7 +88,7 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
-;; Auto associate files that emacs doesn't know what to do with otherwise
+                                        ; Auto associate files that emacs doesn't know what to do with otherwise
 (setq auto-mode-alist (cons '("\\.bash_profile" . sh-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("hosts" . sh-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("Cask" . lisp-mode) auto-mode-alist))
@@ -481,13 +479,13 @@ is `emacs' then the `holy-mode' is enabled at startup.")
 ;;----------------------------------------------------------------------------
 ;; Evil mode - uses modal editing key commands
 ;;----------------------------------------------------------------------------
-
 (use-package evil
   :init
   (progn
     (evil-mode 1)
 
     ;; (define-key evil-normal-state-map (kbd "/") 'swiper)
+    (define-key evil-normal-state-map (kbd "RET") 'newline-and-indent)
     (define-key evil-normal-state-map (kbd "TAB") 'indent-for-tab-command)
     (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
     (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
@@ -497,7 +495,7 @@ is `emacs' then the `holy-mode' is enabled at startup.")
     (define-key evil-insert-state-map [remap newline] 'evil-ret-and-indent)
 
     ;; Make a escape actually quit
-    (define-key evil-normal-state-map [escape] 'keyboard-quit)
+    ;; (define-key evil-normal-state-map [escape] 'keyboard-quit)
     (define-key evil-visual-state-map [escape] 'keyboard-quit)
     (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
     (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
@@ -565,7 +563,7 @@ is `emacs' then the `holy-mode' is enabled at startup.")
 
 (use-package evil-escape
   :init
-  (setq-default evil-escape-key-sequence "fd")
+  (setq-default evil-escape-key-sequence "jk")
   (evil-escape-mode 1))
 
 (use-package evil-leader
@@ -640,7 +638,6 @@ is `emacs' then the `holy-mode' is enabled at startup.")
   (progn
     (key-chord-mode 1)
     (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-    (key-chord-define-global "hj" 'evil-normal-state)
     (key-chord-define-global "jk" 'my-save-if-bufferfilename)
     ))
 
@@ -819,6 +816,14 @@ is `emacs' then the `holy-mode' is enabled at startup.")
 (use-package json-mode
   :mode ("\\.json$" . json-mode))
 
+
+;;----------------------------------------------------------------------------
+;; Vue.js mode
+;;----------------------------------------------------------------------------
+
+(use-package vue-mode)
+(use-package vue-html-mode)
+
 ;;----------------------------------------------------------------------------
 ;; Magit - awesome Git integration
 ;;----------------------------------------------------------------------------
@@ -951,6 +956,7 @@ is `emacs' then the `holy-mode' is enabled at startup.")
 ;; Ruby and related  modes
 ;;----------------------------------------------------------------------------
 
+
 (use-package ruby-mode
   :init
   (progn
@@ -974,7 +980,7 @@ is `emacs' then the `holy-mode' is enabled at startup.")
   (progn
     ;; (add-hook 'ruby-mode-hook 'matt/toggle-wrap)
     ;; (add-hook 'ruby-mode-hook #'rubocop-mode)
-    (add-hook 'ruby-mode-hook 'global-company-mode)
+    ;; (add-hook 'ruby-mode-hook 'global-company-mode)
     (add-hook 'ruby-mode-hook (lambda () (modify-syntax-entry ?_ "w")))
     (setq ruby-deep-arglist nil)
     (setq ruby-dbg-flags "-W0")
@@ -1054,7 +1060,7 @@ is `emacs' then the `holy-mode' is enabled at startup.")
     (setq cssm-indent-level 2)
     (setq cssm-newline-before-closing-bracket t)
     (setq cssm-indent-function #'cssm-c-style-indenter)
-    (setq cssm-mirror-mode nil)
+
     (setq tab-width 2)
     (define-key css-mode-map [return] 'newline-and-indent)
     (setq css-electric-brace-behavior t)
@@ -1165,6 +1171,20 @@ is `emacs' then the `holy-mode' is enabled at startup.")
 (use-package mmm-mode
   :init
   (progn
+    (mmm-add-group
+     'html-js
+     '((js-script-cdata
+        :submode js-mode
+        :face mmm-code-submode-face
+        :front "<script[^>]*>[ \t\n]*\\(//\\)?<!\\[CDATA\\[[ \t]*\n?"
+        :back "[ \t]*\\(//\\)?]]>[ \t\n]*</script>")
+       (js-script
+        :submode js-mode
+        :face mmm-code-submode-face
+        :front "<script[^>]*>[ \t]*\n?"
+        :back "[ \t]*</script>"
+        :insert ((?j js-tag nil @ "<script type=\"text/javascript\">\n"
+                     @ "" _ "" @ "\n</script>" @)))))
     (mmm-add-classes
      '((markdown-ruby
         :submode ruby-mode
@@ -1204,18 +1224,21 @@ is `emacs' then the `holy-mode' is enabled at startup.")
 ;;----------------------------------------------------------------------------
 ;; Code snippets
 ;;----------------------------------------------------------------------------
+;; (use-package snippet
+;;   :config
+;;   (progn
+;;     ))
 
-;; (use-package snippet)
-(use-package yasnippet
-  :init
-  (progn
-    (yas-global-mode 1)
-    (setq yas-snippet-dirs
-          '("~/.emacs.d/snippets"                 ;; personal snippets
-            ))
-    ;;(yas/global-mode t)
-    ))
 
+;; (use-package yasnippet
+;;   :init
+;;   (progn
+;;     (yas-global-mode 1)
+;;     (setq yas-snippet-dirs
+;;           '("~/.emacs.d/snippets"                 ;; personal snippets
+;;             ))
+;;     (yas/global-mode t)
+;;     ))
 (use-package ivy
   :init
   (progn

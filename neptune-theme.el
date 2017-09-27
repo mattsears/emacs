@@ -40,8 +40,10 @@
 
        `(font-lock-comment-face ((,class (:slant italic :foreground ,neptune-grey-1))))
        `(font-lock-preprocessor-face ((,class (:foreground ,neptune-fg))))
+
        `(font-lock-builtin-face ((,class (:foreground ,neptune-purple))))
-       `(font-lock-constant-face ((,class (:foreground , neptune-red-0))))
+       `(font-lock-constant-face ((,class (:foreground , neptune-purple))))
+
        `(font-lock-doc-face ((,class (:foreground ,neptune-green-0))))
        `(font-lock-function-name-face ((,class (:foreground ,neptune-orange))))
        `(font-lock-keyword-face ((,class (:foreground ,neptune-blue))))

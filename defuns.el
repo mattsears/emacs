@@ -1,6 +1,31 @@
-                                        ;----------------------------------------------------------------------------
+;;----------------------------------------------------------------------------
 ;; Custom functions
-                                        ;----------------------------------------------------------------------------
+;;----------------------------------------------------------------------------
+
+(defun open-finder-1 (dir file)
+  (let ((script
+     (if file
+       (concat
+        "tell application \"Finder\"\n"
+        "    set frontmost to true\n"
+        "    make new Finder window to (POSIX file \"" dir "\")\n"
+        "    select file \"" file "\"\n"
+        "end tell\n")
+       (concat
+      "tell application \"Finder\"\n"
+      "    set frontmost to true\n"
+      "    make new Finder window to {path to desktop folder}\n"
+      "end tell\n"))))
+    (start-process "osascript-getinfo" nil "osascript" "-e" script)))
+
+(defun open-finder ()
+  (interactive)
+  (let ((path (buffer-file-name))
+    dir file)
+  (when path
+    (setq dir (file-name-directory path))
+    (setq file (file-name-nondirectory path)))
+  (open-finder-1 dir file)))
 
 (defun dot-emacs (relative-path)
   "Return the full path of a file in the user's emacs directory."
@@ -63,7 +88,8 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (interactive)
   (if (buffer-file-name)
       (progn
-        (evil-normal-state)
+        ;; (evil-normal-state)
+        (evil-force-normal-state)
         (save-buffer))
     (message "no file is associated to this buffer: do nothing")
     ))
