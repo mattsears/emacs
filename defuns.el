@@ -420,7 +420,7 @@ markdown documment"
                 '("%e"
                   (:eval
                    (let* ((active (powerline-selected-window-active))
-                          (lhs (list (powerline-raw (concat "L%l") nil 'l)))
+                          (lhs (list (powerline-raw (concat "L%l:%c") nil 'l)))
                           (rhs (list
                                 (if (buffer-modified-p)
                                     (powerline-raw "*" nil 'r))

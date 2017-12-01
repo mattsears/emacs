@@ -15,14 +15,11 @@
 (load "neptune-theme")
 
 ;;----------------------------------------------------------------------------
-;; Global hooks :-)
-;;----------------------------------------------------------------------------
-
-;; (add-hook 'after-change-major-mode-hook 'fci-mode)
-
-;;----------------------------------------------------------------------------
 ;; Global settings for all modes
 ;;----------------------------------------------------------------------------
+
+;; Set the default mode to tex-mode
+(setq-default major-mode 'shell-script-mode)
 
 ;; Indicate where the 100 column character ends
 (require 'fill-column-indicator)
@@ -51,10 +48,8 @@
       "~/.emacs.d/.cache/auto-save-list/.saves-")
 
 ;; Scroll to where you last left off
-;; (require 'saveplace)
 (setq save-place-file "~/.emacs.d/.saveplace")
 (save-place-mode 1)
-;; (setq-default save-place t)
 
 ;; Make yes/no options y/n
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -67,7 +62,6 @@
 
 ;; Misc settings
 (setq indicate-buffer-boundaries nil)
-
 
 ;; This will help distinguish files with the same name
 (require 'uniquify)
@@ -88,25 +82,12 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
-                                        ; Auto associate files that emacs doesn't know what to do with otherwise
+;; Auto associate files that emacs doesn't know what to do with otherwise
 (setq auto-mode-alist (cons '("\\.bash_profile" . sh-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("hosts" . sh-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("Cask" . lisp-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '(".*mutt.*" . message-mode) auto-mode-alist))
-
-;; Enable mouse support
-(unless window-system
-  (require 'mouse)
-  (xterm-mouse-mode t)
-  (global-set-key [mouse-4] '(lambda ()
-                               (interactive)
-                               (scroll-down 1)))
-  (global-set-key [mouse-5] '(lambda ()
-                               (interactive)
-                               (scroll-up 1)))
-  (defun track-mouse (e))
-  (setq mouse-sel-mode t)
-  )
+(setq auto-mode-alist (cons '(".aws" . shell-script-mode) auto-mode-alist))
 
 ;; Set column with
 (setq fill-column 80)
@@ -140,22 +121,17 @@
     (global-hl-line-mode)
     ))
 
-;;----------------------------------------------------------------------------
-;; Change the default colors for matching parens
-;;----------------------------------------------------------------------------
-
+;; Paren - Change the default colors for matching parens
 (use-package paren
   :init
   (progn
     (show-paren-mode)
     (set-face-background 'show-paren-match "#1d1f21")
-    (set-face-foreground 'show-paren-match "#dd0093")
+    (set-face-foreground 'show-paren-match "##c3c2ef")
     (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
     ))
 
-;;------------------------------------------------------------------------------
 ;; Smex - Enhanced M-x
-;;------------------------------------------------------------------------------
 (use-package smex
   :bind (("M-x" . smex)
          ("M-X" . smex-major-mode-commands))
@@ -170,8 +146,9 @@
   :init
   (progn (smart-newline-mode 1) ))
 
+
 ;;------------------------------------------------------------------------------
-;; IDO options
+;; IDO enhancements
 ;;------------------------------------------------------------------------------
 
 ;; Do not auto complete when creating new directories!
@@ -211,9 +188,6 @@
 
 (use-package ido-completing-read)
 
-;; Yet another paste tool, this one for Gist (awesome)
-(use-package gist)
-
 ;; Keep a history of recent changes
 (use-package recentf
   :init
@@ -222,20 +196,14 @@
     (setq recentf-max-saved-items 500)
     (setq recentf-max-menu-items 60)))
 
-;;----------------------------------------------------------------------------
 ;; Silver Searcher searching (Say that 3 times in a row)
-;;----------------------------------------------------------------------------
-
 (use-package ag
   :init
   (progn
     (setq ag-highlight-search t)))
 
 
-;;----------------------------------------------------------------------------
 ;; Projectile for project file navigation
-;;----------------------------------------------------------------------------
-
 (use-package projectile
   :defer 1
   :config
@@ -257,7 +225,6 @@
 ;;----------------------------------------------------------------------------
 ;; Helm for enhanced project file navigation
 ;;----------------------------------------------------------------------------
-
 (use-package helm
   :defer 1
   :init
@@ -341,14 +308,12 @@ is `emacs' then the `holy-mode' is enabled at startup.")
                    collect (with-current-buffer (window-buffer w)
                              (cons (buffer-name) mode-line-format)))))
 
-
   (defun bottom-buffers-hide-mode-line ()
     (setq-default cursor-in-non-selected-windows nil)
     (mapc (lambda (elt)
             (with-current-buffer (car elt)
               (setq-local mode-line-format nil)))
           bottom-buffers))
-
 
   (defun bottom-buffers-show-mode-line ()
     (setq-default cursor-in-non-selected-windows t)
@@ -495,7 +460,6 @@ is `emacs' then the `holy-mode' is enabled at startup.")
     (define-key evil-insert-state-map [remap newline] 'evil-ret-and-indent)
 
     ;; Make a escape actually quit
-    ;; (define-key evil-normal-state-map [escape] 'keyboard-quit)
     (define-key evil-visual-state-map [escape] 'keyboard-quit)
     (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
     (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
@@ -527,10 +491,19 @@ is `emacs' then the `holy-mode' is enabled at startup.")
               eshell-mode
               diff-mode))
 
-    (lexical-let ((default-color (cons (face-background 'mode-line)
-                                       (face-foreground 'mode-line))))
-      (add-hook 'post-command-hook (lambda () (my-evil-modeline-change default-color)))
-      )))
+    ;; Change the modeline color based on evil mode
+    (setq original-background (face-attribute 'mode-line :background))
+    (setq normal-state-background "#646c9c")
+
+    (add-hook 'evil-normal-state-entry-hook
+              (lambda ()
+                (set-face-attribute 'mode-line nil :background original-background)))
+    (add-hook 'evil-normal-state-exit-hook
+              (lambda ()
+                (set-face-attribute 'mode-line nil :background normal-state-background)))
+
+    )
+  )
 
 
 ;; Make a visual selection with v or V, and then hit * to search forward
@@ -573,11 +546,10 @@ is `emacs' then the `holy-mode' is enabled at startup.")
     (evil-leader/set-leader ",")
     (evil-leader/set-key
       "t"   'projectile-find-file
-      "o"   'dired
+      "o"   'dired-jump
       "b"   'projectile-switch-to-buffer
       "i"   'iwb
       ","   'switch-to-previous-buffer
-      "."   'dumb-jump-go
       "TAB" 'projectile-ibuffer
       "/"   'helm-projectile-ag
       "w"   'matts-close-and-delete-window
@@ -588,6 +560,8 @@ is `emacs' then the `holy-mode' is enabled at startup.")
       "c"   'evil-commentary-line
       "R"   'matts-ido-choose-from-recentf
       "a"   'annotate-annotate
+      "j"   'dumb-jump-go
+      "p"   'dumb-jump-back
 
       "gb" 'magit-blame
       "gl" 'magit-log-all
@@ -614,8 +588,6 @@ is `emacs' then the `holy-mode' is enabled at startup.")
       ":" 'ruby-tools-to-symbol
       "'" 'ruby-tools-to-single-quote-string
 
-      "rdb" 'my-rails-database
-
       "et"  'alchemist-mix-test
       "ec"  'alchemist-mix-compile
       "ex"  'alchemist-iex-project-run
@@ -623,7 +595,6 @@ is `emacs' then the `holy-mode' is enabled at startup.")
       "ee"  'alchemist-eval-print-current-line
 
       "m"   'list-bookmarks
-      "p"   'matts-ido-find-project
       "]"   'text-shift-right
       "["   'text-shift-left
       "#"   'flyspell-auto-correct-word
@@ -692,7 +663,6 @@ is `emacs' then the `holy-mode' is enabled at startup.")
     (define-key dired-mode-map "n" 'dired-touch-now)
     (define-key dired-mode-map "o" 'matts-dired-open-mac)
     (define-key dired-mode-map [return] 'dired-find-alternate-file)
-    ;; (define-key dired-mode-map [return] 'toggle-diredp-find-file-reuse-dir)
     ))
 
 ;;----------------------------------------------------------------------------
@@ -740,6 +710,7 @@ is `emacs' then the `holy-mode' is enabled at startup.")
          ("\\.eex\\'" . web-mode)
          ("\\.mustache\\'" . web-mode)
          ("\\.erb\\'" . web-mode)
+         ("\\.vue\\'" . web-mode)
          ("\\.html?\\'" . web-mode))
   :config
   (progn
@@ -818,13 +789,6 @@ is `emacs' then the `holy-mode' is enabled at startup.")
 
 
 ;;----------------------------------------------------------------------------
-;; Vue.js mode
-;;----------------------------------------------------------------------------
-
-(use-package vue-mode)
-(use-package vue-html-mode)
-
-;;----------------------------------------------------------------------------
 ;; Magit - awesome Git integration
 ;;----------------------------------------------------------------------------
 
@@ -883,7 +847,6 @@ is `emacs' then the `holy-mode' is enabled at startup.")
 
     (define-key magit-mode-map "c" 'magit-maybe-commit)
 
-
     (setq
      ;; use ido to look for branches
      magit-completing-read-function 'magit-ido-completing-read
@@ -911,7 +874,8 @@ is `emacs' then the `holy-mode' is enabled at startup.")
     ;; (setq magit-stage-all-confirm nil)
     ;; (setq magit-unstage-all-confirm nil)
     )
-  :bind ("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status)
+  )
 
 
 (use-package browse-at-remote)
@@ -974,13 +938,17 @@ is `emacs' then the `holy-mode' is enabled at startup.")
       (progn (global-rbenv-mode)))
 
     ;; Provides helpers for converting hashes to the newer syntax (eg {key: value})
-    (use-package ruby-hash-syntax))
+    (use-package ruby-hash-syntax)
+
+    (use-package ruby-block
+      :config
+      (progn
+        (setq ruby-block-highlight-toggle 'overlay)
+        ))
+    )
 
   :config
   (progn
-    ;; (add-hook 'ruby-mode-hook 'matt/toggle-wrap)
-    ;; (add-hook 'ruby-mode-hook #'rubocop-mode)
-    ;; (add-hook 'ruby-mode-hook 'global-company-mode)
     (add-hook 'ruby-mode-hook (lambda () (modify-syntax-entry ?_ "w")))
     (setq ruby-deep-arglist nil)
     (setq ruby-dbg-flags "-W0")
@@ -992,9 +960,6 @@ is `emacs' then the `holy-mode' is enabled at startup.")
     (setq ruby-deep-indent-paren nil)
     (setq ruby-deep-indent-paren-style nil)
     (setq ruby-align-chained-calls nil)
-    (setq ruby-deep-indent-paren nil)
-    (setq ruby-deep-indent-paren-style nil)
-    (setq ruby-use-smie nil)
 
     (defadvice ruby-indent-line (after unindent-closing-paren activate)
       "Indent sole parenthesis in loca's way."
@@ -1011,28 +976,6 @@ is `emacs' then the `holy-mode' is enabled at startup.")
         (when indent
           (indent-line-to indent)
           (when (> offset 0) (forward-char offset)))))
-
-    ;; (defun add-rails-keywords-hook ()
-    ;;   (font-lock-add-keywords nil
-    ;;                           '(("\\has_many\\" (0 font-lock-warning-face)))))
-    ;; (add-hook 'ruby-mode-hook #'add-rails-keywords-hook)
-
-    ;; (defvar rails-mode-keywords
-    ;;   '("default_scope" "named_scope" "scope" "serialize" "belongs_to" "has_one"
-    ;;     "has_many" "has_and_belongs_to_many" "composed_of" "accepts_nested_attributes_for"
-    ;;     "before_create" "before_destroy" "before_save" "before_update" "before_validation"
-    ;;     "before_validation_on_create" "before_validation_on_update" "after_create"
-    ;;     "after_destroy" "after_save" "after_update" "after_validation"
-    ;;     "after_validation_on_create" "after_validation_on_update" "around_create"
-    ;;     "around_destroy" "around_save" "around_update" "after_commit" "after_find"
-    ;;     "after_initialize" "after_rollback" "after_touch" "attr_accessible"
-    ;;     "attr_protected" "attr_readonly" "validates" "validate" "validate_on_create"
-    ;;     "validate_on_update" "validates_acceptance_of" "validates_associated"
-    ;;     "validates_confirmation_of" "validates_each" "validates_exclusion_of"
-    ;;     "validates_format_of" "validates_inclusion_of" "validates_length_of"
-    ;;     "validates_numericality_of" "validates_presence_of" "validates_size_of"
-    ;;     "validates_existence_of" "validates_uniqueness_of" "validates_with"
-    ;;     "enum" "after_create_commit" "after_update_commit" "after_destroy_commit")
     )
   :bind (("C-{" . ruby-toggle-hash-syntax))
   :mode (("\\.rake$" . ruby-mode)
@@ -1229,16 +1172,16 @@ is `emacs' then the `holy-mode' is enabled at startup.")
 ;;   (progn
 ;;     ))
 
+(use-package yasnippet
+  :init
+  (progn
+    (yas-global-mode 1)
+    (setq yas-snippet-dirs
+          '("~/.emacs.d/snippets"                 ;; personal snippets
+            ))
+    (yas/global-mode t)
+    ))
 
-;; (use-package yasnippet
-;;   :init
-;;   (progn
-;;     (yas-global-mode 1)
-;;     (setq yas-snippet-dirs
-;;           '("~/.emacs.d/snippets"                 ;; personal snippets
-;;             ))
-;;     (yas/global-mode t)
-;;     ))
 (use-package ivy
   :init
   (progn
@@ -1251,14 +1194,12 @@ is `emacs' then the `holy-mode' is enabled at startup.")
     )
   )
 
-(use-package fullframe
+(use-package beacon
   :config
   (progn
-    (fullframe magit-status magit-mode-quit-window)
-    )
-  )
+    (beacon-mode 1)
+    ))
 
-(use-package powerline
-  :init
-  (progn
-    (powerline-clean-theme)))
+(use-package dumb-jump)
+
+(use-package exato :ensure t)
