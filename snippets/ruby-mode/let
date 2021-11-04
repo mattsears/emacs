@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: let
+# key: let
+# group: general
+# --
+let(:$1) { $0 }

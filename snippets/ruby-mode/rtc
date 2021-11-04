@@ -1,0 +1,31 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: rtc
+# key: rtc
+# group: ruby
+# --
+
+# frozen_string_literal: true
+
+require "test_helper"
+
+# See User
+class UserTest < ActiveSupport::TestCase
+
+  let(:user) { create(:user) }
+
+  subject do
+    Users::Update.run(user: user, name: "Test Case")
+  end
+
+  describe "saves users data" do
+    before { subject.result }
+
+    it "command should return true" do
+      assert subject.success?
+    end
+
+    it "should return the new collection" do
+      assert User.exists?(id: user.id, name: "Test Case")
+    end
+  end
+end

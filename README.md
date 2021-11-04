@@ -10,7 +10,6 @@ Install
 =======
 brew install emacs --HEAD --cocoa --srgb
 
-
 A Few Features
 ========
 

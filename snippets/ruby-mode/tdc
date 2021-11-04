@@ -1,0 +1,11 @@
+#name : tdc
+# --
+
+# frozen_string_literal: true
+
+# Public: $0
+#
+# Examples
+#
+#   Math.square_root(9)
+#   # => 3

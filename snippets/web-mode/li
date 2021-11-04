@@ -1,0 +1,5 @@
+#name : <li>
+# --
+<li class="${class}">
+  $0
+</li>

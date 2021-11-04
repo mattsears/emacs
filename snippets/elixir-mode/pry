@@ -1,0 +1,6 @@
+
+# -*- mode: snippet; require IEx: nil -*-
+# name:
+# group: general
+# --
+require IEx; IEx.pry $0

@@ -24,3 +24,7 @@ var/*
 .projectile-bookmarks.eld
 .projectile.cache
 .smex.save
+.cache/
+history
+projectile-bookmarks.eld
+transient/

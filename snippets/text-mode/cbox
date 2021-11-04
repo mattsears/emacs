@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: comment block
+# key: cbox
+# expand-env: ((yas-after-exit-snippet-hook (lambda () (if (buffer-substring yas-snippet-beg yas-snippet-end) (comment-box yas-snippet-beg yas-snippet-end 1)))))
+# --
+$1
+$0

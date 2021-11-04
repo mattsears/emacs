@@ -1,0 +1,27 @@
+#name : rdm
+# --
+
+# [Description goes here]
+#
+# @author Matt Sears
+#
+# @see http://example.com Description of URL
+# @see SomeOtherClass#method
+#
+# @private
+#
+# @param [Hash] opts the options to create a message with.
+# @option opts [String] :subject The subject
+# @option opts [String] :from ('nobody') From address
+#
+# The options parsed out of the commandline.
+# Default options are:
+#   :format => :dot
+#
+# @example Parse a glob of files
+#   YARD.parse('lib/**/*.rb')
+#
+# @raise [ExceptionClass] description
+#
+# @return [true] always returns true
+# @return description here with no types

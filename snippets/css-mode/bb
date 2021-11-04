@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: blue border
+# key: bb
+# group: general
+# --
+border: 1px solid blue;

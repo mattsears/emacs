@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: it
+# key: it
+# group: general
+# --
+it "$0" do
+
+end

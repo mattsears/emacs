@@ -1,31 +1,38 @@
+
 ;;----------------------------------------------------------------------------
 ;; Custom functions
 ;;----------------------------------------------------------------------------
 
-(defun open-finder-1 (dir file)
-  (let ((script
-     (if file
-       (concat
-        "tell application \"Finder\"\n"
-        "    set frontmost to true\n"
-        "    make new Finder window to (POSIX file \"" dir "\")\n"
-        "    select file \"" file "\"\n"
-        "end tell\n")
-       (concat
-      "tell application \"Finder\"\n"
-      "    set frontmost to true\n"
-      "    make new Finder window to {path to desktop folder}\n"
-      "end tell\n"))))
-    (start-process "osascript-getinfo" nil "osascript" "-e" script)))
+(defun matts/arrayify (start end quote)
+  "Turn strings on newlines into a QUOTEd, comma-separated one-liner."
+  (interactive "r\nMQuote: ")
+  (let ((insertion
+         (mapconcat
+          (lambda (x) (format "%s%s%s" quote x quote))
+          (split-string (buffer-substring start end)) ", ")))
+    (delete-region start end)
+    (insert insertion)))
 
-(defun open-finder ()
-  (interactive)
-  (let ((path (buffer-file-name))
-    dir file)
-  (when path
-    (setq dir (file-name-directory path))
-    (setq file (file-name-nondirectory path)))
-  (open-finder-1 dir file)))
+(defun matts/shift-text (distance)
+  (if (use-region-p)
+      (let ((mark (mark)))
+        (save-excursion
+          (indent-rigidly (region-beginning)
+                          (region-end)
+                          distance)
+          (push-mark mark t t)
+          (setq deactivate-mark nil)))
+    (indent-rigidly (line-beginning-position)
+                    (line-end-position)
+                    distance)))
+
+(defun matts/shift-right (count)
+  (interactive "p")
+  (matts/shift-text count))
+
+(defun matts/shift-left (count)
+  (interactive "p")
+  (matts/shift-text (- count)))
 
 (defun dot-emacs (relative-path)
   "Return the full path of a file in the user's emacs directory."
@@ -34,14 +41,6 @@
 (defun my-send-string-to-terminal (string)
   (unless (display-graphic-p) (send-string-to-terminal string)))
 
-(defun single-lines-only ()
-  "replace multiple blank lines with a single one"
-  (interactive)
-  (goto-char (point-min))
-  (while (re-search-forward "\\(^\\s-*$\\)\n" nil t)
-    (replace-match "\n")
-    (forward-char 1)))
-
 (defun set-exec-path-from-shell-PATH ()
   "Set up Emacs' `exec-path' and PATH environment variable to match that used by the user's shell.
 This is particularly useful under Mac OSX, where GUI apps are not started from a shell."
@@ -49,6 +48,40 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator))))
+
+(defun matts/toggle-quotes ()
+  (interactive)
+  (let* ((beg (nth 8 (syntax-ppss)))
+         (orig-quote (char-after beg))
+         (new-quote (pcase orig-quote
+                      (?\' ?\")
+                      (?\" ?\'))))
+    (save-restriction
+     (widen)
+     (save-excursion
+      (catch 'done
+        (unless new-quote
+          (message "Not inside a string")
+          (throw 'done nil))
+        (goto-char beg)
+        (delete-char 1)
+        (insert-char new-quote)
+        (while t
+          (cond ((eobp)
+                 (throw 'done nil))
+                ((= (char-after) orig-quote)
+                 (delete-char 1)
+                 (insert-char new-quote)
+                 (throw 'done nil))
+                ((= (char-after) ?\\)
+                 (forward-char 1)
+                 (when (= (char-after) orig-quote)
+                   (delete-char -1))
+                 (forward-char 1))
+                ((= (char-after) new-quote)
+                 (insert-char ?\\)
+                 (forward-char 1))
+                (t (forward-char 1)))))))))
 
 ;;----------------------------------------------------------------------------
 ;; Evil mode helpers
@@ -88,57 +121,14 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (interactive)
   (if (buffer-file-name)
       (progn
-        ;; (evil-normal-state)
-        (evil-force-normal-state)
+        (evil-escape)
         (save-buffer))
     (message "no file is associated to this buffer: do nothing")
     ))
 
-
-;;----------------------------------------------------------------------------
-;; Helpers for moving text around
-;;----------------------------------------------------------------------------
-
-(defun move-line-up ()
-  (interactive)
-  (transpose-lines 1)
-  (forward-line -2))
-
-(defun move-line-down ()
-  (interactive)
-  (forward-line 1)
-  (transpose-lines 1)
-  (forward-line -1))
-
-(defun text-shift-right (&optional arg)
-  "Shift the line or region to the ARG places to the right.
-A place is considered `tab-width' character columns."
-  (interactive)
-  (let ((deactivate-mark nil)
-        (beg (or (and mark-active (region-beginning))
-                 (line-beginning-position)))
-        (end (or (and mark-active (region-end)) (line-end-position))))
-    (indent-rigidly beg end (* (or arg 1) tab-width))))
-
-(defun text-shift-left (&optional arg)
-  "Shift the line or region to the ARG places to the left."
-  (interactive)
-  (text-shift-right (* -1 (or arg 1))))
-
 ;;----------------------------------------------------------------------------
 ;; Buffer Utils
 ;;----------------------------------------------------------------------------
-
-(defun matt/toggle-wrap ()
-  "Toggle the wrap guide and soft wrapping on and off."
-  (interactive)
-  (setq fci-rule-width 1)
-  (setq fci-rule-color "darkgrey")
-  (if (and (boundp 'fci-mode) fci-mode)
-      (progn (fci-mode        0)
-             (visual-line-mode 0))
-    (fci-mode       1)
-    (visual-line-mode 1)))
 
 (defun iwb ()
   "indent whole buffer"
@@ -159,7 +149,7 @@ A place is considered `tab-width' character columns."
       (untabify-buffer)
     (untabify (point-min) (point-max))))
 
-(defun nuke-all-buffers ()
+(defun matts/nuke-all-buffers ()
   "Kill all buffers, leaving *scratch* only."
   (interactive)
   (mapcar (lambda (x) (kill-buffer x)) (buffer-list)) (delete-other-windows))
@@ -172,15 +162,6 @@ A place is considered `tab-width' character columns."
 
 ;; Delete trailing whitespace before save
 (add-hook 'before-save-hook 'cleanup-buffer)
-
-(defun back-to-indentation-or-beginning-of-line ()
-  "Moves point back to indentation if there is any
-non blank characters to the left of the cursor.
-Otherwise point moves to beginning of line."
-  (interactive)
-  (if (= (point) (save-excursion (back-to-indentation) (point)))
-      (beginning-of-line)
-    (back-to-indentation)))
 
 (defun insert-soft-tab ()
   " Tab with spaces"
@@ -202,21 +183,26 @@ Repeated invocations toggle between the two most recently open buffers."
   (if (buffer-exists "*Buffers*")  (kill-buffer "*Ibuffer*"))
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-(defun matts-ibuffer ()
-  "Open ibuffer with cursour pointed to most recent buffer name"
-  (interactive)
-  (let ((recent-buffer-name (buffer-name)))
-    (ibuffer)
-    (ibuffer-jump-to-buffer recent-buffer-name)))
-
 (defun turn-on-flyspell ()
   "Force flyspell-mode on using a positive arg.  For use in hooks."
   (interactive)
   (flyspell-mode 1))
 
-                                        ;----------------------------------------------------------------------------
-                                        ; Window helpers
-                                        ;----------------------------------------------------------------------------
+(defun matts/hsplit-last-buffer ()
+  (interactive)
+  (split-window-horizontally)
+  (other-window 1 nil)
+  (switch-to-next-buffer))
+
+(defun matts/align-columns (BEG END)
+  "Align non-space columns in region BEG END."
+  (interactive "r")
+  (align-regexp BEG END "\\(\\s-*\\)\\S-+" 1 1 t))
+
+
+;;----------------------------------------------------------------------------
+;; Window helpers
+;;----------------------------------------------------------------------------
 
 (defun my-close-current-window-asktosave ()
   "Kill the buffer, but not the window"
@@ -226,16 +212,25 @@ Repeated invocations toggle between the two most recently open buffers."
 (defun matts-close-and-delete-window ()
   "Kill the current frame and the window and go back to the first window"
   (interactive)
-  (matts-first-window)
+
+  (matts/first-window)
   (other-window 1)
   (kill-buffer (current-buffer))
   (delete-window))
 
-(defun matts-first-window ()
+(defun matts/last-window ()
+  (interactive)
+  (let ((win (get-mru-window t t t)))
+    (unless win (error "Last window not found"))
+    (let ((frame (window-frame win)))
+      (select-frame-set-input-focus frame)
+      (select-window win))))
+
+(defun matts/first-window ()
   (interactive)
   (select-window (frame-first-window)))
 
-(defun matts-flip-windows ()
+(defun matts/flip-windows ()
   ";; Swap windows if in split-screen mode"
   (interactive)
   (let ((cur-buffer (current-buffer))
@@ -250,18 +245,6 @@ Repeated invocations toggle between the two most recently open buffers."
     (switch-to-buffer bottom-buffer)
     (pop-to-buffer cur-buffer)))
 
-(defun switch-to-scratch ()
-  "switch to scratch, grab the region if it's active"
-  (interactive)
-  (let ((contents
-         (and (region-active-p)
-              (buffer-substring (region-beginning)
-                                (region-end)))))
-    (switch-to-buffer "*scratch*")
-    (if contents
-        (progn
-          (goto-char (buffer-end 1))
-          (insert contents)))))
 
 ;;----------------------------------------------------------------------------
 ;; IDO related functions
@@ -292,6 +275,7 @@ Repeated invocations toggle between the two most recently open buffers."
      `((500 200) ,(selected-frame))
      (list menu-title (cons menu-title (nreverse item-list))))))
 
+(require 'noflet)
 (defun matts-find-symbol ()
   "Update the imenu index and then use ido to select a symbol to navigate to.
 Symbols matching the text at point are put first in the completion list."
@@ -299,7 +283,7 @@ Symbols matching the text at point are put first in the completion list."
   (imenu--make-index-alist)
   (let ((name-and-pos '())
         (symbol-names '()))
-    (flet ((addsymbols
+    (noflet ((addsymbols
             (symbol-list)
             (when (listp symbol-list)
               (dolist (symbol symbol-list)
@@ -320,7 +304,7 @@ Symbols matching the text at point are put first in the completion list."
                   (unless (or (null position) (null name))
                     (add-to-list 'symbol-names name)
                     (add-to-list 'name-and-pos (cons name position))))))))
-      (addsymbols imenu--index-alist))
+          (addsymbols imenu--index-alist))
     ;; If there are matching symbols at point, put them at the beginning
     ;; of `symbol-names'.
     (let ((symbol-at-point (thing-at-point 'symbol)))
@@ -337,7 +321,7 @@ Symbols matching the text at point are put first in the completion list."
              (lambda (symbol)
                (setq symbol-names (cons symbol (delete symbol symbol-names))))
              matching-symbols)))))
-    (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
+    (let* ((selected-symbol (ivy-completing-read "Symbol? " symbol-names))
            (position (cdr (assoc selected-symbol name-and-pos))))
       (push-mark)
       (if (overlayp position)
@@ -348,7 +332,7 @@ Symbols matching the text at point are put first in the completion list."
 ;; File related helpers
 ;;----------------------------------------------------------------------------
 
-(defun delete-this-buffer-and-file ()
+(defun matts/delete-this-buffer-and-file ()
   "Removes file connected to current buffer and kills buffer."
   (interactive)
   (let ((filename (buffer-file-name))
@@ -362,7 +346,7 @@ Symbols matching the text at point are put first in the completion list."
         (message "File '%s' successfully removed" filename)))))
 (global-set-key (kbd "C-c k") 'delete-this-buffer-and-file)
 
-(defun rename-file-and-buffer (new-name)
+(defun matts/rename-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
   (interactive "sNew name: ")
   (let ((name (buffer-name))
@@ -383,7 +367,7 @@ for anything changes.  In other words, it will live reload and convert the
 markdown documment"
   (interactive)
   (shell-command
-   (format "open -a /Applications/Marked.app %s"
+   (format "open -a /Applications/Setapp/Marked.app %s"
            (shell-quote-argument (buffer-file-name))))
   )
 
@@ -391,56 +375,10 @@ markdown documment"
 ;; UI-related helpers
 ;;----------------------------------------------------------------------------
 
-;; Highlights HTML/CSS color specifications
-(defvar hexcolour-keywords
-  '(("#[abcdef[:digit:]]\\{3,6\\}"
-     (0 (let ((colour (match-string-no-properties 0)))
-          (if (or (= (length colour) 4)
-                  (= (length colour) 7))
-              (put-text-property
-               (match-beginning 0)
-               (match-end 0)
-               'face (list :background (match-string-no-properties 0)
-                           :foreground (if (>= (apply '+ (x-color-values
-                                                          (match-string-no-properties 0)))
-                                               (* (apply '+ (x-color-values "white")) .6))
-                                           "black" ;; light bg, dark text
-                                         "white" ;; dark bg, light text
-                                         )))))
-        append))))
-                                        ;
-(defun hexcolour-add-to-font-lock ()
-  (interactive)
-  (font-lock-add-keywords nil hexcolour-keywords t))
-
-(defun powerline-clean-theme ()
-  "Customize the modeline with help from the powerline package"
-  (interactive)
-  (setq-default mode-line-format
-                '("%e"
-                  (:eval
-                   (let* ((active (powerline-selected-window-active))
-                          (lhs (list (powerline-raw (concat "L%l:%c") nil 'l)))
-                          (rhs (list
-                                (if (buffer-modified-p)
-                                    (powerline-raw "*" nil 'r))
-                                (powerline-raw (concat "")  nil 'r)
-                                (powerline-raw (concat "(%m) %p")  nil 'l)))
-                          (center (list (powerline-raw "%b" nil) )))
-                     (concat
-                      (powerline-render lhs)
-                      (powerline-fill-center nil (/ (powerline-width center) 2.0))
-                      (powerline-render center)
-                      (powerline-fill nil (powerline-width rhs))
-                      (powerline-render rhs)))))))
-(powerline-clean-theme)
-
-(defun reload-color-theme ()
+(defun matts/reload-color-theme ()
   "Reloads the color themes. Handy when experimenting with various colors"
   (interactive)
-  (load-file "~/.emacs.d/neptune-theme.el")
-  (add-to-list 'custom-theme-load-path "~/.emacs.d")
-  (load-theme 'neptune)
+  (load-file "/Users/matt/emacs/modules/config-theme.el")
   )
 
 ;;----------------------------------------------------------------------------
@@ -463,15 +401,6 @@ markdown documment"
      (setq tip-showing nil)
      )))
 
-
-;;----------------------------------------------------------------------------
-;; Ruby related functions
-;;----------------------------------------------------------------------------
-
-(defun my-sass-comment-fix ()
-  "Change the default commenting sequence for sass"
-  (set 'comment-start "//")
-  )
 
 ;;----------------------------------------------------------------------------
 ;; Dired related functions
@@ -506,4 +435,96 @@ reuse the current one."
   (dired-goto-file (concat (dired-current-directory) touch-file)))
 
 
-(provide 'defuns)
+(defun neotree-project-dir-toggle ()
+  "Open NeoTree using the project root, using find-file-in-project,
+or the current buffer directory."
+  (interactive)
+  (let ((project-dir
+         (ignore-errors
+           ;;; Pick one: projectile or find-file-in-project ; (projectile-project-root)
+           (ffip-project-root)
+           ))
+        (file-name (buffer-file-name))
+        (neo-smart-open t))
+    (if (and (fboundp 'neo-global--window-exists-p)
+             (neo-global--window-exists-p))
+        (neotree-hide)
+      (progn
+        (neotree-show)
+        (if project-dir
+            (neotree-dir project-dir))
+        (if file-name
+            (neotree-find file-name))))))
+
+(defun matts/font-lock-custom-keywords ()
+  "Highlight a bunch of well known comment annotations. This functions
+should be added to the hooks of major modes for programming."
+  (font-lock-add-keywords
+   nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
+          1 font-lock-warning-face t))))
+
+(add-hook 'prog-mode-hook 'matts/font-lock-custom-keywords)
+
+
+(defun matts/open-env ()
+  "Open the projects .env file"
+  (interactive)
+  (when-let ((root (projectile-project-root)))
+    (find-file-other-window (expand-file-name ".env" root)))
+  )
+
+(defun matts/restart-rails-server ()
+  "Restarts the running Rails server"
+  (interactive)
+  (shell-command "pkill -USR1 puma-dev")
+  )
+
+(defun matts/format-html ()
+  "run a command on the current file and revert the buffer"
+  (interactive)
+  (shell-command
+   (format "bundle exec htmlbeautifier %s" (shell-quote-argument (buffer-file-name))  ))
+  (revert-buffer t t t))
+
+(defun matts/change-number-at-point (change increment)
+  (let ((number (number-at-point))
+        (point (point)))
+    (when number
+      (progn
+        (forward-word)
+        (search-backward (number-to-string number))
+        (replace-match (number-to-string (funcall change number increment)))
+        (goto-char point)))))
+
+(defun matts/increment-number-at-point (&optional increment)
+  "Increment number at point like vim's C-a"
+  (interactive "p")
+  (matts/change-number-at-point '+ (or increment 1)))
+
+(defun matts/decrement-number-at-point (&optional increment)
+  "Decrement number at point like vim's C-x"
+  (interactive "p")
+  (matts/change-number-at-point '- (or increment 1)))
+
+(defun matts/move-file (new-location)
+  "Write this file to NEW-LOCATION, and delete the old one."
+  (interactive (list (expand-file-name
+                      (if buffer-file-name
+                          (read-file-name "Move file to: ")
+                        (read-file-name "Move file to: "
+                                        default-directory
+                                        (expand-file-name (file-name-nondirectory (buffer-name))
+                                                          default-directory))))))
+  (when (file-exists-p new-location)
+    (delete-file new-location))
+  (let ((old-location (expand-file-name (buffer-file-name))))
+    (message "old file is %s and new file is %s"
+             old-location
+             new-location)
+    (write-file new-location t)
+    (when (and old-location
+               (file-exists-p new-location)
+               (not (string-equal old-location new-location)))
+      (delete-file old-location))))
+
+(provide 'config-defuns)

@@ -1,0 +1,4 @@
+#name : pryr "..."
+#group : general
+# --
+binding.pry_remote

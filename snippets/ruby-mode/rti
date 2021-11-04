@@ -1,0 +1,40 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: rti
+# key: rti
+# group: general
+# --
+
+# frozen_string_literal: true
+
+# See UsersController
+class UsersControllerTest < ActionDispatch::IntegrationTest
+  let(:user) { create(:user) }
+
+  before { sign_in(user) }
+
+  describe "updating bookmarks" do
+    before do
+      put users_path(user), params: { user: { name: "Test User" } }, as: :turbo_stream
+    end
+
+    it "return a successful response" do
+      assert_response :success
+    end
+
+    it "renders the correct template" do
+      assert_template "users/update"
+    end
+
+    it "something" do
+      assert_equal user, assigns(:user)
+    end
+  end
+
+  describe "get users" do
+    before { get users_path, params: { user_id: user.id } }
+
+    it "should return a sucessful response" do
+      assert_response :success
+    end
+  end
+end

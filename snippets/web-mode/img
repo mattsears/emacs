@@ -1,0 +1,3 @@
+#name : <%= image_tag " ... ", :action => " ... " %>
+# --
+<%= image_tag "${name}", class: "${class}", alt: "${alt}" %>$0

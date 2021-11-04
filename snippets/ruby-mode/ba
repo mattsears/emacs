@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: before_action
+# key: ba
+# group: general
+# --
+before_action :$0

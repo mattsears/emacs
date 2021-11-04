@@ -1,0 +1,27 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: fb
+# key: fb
+# group: general
+# --
+
+# frozen_string_literal: true
+
+FactoryBot.define do
+  factory :user do
+    first_name { "John" }
+    last_name  { "Doe" }
+    sequence(:username) { |n| "user#{n}" }
+    admin { false }
+
+    factory :sample_user do
+      first_name { FFaker::Name.first_name }
+    end
+
+  end
+end
+
+def user_with_posts(posts_count: 5)
+  FactoryBot.create(:user) do |user|
+    FactoryBot.create_list(:post, posts_count, user: user)
+  end
+end

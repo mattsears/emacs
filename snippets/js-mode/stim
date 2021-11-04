@@ -1,0 +1,47 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: stim declaration
+# key: stim
+# --
+/**
+ * Short description. (use period)
+ *
+ * @since  x.x.x
+ * @access (private, protected, or public)
+ *
+ * @type     {type}
+ * @property {type} key Description.
+ *
+ * @member   {type} realName
+ * @memberof className
+ */
+import { Controller } from "stimulus"
+
+export default class extends Controller {
+
+  static targets = [
+    "form",
+    "button"
+  ]
+
+  static values = {
+    url: String
+  }
+
+  /**
+   *
+   */
+  connect() {
+    console.log("Is this thing on?", this.element)
+    $0
+  }
+
+  /**
+   * [onSubmit Fires when the form is submitted]
+   * @param  {[type]} e [description]
+   * @return {[type]}   [description]
+   */
+  onSubmit(e) {
+    // Do something...
+  }
+
+}

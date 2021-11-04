@@ -1,0 +1,8 @@
+#name : rdb
+# --
+
+# for block {|a, b, c| ... }
+# @yield [a, b, c] Description of block
+#
+# @yieldparam [optional, types, ...] argname description
+# @yieldreturn [optional, types, ...] description

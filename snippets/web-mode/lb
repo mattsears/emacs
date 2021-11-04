@@ -1,0 +1,3 @@
+#name : <%= label :action, class: 'small' %>
+# --
+<%= f.label :$0, class: "$1" %>

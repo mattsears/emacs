@@ -1,0 +1,7 @@
+#name : rda
+# --
+
+# @todo Add support for Jabberwocky service
+#   There is an open source Jabberwocky library available
+#   at http://somesite.com that can be integrated easily
+#   into the project.
