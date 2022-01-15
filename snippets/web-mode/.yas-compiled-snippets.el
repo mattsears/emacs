@@ -23,6 +23,7 @@
                        ("ifel" "<% if $0cond} -%>\n$0\n<% else -%>\n<% end -%>\n" "<% if  ...  -%> $. <% else -%> <% end -%>" nil nil nil "/Users/matt/.emacs.d/snippets/web-mode/ifel" nil nil)
                        ("if" "<% if ${false} -%>\n  $0\n<% end -%>\n" "<% if  ...  -%> $. <% end -%>" nil nil nil "/Users/matt/.emacs.d/snippets/web-mode/if" nil nil)
                        ("h" "<%=h ${@item} %>\n" "<%=h  ...  %>" nil nil nil "/Users/matt/.emacs.d/snippets/web-mode/h" nil nil)
+                       ("fw" "<%= form_with model: @model do |form| %>\n  <%= form.hidden_field :parent_id, value: \"foo\" %>\n  $0\n<% end %>\n" "<% form_with do %> ... <% end  %>" nil nil nil "/Users/matt/.emacs.d/snippets/web-mode/fw" nil nil)
                        ("ft" "<% form_tag(:action => \"${update}\") do %>\n$0\n<% end %>\n" "<% form_tag(:action => \" ... \") do %> ... <% end  %>" nil nil nil "/Users/matt/.emacs.d/snippets/web-mode/ft" nil nil)
                        ("end" "<% end %>" "end" nil nil nil "/Users/matt/.emacs.d/snippets/web-mode/end" nil nil)
                        ("em" "<em>$0</em>" "<em>" nil nil nil "/Users/matt/.emacs.d/snippets/web-mode/em" nil nil)
@@ -35,4 +36,4 @@
                        ("%" "<%$0 -%>\n" "<%$. -%>" nil nil nil "/Users/matt/.emacs.d/snippets/web-mode/%" nil nil)))
 
 
-;;; Do not edit! File generated at Fri May 28 10:02:39 2021
+;;; Do not edit! File generated at Fri Dec 17 15:11:50 2021

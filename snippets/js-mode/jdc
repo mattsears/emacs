@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Javascript class documentation header
+# key: jdc
+# --
+/**
+ * $0 Description goes here
+ * @extends {Controller}
+ */

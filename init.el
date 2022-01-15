@@ -2,8 +2,9 @@
 ;; Global Package Initializations
 ;;----------------------------------------------------------------------------
 
-(setq load-prefer-newer t)
-(setq warning-minimum-level :emergency)
+;; (setq load-prefer-newer t)
+
+;; (setq warning-minimum-level :emergency)
 
 (if (member "-M" command-line-args)
 

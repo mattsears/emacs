@@ -47,8 +47,8 @@
     (setq projectile-completion-system 'selectrum-completing-read)
     (setq projectile-sort-order 'recently-active)
     (setq projectile-indexing-method 'alien)
-    ;; (setq projectile-use-native-indexing t)
-    ;; (setq projectile-indexing-method 'native)
+    (setq projectile-switch-project-action 'neotree-projectile-action)
+
     (setq projectile-globally-ignored-files
           (append '(
                     ".DS_Store"
@@ -263,7 +263,7 @@
   (progn
     (setq neo-window-width 40)
     (setq neo-autorefresh nil)
-    (setq neo-vc-integration nil)
+    ;; (setq neo-vc-integration t)
     ;; (setq neo-banner-message "🚀")
     (setq neo-show-slash-for-folder nil)
     (setq neo-show-updir-line nil)
@@ -292,6 +292,21 @@
 
 (use-package company
   :init
+  (setq company-backends '(
+                           company-capf
+                           company-keywords
+                           company-semantic
+                           company-files
+                           company-etags
+                           company-elisp
+                           company-yasnippet
+                           ))
+
+  (setq company-tooltip-limit 20)
+  (setq company-minimum-prefix-length 1)
+  (setq company-show-numbers t)
+  (setq company-idle-delay 0)
+  (setq company-echo-delay 0)
   (progn
     (add-hook 'after-init-hook 'global-company-mode)
     (add-hook 'global-company-mode-hook
@@ -326,12 +341,25 @@
 (use-package dash
   :ensure t)
 
-;; Shows uncommited code in the margins
-(global-diff-hl-mode)
 
-(use-package eglot
-  :hook (ruby-mode . eglot-ensure)
-  :ensure t)
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-modeline-diagnostics-scope :workspace)
+
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (ruby-mode . lsp)
+         (js-mode . lsp)
+         )
+  :commands lsp)
+
+;; optionally
+(use-package lsp-ui :commands lsp-ui-mode)
+;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
 
 (use-package selectrum
   :ensure t
@@ -356,6 +384,12 @@
     (setq compilation-finish-functions 'matts/compile-autoclose)
     (popwin-mode 1)
     )
+  )
+
+;; Highlights columns (helpful with long ERB files)
+(use-package highlight-indentation
+  :ensure t
+  :commands highlight-indentation-current-column-mode
   )
 
 (provide 'config-packages)

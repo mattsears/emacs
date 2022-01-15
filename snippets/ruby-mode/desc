@@ -3,6 +3,6 @@
 # key: desc
 # group: general
 # --
-describe "$0" do
+describe '$0' do
 
 end

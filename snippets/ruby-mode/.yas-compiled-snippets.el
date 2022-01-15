@@ -2,7 +2,7 @@
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'ruby-mode
-                     '(("yds" "# ============================================================================\n# $0PUBLIC CLASS METHODS\n# ============================================================================" "yds" nil nil nil "/Users/matt/.emacs.d/snippets/ruby-mode/yds" nil nil)
+                     '(("yds" "# ============================================================================\n# $0PRIVATE INSTANCE METHODS\n# ============================================================================" "yds" nil nil nil "/Users/matt/.emacs.d/snippets/ruby-mode/yds" nil nil)
                        ("ydm" "# [Description goes here]\n#\n# @author Matt Sears\n#\n# @see http://example.com Description of URL\n# @see SomeOtherClass#method\n#\n# @private\n#\n# @param [Hash] opts the options to create a message with.\n# @option opts [String] :subject The subject\n# @option opts [String] :from ('nobody') From address\n#\n# The options parsed out of the commandline.\n# Default options are:\n#   :format => :dot\n#\n# @example Parse a glob of files\n#   YARD.parse('lib/**/*.rb')\n#\n# @raise [ExceptionClass] description\n#\n# @return [true] always returns true\n# @return description here with no types" "rdm" nil nil nil "/Users/matt/.emacs.d/snippets/ruby-mode/ydm" nil nil)
                        ("ydc" "# frozen_string_literal: true\n\n# Description goes here\n#\n# @author Matt Sears\n# @abstract\n# @since 0.1.0\n#" "rdc" nil nil nil "/Users/matt/.emacs.d/snippets/ruby-mode/ydc" nil nil)
                        ("ydb" "# for block {|a, b, c| ... }\n# @yield [a, b, c] Description of block\n#\n# @yieldparam [optional, types, ...] argname description\n# @yieldreturn [optional, types, ...] description" "rdb" nil nil nil "/Users/matt/.emacs.d/snippets/ruby-mode/ydb" nil nil)
@@ -38,7 +38,7 @@
                        ("let" "let(:$1) { $0 }\n" "let" nil
                         ("general")
                         nil "/Users/matt/.emacs.d/snippets/ruby-mode/let" nil nil)
-                       ("it" "it \"$0\" do\n\nend" "it" nil
+                       ("it" "it '$0' do\n\nend" "it" nil
                         ("general")
                         nil "/Users/matt/.emacs.d/snippets/ruby-mode/it" nil nil)
                        ("inject" "inject(${1:0}) { |${2:injection}, ${3:element}| $0 }" "inject(...) { |...| ... }" nil
@@ -56,7 +56,7 @@
                        ("ea" "each { |${e}| $0 }" "each { |...| ... }" nil
                         ("collections")
                         nil "/Users/matt/.emacs.d/snippets/ruby-mode/ea" nil nil)
-                       ("desc" "describe \"$0\" do\n\nend" "desc" nil
+                       ("desc" "describe '$0' do\n\nend" "desc" nil
                         ("general")
                         nil "/Users/matt/.emacs.d/snippets/ruby-mode/desc" nil nil)
                        ("def" "def ${1:method}${2:(${3:args})}\n    $0\nend" "def ... end" nil nil nil "/Users/matt/.emacs.d/snippets/ruby-mode/def" nil nil)
@@ -77,7 +77,10 @@
                         nil "/Users/matt/.emacs.d/snippets/ruby-mode/before" nil nil)
                        ("ba" "before_action :$0" "before_action" nil
                         ("general")
-                        nil "/Users/matt/.emacs.d/snippets/ruby-mode/ba" nil nil)))
+                        nil "/Users/matt/.emacs.d/snippets/ruby-mode/ba" nil nil)
+                       ("%w" "%w($0)" "%w" nil
+                        ("general")
+                        nil "/Users/matt/.emacs.d/snippets/ruby-mode/%w" nil nil)))
 
 
-;;; Do not edit! File generated at Fri May 28 10:02:39 2021
+;;; Do not edit! File generated at Fri Dec 17 15:11:50 2021

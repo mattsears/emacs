@@ -5,7 +5,10 @@
   :ensure t
   :init
   (progn
+    (setq evil-want-keybinding nil)
+
     (evil-mode t)
+    (evil-collection-init)
     ;; Make a escape actually quit
     (define-key evil-visual-state-map [escape] 'keyboard-quit)
     (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
@@ -29,8 +32,14 @@
 
     (setq evil-want-fine-undo t)
     (setq evil-default-cursor t)
-    (setq evil-normal-state-cursor '("orange" box))
-    (setq evil-insert-state-cursor '("orange" bar))
+    (setq evil-normal-state-cursor '(box "orange"))
+    (setq evil-insert-state-cursor '(bar "orange"))
+    (setq evil-visual-state-cursor '(hollow "orange"))
+
+    (unless (display-graphic-p)
+      (require 'evil-terminal-cursor-changer)
+      (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+      )
 
     ;; Changing/deleting/yanking text will not clobber your default clipboard.
     (setq x-select-enable-clipboard nil)
@@ -122,7 +131,7 @@
       "t"   'counsel-projectile-find-file
       "o"   'dired-jump
       "b"   'counsel-projectile-switch-to-buffer
-      "i"   'iwb
+      "i"   'fwb
       ","   'switch-to-previous-buffer
       "/"   'counsel-projectile-ag
       "w"   'matts-close-and-delete-window
@@ -135,6 +144,7 @@
       "j"   'dumb-jump-go
       "p"   'dumb-jump-back
       "n"   'neotree-project-dir-toggle
+      ;; "n"   'dired-sidebar-toggle-sidebar
 
       "g"  'hydra-magit/body'
       "f"  'hydra-files/body'
@@ -149,5 +159,10 @@
       "ee"  'alchemist-eval-print-current-line
       ";"   'ispell-word
       )))
+
+(use-package evil-exchange
+  :after evil
+  :config
+  (evil-exchange-install))
 
 (provide 'config-evil)

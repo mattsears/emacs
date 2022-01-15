@@ -97,8 +97,9 @@
   (setq doom-modeline-unicode-fallback t)
   (setq doom-modeline-buffer-encoding nil)
   (setq doom-modeline-buffer-file-name-style 'relative-to-project)
-  ;; (set-face-attribute 'mode-line nil :family "Noto Sans" :height 100)
-  ;; (set-face-attribute 'mode-line-inactive nil :family "Noto Sans" :height 100)
+  (setq doom-modeline-project-detection 'auto)
+  (set-face-attribute 'mode-line nil :family "Noto Sans" :height 100)
+  (set-face-attribute 'mode-line-inactive nil :family "Noto Sans" :height 100)
   )
 
 (provide 'config-ui)

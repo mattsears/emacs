@@ -36,10 +36,12 @@
 (depends-on "evil-visualstar")
 (depends-on "evil-rails")
 (depends-on "evil-quickscope")
-(depends-on "evil-magit")
 (depends-on "evil-exchange")
 (depends-on "evil-lion")
 (depends-on "evil-textobj-anyblock")
+(depends-on "evil-terminal-cursor-changer")
+(depends-on "evil-collection")
+(depends-on "evil-exchange")
 
 (depends-on "exec-path-from-shell")
 (depends-on "f")
@@ -65,7 +67,6 @@
 (depends-on "magit")
 (depends-on "magit-popup")
 (depends-on "markdown-mode")
-(depends-on "markdown-mode+")
 (depends-on "minitest")
 (depends-on "mmm-mode")
 (depends-on "neotree")
@@ -116,7 +117,7 @@
 (depends-on "crystal-mode")
 (depends-on "pug-mode")
 (depends-on "csv-mode")
-
+(depends-on "ag")
 (depends-on "ivy")
 (depends-on "ivy-rich")
 (depends-on "flyspell-correct-ivy")
@@ -146,6 +147,13 @@
 (depends-on "doom-modeline")
 
 (depends-on "vterm-toggle")
-(depends-on "eglot")
+(depends-on "lsp-mode")
+(depends-on "lsp-ui")
+
+(depends-on "which-key")
 
 (depends-on "selectrum")
+(depends-on "dimmer")
+(depends-on "dired-sidebar")
+(depends-on "auto-rename-tag")
+(depends-on "highlight-indentation")

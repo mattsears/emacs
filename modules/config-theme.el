@@ -284,6 +284,13 @@
    `(flycheck-info((,class (:underline (:style wave :color "Red")))))
    `(flycheck-warning((,class (:underline (:style wave :color "Red")))))
    `(flycheck-error((,class (:underline (:style wave :color "Red")))))
+	 
+
+   ;;----------------------------------------------------------------------------
+   ;; From the highlight-indentation package
+   ;;----------------------------------------------------------------------------
+
+   `(highlight-indentation-current-column-face ((,class (:background ,neptune-grey-4))))
    ))
 
 ;;;###autoload

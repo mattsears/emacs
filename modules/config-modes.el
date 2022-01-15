@@ -90,9 +90,8 @@
   :mode (("\\.markdown$" . markdown-mode)
          ("\\.md$" . markdown-mode)
          ("\\.mkd$" . markdown-mode)
-         (".simplenote$" . markdown-mode)))
-
-(use-package markdown-mode+)
+         (".simplenote$" . markdown-mode))
+  :hook (markdown-mode . auto-fill-mode))
 
 (use-package adoc-mode
   :mode (("\\.adoc$" . adoc-mode)))
@@ -113,21 +112,48 @@
 
 (use-package dired
   :init
-  (progn
-    (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
-    (put 'dired-find-alternate-file 'disabled nil)
-    )
   :config
   (progn
     (use-package wdired)
     (use-package dired-x)
-    ;; (use-package dired-details)
-    ;; (dired-details-install)
+
+    (use-package dired-sidebar
+      :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+      :ensure t
+      :commands (dired-sidebar-toggle-sidebar)
+      :init
+      (add-hook 'dired-sidebar-mode-hook
+                (lambda ()
+                  (unless (file-remote-p default-directory)
+                    (auto-revert-mode))))
+      :config
+      (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+      (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+      ;; (setq dired-sidebar-subtree-line-prefix "_")
+      (setq dired-sidebar-theme 'nerd)
+      (setq dired-sidebar-use-term-integration t)
+      (setq dired-sidebar-use-custom-font t)
+
+      (add-hook 'dired-sidebar-mode-hook
+                (lambda ()
+                  ;; (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+                  (define-key evil-normal-state-local-map (kbd "l") 'dired-sidebar-subtree-toggle)
+                  (define-key evil-normal-state-local-map (kbd "h") 'dired-sidebar-subtree-toggle)
+                  (define-key evil-normal-state-local-map (kbd "RET") 'dired-sidebar-find-file)
+                  ;; (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
+                  ;; (define-key evil-normal-state-local-map (kbd "n") 'neotree-create-node)
+                  ;; (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+                  ;; (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
+                  ))
+      )
+
     (setq dired-omit-files
           (rx (or (seq bol (? ".") "#")         ;; emacs autosave files
                   (seq "~" eol)                 ;; backup-files
                   (seq "coverage" eol)          ;; code coverage files
                   )))
+
     ;; (setq-default dired-details-hidden-string "--- ")
     (setq dired-omit-extensions
           (append dired-latex-unclean-extensions
@@ -142,22 +168,25 @@
     (setq dired-recursive-deletes 'top)
     (setq dired-recursive-copies (quote always))
 
-    (define-key dired-mode-map [delete] 'dired-do-delete)
-    (define-key dired-mode-map (kbd "DEL") 'matts-dired-up-directory)
-    (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
-    (define-key dired-mode-map "n" 'dired-touch-now)
-    (define-key dired-mode-map "o" 'matts-dired-open-mac)
-    (define-key dired-mode-map "a" 'dired-find-alternate-file)
-    (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+    (add-hook 'dired-mode-hook
+              (lambda ()
+                (define-key evil-normal-state-local-map (kbd "RET") 'dired-find-alternate-file)
+                (define-key evil-normal-state-local-map (kbd "DEL") 'matts-dired-up-directory)
+                (define-key evil-normal-state-local-map (kbd "o") 'matts-dired-open-mac)
+                (define-key evil-normal-state-local-map (kbd "n") 'dired-touch-now)
+                (define-key evil-normal-state-local-map (kbd "r") 'wdired-change-to-wdired-mode)
 
-    (defun matts/dired-open-thing ()
-      "If file at point is a directory open a dired buffer in the same window. Else open in a new window."
-      (interactive)
-      (dired-find-file)
-      ;; (if (file-directory-p (dired-get-filename nil t))
-      ;;     (dired-find-alternate-file)
-      ;;     (dired-find-file-other-window))
-  )
+                ))
+
+    ;; (define-key dired-mode-map [delete] 'dired-do-delete)
+    ;; (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+    ;; (define-key dired-mode-map (kbd "M-RET") 'dired-find-alternate-file)
+    ;; (define-key dired-mode-map (kbd "DEL") 'matts-dired-up-directory)
+    ;; (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
+    ;; (define-key dired-mode-map "n" 'dired-touch-now)
+    ;; (define-key dired-mode-map "o" 'matts-dired-open-mac)
+    ;; (define-key dired-mode-map "a" 'dired-find-alternate-file)
+
     ))
 
 

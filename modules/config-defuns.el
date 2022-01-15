@@ -130,12 +130,14 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 ;; Buffer Utils
 ;;----------------------------------------------------------------------------
 
-(defun iwb ()
-  "indent whole buffer"
+(defun fwb ()
+  "format whole buffer"
   (interactive)
   (delete-trailing-whitespace)
   (indent-region (point-min) (point-max) nil)
-  (untabify (point-min) (point-max)))
+  (untabify (point-min) (point-max))
+  (lsp-format-buffer)
+  )
 
 (defun untabify-buffer ()
   "Replaces all tabs in the buffer with spaces."
@@ -442,7 +444,8 @@ or the current buffer directory."
   (let ((project-dir
          (ignore-errors
            ;;; Pick one: projectile or find-file-in-project ; (projectile-project-root)
-           (ffip-project-root)
+           ;; (ffip-project-root)
+           (projectile-project-root)
            ))
         (file-name (buffer-file-name))
         (neo-smart-open t))
@@ -526,5 +529,6 @@ should be added to the hooks of major modes for programming."
                (file-exists-p new-location)
                (not (string-equal old-location new-location)))
       (delete-file old-location))))
+
 
 (provide 'config-defuns)

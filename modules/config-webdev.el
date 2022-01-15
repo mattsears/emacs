@@ -25,16 +25,20 @@
     (setq web-mode-enable-current-column-highlight t)
     (setq web-mode-enable-current-element-highlight t)
     (setq web-mode-enable-auto-closing t)
-
     ;; (setq web-mode-attr-indent-offset 4)
     ;; (setq web-mode-attr-value-indent-offset 4)
     (setq web-mode-block-padding 6)
+    (eval-after-load "web-mode"
+      '(set-face-background 'web-mode-current-element-highlight-face "blue"))
     )
   :init
   (progn
     (add-hook 'web-mode-hook
               (lambda ()
+
                 (whitespace-mode -1)
+                (auto-rename-tag-mode t)
+                (highlight-indentation-current-column-mode t) ;; highlight columns
                 ;; (yas-minor-mode -1)
                 ))
     )
@@ -49,7 +53,7 @@
 (use-package css-mode
   :init
   ;; (progn
-    ;; (hexcolour-add-to-font-lock))
+  ;; (hexcolour-add-to-font-lock))
   :config
   (progn
     (setq cssm-indent-level 2)
@@ -129,6 +133,12 @@
 
 (use-package vue-mode
   :mode (("\\.vue\\'" . vue-mode))
+  )
+
+(use-package auto-rename-tag
+  :config
+  (add-hook 'webmode-mode-hook #'auto-rename-tag-mode)
+  (add-hook 'html-mode-hook #'auto-rename-tag-mode)
   )
 
 (provide 'config-webdev)

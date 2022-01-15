@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Javascript class documentation header
+# key: jdf
+# --
+/**
+ * $0 Multiple lines of JSDoc text are written here,
+ * @param {number} arg A number to do something to.
+ */

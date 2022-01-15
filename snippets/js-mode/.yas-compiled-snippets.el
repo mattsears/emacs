@@ -40,6 +40,8 @@
                        ("metb" "${1:methodName} = (${2:params}) => {\n  ${0}\n}" "bound method" nil nil nil "/Users/matt/.emacs.d/snippets/js-mode/metb" nil "b8f2656b-94d0-40fc-baf2-d335073ecd54")
                        ("met" "${1:name}(${2:arg}) {\n  $0\n}" "method" nil nil nil "/Users/matt/.emacs.d/snippets/js-mode/met" nil nil)
                        ("let" "let ${1:name} = ${2:initial};" "let declaration" nil nil nil "/Users/matt/.emacs.d/snippets/js-mode/let" nil nil)
+                       ("jdf" "/**\n * $0 Multiple lines of JSDoc text are written here,\n * @param {number} arg A number to do something to.\n */\n" "Javascript class documentation header" nil nil nil "/Users/matt/.emacs.d/snippets/js-mode/jdf" nil nil)
+                       ("jdc" "/**\n * $0 Description goes here\n * @extends {Controller}\n */" "Javascript class documentation header" nil nil nil "/Users/matt/.emacs.d/snippets/js-mode/jdc" nil nil)
                        ("init" "constructor(${1:arg}) {\n  ${2:super(${3:arg});}\n  $0\n}" "constructor" nil nil nil "/Users/matt/.emacs.d/snippets/js-mode/init" nil nil)
                        ("imp" "import ${2:moduleName} from '${1:module}'$0" "import" nil nil nil "/Users/matt/.emacs.d/snippets/js-mode/imp" nil "fb07fe1d-4cf7-47e9-bca8-51a6438c5d6f")
                        ("imn" "import '${1:module}'$0" "importNoModuleName" nil nil nil "/Users/matt/.emacs.d/snippets/js-mode/imn" nil "39b0065c-1dd5-4214-a612-1fead18dd677")
@@ -116,4 +118,4 @@
                         nil "/Users/matt/.emacs.d/snippets/js-mode/console/cas" nil "b845ab40-1e04-4d11-bb0c-14266e733945")))
 
 
-;;; Do not edit! File generated at Fri May 28 10:02:39 2021
+;;; Do not edit! File generated at Fri Dec 17 15:11:50 2021
